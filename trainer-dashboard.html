@@ -158,8 +158,14 @@
       background: rgba(138,166,143,0.12);
       display: grid;
       place-items: center;
-      font-size: 24px;
+      color: var(--sage);
       flex-shrink: 0;
+    }
+
+    .dog-avatar svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2.2;
     }
 
     .dog h4 {
@@ -261,8 +267,14 @@
       border: 1.5px solid var(--glass-border);
       background: var(--glass);
       color: var(--navy);
-      font-size: 22px;
-      font-weight: var(--font-bold);
+      display: grid;
+      place-items: center;
+    }
+
+    .drawer-close svg {
+      width: 21px;
+      height: 21px;
+      stroke-width: 2.4;
     }
 
     .drawer-card {
@@ -296,6 +308,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: var(--space-sm);
       padding: 16px;
       border-radius: var(--radius-md);
       text-decoration: none;
@@ -304,7 +317,20 @@
       font-weight: var(--font-heavy);
     }
 
-    .drawer-link span {
+    .drawer-link-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .drawer-link svg {
+      width: 19px;
+      height: 19px;
+      stroke-width: 2.2;
+      color: var(--sage);
+    }
+
+    .drawer-link span:last-child {
       color: rgba(15,31,46,0.34);
     }
 
@@ -389,7 +415,9 @@
       <div class="dog-list">
 
         <a href="member-profile.html" class="dog glass-card">
-          <div class="dog-avatar">🐕</div>
+          <div class="dog-avatar">
+            <i data-lucide="dog"></i>
+          </div>
 
           <div>
             <h4>Bella</h4>
@@ -398,7 +426,9 @@
         </a>
 
         <a href="member-profile.html" class="dog glass-card">
-          <div class="dog-avatar">🐶</div>
+          <div class="dog-avatar">
+            <i data-lucide="paw-print"></i>
+          </div>
 
           <div>
             <h4>Charlie</h4>
@@ -415,22 +445,30 @@
   <nav class="bottom-nav">
 
     <a href="trainer-dashboard.html" class="bottom-nav-item active">
-      <div class="bottom-nav-icon">🏠</div>
+      <div class="bottom-nav-icon">
+        <i data-lucide="home"></i>
+      </div>
       Home
     </a>
 
     <a href="session-detail.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon">📋</div>
+      <div class="bottom-nav-icon">
+        <i data-lucide="calendar-check"></i>
+      </div>
       Sessions
     </a>
 
     <a href="dogs.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon">🐕</div>
+      <div class="bottom-nav-icon">
+        <i data-lucide="dog"></i>
+      </div>
       Dogs
     </a>
 
     <a href="club-dashboard.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon">👥</div>
+      <div class="bottom-nav-icon">
+        <i data-lucide="users"></i>
+      </div>
       Club
     </a>
 
@@ -452,7 +490,7 @@
       </div>
 
       <button class="drawer-close btn" id="closeDrawer" aria-label="Close account menu">
-        ×
+        <i data-lucide="x"></i>
       </button>
 
     </div>
@@ -472,27 +510,42 @@
     <div class="drawer-menu">
 
       <a href="#" class="drawer-link glass-card">
-        Profile
+        <span class="drawer-link-left">
+          <i data-lucide="user"></i>
+          Profile
+        </span>
         <span>›</span>
       </a>
 
       <a href="#" class="drawer-link glass-card">
-        Notifications
+        <span class="drawer-link-left">
+          <i data-lucide="bell"></i>
+          Notifications
+        </span>
         <span>›</span>
       </a>
 
       <a href="#" class="drawer-link glass-card">
-        Membership
+        <span class="drawer-link-left">
+          <i data-lucide="badge-check"></i>
+          Membership
+        </span>
         <span>›</span>
       </a>
 
       <a href="club-dashboard.html" class="drawer-link glass-card">
-        Club settings
+        <span class="drawer-link-left">
+          <i data-lucide="settings"></i>
+          Club settings
+        </span>
         <span>›</span>
       </a>
 
       <a href="#" class="drawer-link glass-card">
-        Help
+        <span class="drawer-link-left">
+          <i data-lucide="circle-help"></i>
+          Help
+        </span>
         <span>›</span>
       </a>
 
@@ -506,7 +559,11 @@
 
   </aside>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <script>
+    lucide.createIcons();
+
     const openDrawer = document.getElementById("openDrawer");
     const closeDrawer = document.getElementById("closeDrawer");
     const drawerOverlay = document.getElementById("drawerOverlay");
