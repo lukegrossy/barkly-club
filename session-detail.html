@@ -8,38 +8,12 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
 
-  <title>Session Detail | Barkly Club</title>
+  <title>Session | Barkly Club</title>
+
+  <link rel="stylesheet" href="design-system.css" />
 
   <style>
-    :root {
-      --navy: #0F1F2E;
-      --sage: #8AA68F;
-      --cream: #F2EDE3;
-      --white: #FFFCF7;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      min-height: 100dvh;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Inter",
-        "Segoe UI",
-        sans-serif;
-
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.82), transparent 42%),
-        linear-gradient(180deg, #f8f4eb 0%, #f2ede3 100%);
-
-      color: var(--navy);
-
       padding:
         max(26px, env(safe-area-inset-top))
         20px
@@ -47,157 +21,103 @@
     }
 
     .session-page {
-      max-width: 560px;
+      max-width: var(--content-width);
       margin: 0 auto;
     }
 
     .topbar {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
 
-      margin-bottom: 22px;
+      margin-bottom: var(--space-xl);
     }
 
-    .back {
-      width: 42px;
-      height: 42px;
-
-      border-radius: 999px;
-
-      background: rgba(255,255,255,0.72);
-
-      border: 1.5px solid rgba(15,31,46,0.08);
-
-      display: grid;
-      place-items: center;
-
-      text-decoration: none;
-
-      color: var(--navy);
-
-      font-size: 24px;
-      font-weight: 700;
-    }
-
-    .status-live {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      font-size: 13px;
-      font-weight: 800;
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
 
       color: var(--sage);
+
+      margin-bottom: var(--space-xs);
     }
 
-    .dot {
-      width: 10px;
-      height: 10px;
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
 
-      border-radius: 999px;
-
-      background: #6db87f;
-
-      box-shadow:
-        0 0 0 6px rgba(109,184,127,0.16);
+      margin-bottom: var(--space-sm);
     }
 
-    .hero {
+    .topbar p {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+
+      line-height: 1.5;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+
+      border-radius: var(--radius-pill);
+
       background: var(--navy);
 
       color: white;
 
-      border-radius: 36px;
-
-      padding: 26px;
-
-      margin-bottom: 18px;
-
-      box-shadow:
-        0 18px 36px rgba(15,31,46,0.16);
-    }
-
-    .badge {
-      display: inline-flex;
-
-      padding: 8px 12px;
-
-      border-radius: 999px;
-
-      background: rgba(138,166,143,0.22);
-
-      color: #dce8df;
-
-      font-size: 12px;
-      font-weight: 800;
-
-      margin-bottom: 18px;
-    }
-
-    h1 {
-      font-size: 34px;
-      line-height: 1.02;
-      letter-spacing: -0.06em;
-
-      margin-bottom: 12px;
-    }
-
-    .hero p {
-      font-size: 15px;
-      line-height: 1.55;
-
-      color: rgba(255,255,255,0.72);
-    }
-
-    .stats {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      place-items: center;
 
-      margin-bottom: 22px;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+
+      flex-shrink: 0;
     }
 
-    .stat {
-      background: rgba(255,255,255,0.74);
+    .session-card {
+      padding: 24px;
 
-      border: 1.5px solid rgba(15,31,46,0.08);
-
-      border-radius: 28px;
-
-      padding: 22px;
+      margin-bottom: var(--space-xl);
     }
 
-    .stat strong {
-      display: block;
+    .session-meta {
+      display: flex;
+      flex-wrap: wrap;
 
-      font-size: 38px;
-      line-height: 1;
+      gap: 10px;
 
-      letter-spacing: -0.06em;
-
-      margin-bottom: 10px;
+      margin-top: var(--space-md);
     }
 
-    .stat span {
-      font-size: 14px;
-      font-weight: 700;
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
 
-      color: rgba(15,31,46,0.62);
+      gap: 8px;
+
+      padding:
+        10px
+        14px;
+
+      border-radius: var(--radius-pill);
+
+      background:
+        rgba(255,255,255,0.08);
+
+      color:
+        rgba(255,255,255,0.76);
+
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
     }
 
-    .section {
-      margin-bottom: 18px;
-    }
+    .meta-pill svg {
+      width: 16px;
+      height: 16px;
 
-    .section-card {
-      background: rgba(255,255,255,0.74);
-
-      border: 1.5px solid rgba(15,31,46,0.08);
-
-      border-radius: 30px;
-
-      padding: 22px;
+      stroke-width: 2.2;
     }
 
     .section-head {
@@ -205,197 +125,114 @@
       align-items: center;
       justify-content: space-between;
 
-      margin-bottom: 18px;
+      margin-bottom: var(--space-md);
     }
 
     .section-head h2 {
-      font-size: 22px;
-      letter-spacing: -0.04em;
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
     }
 
-    .section-head a {
-      text-decoration: none;
+    .attendance-count {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
 
       color: var(--sage);
-
-      font-size: 14px;
-      font-weight: 800;
     }
 
-    .dog-list {
+    .attendance-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+
+      gap: var(--space-sm);
     }
 
-    .dog {
+    .dog-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
 
       padding: 16px;
-
-      border-radius: 24px;
-
-      background: rgba(248,244,235,0.72);
-
-      border: 1px solid rgba(15,31,46,0.06);
     }
 
     .dog-left {
       display: flex;
       align-items: center;
+
       gap: 14px;
     }
 
     .dog-avatar {
-      width: 50px;
-      height: 50px;
+      width: 52px;
+      height: 52px;
 
-      border-radius: 18px;
+      border-radius: var(--radius-md);
 
-      background: rgba(138,166,143,0.12);
+      background:
+        rgba(138,166,143,0.12);
 
       display: grid;
       place-items: center;
-
-      font-size: 24px;
-    }
-
-    .dog h3 {
-      font-size: 17px;
-      margin-bottom: 4px;
-    }
-
-    .dog p {
-      font-size: 14px;
-      color: rgba(15,31,46,0.62);
-    }
-
-    .check {
-      width: 34px;
-      height: 34px;
-
-      border-radius: 999px;
-
-      background: rgba(138,166,143,0.16);
 
       color: var(--sage);
 
-      display: grid;
-      place-items: center;
-
-      font-size: 16px;
-      font-weight: 900;
+      flex-shrink: 0;
     }
 
-    .notes {
-      font-size: 15px;
-      line-height: 1.7;
+    .dog-avatar svg {
+      width: 24px;
+      height: 24px;
 
-      color: rgba(15,31,46,0.72);
+      stroke-width: 2.2;
     }
 
-    .actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+    .dog-row h3 {
+      font-size: 18px;
 
-      margin-top: 16px;
+      margin-bottom: 4px;
     }
 
-    .action {
-      height: 64px;
+    .dog-row p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
 
-      border-radius: 22px;
+    .checkin-btn {
+      width: 46px;
+      height: 46px;
+
+      border-radius: var(--radius-pill);
 
       border: none;
 
-      font-size: 15px;
-      font-weight: 800;
+      background:
+        rgba(15,31,46,0.08);
 
-      cursor: pointer;
-    }
-
-    .primary {
-      background: var(--navy);
-      color: white;
-    }
-
-    .secondary {
-      background: rgba(255,255,255,0.74);
-
-      color: var(--navy);
-
-      border: 1.5px solid rgba(15,31,46,0.08);
-    }
-
-    .nav {
-      position: fixed;
-
-      left: 50%;
-      bottom: 18px;
-
-      transform: translateX(-50%);
-
-      width: calc(100% - 34px);
-      max-width: 540px;
-
-      background: rgba(255,255,255,0.82);
-
-      backdrop-filter: blur(24px);
-
-      border: 1px solid rgba(15,31,46,0.06);
-
-      border-radius: 24px;
-
-      padding:
-        10px
-        8px
-        calc(10px + env(safe-area-inset-bottom));
-
-      display: flex;
-      justify-content: space-around;
-
-      box-shadow:
-        0 10px 24px rgba(15,31,46,0.08);
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      gap: 4px;
-
-      min-width: 62px;
-
-      text-decoration: none;
-
-      color: rgba(15,31,46,0.42);
-
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .nav-icon {
-      width: 36px;
-      height: 36px;
-
-      border-radius: 12px;
+      color: var(--text-secondary);
 
       display: grid;
       place-items: center;
 
-      font-size: 18px;
+      transition:
+        transform var(--transition-fast),
+        background var(--transition-fast),
+        color var(--transition-fast);
     }
 
-    .nav-item.active {
-      color: var(--navy);
+    .checkin-btn svg {
+      width: 22px;
+      height: 22px;
+
+      stroke-width: 2.6;
     }
 
-    .nav-item.active .nav-icon {
-      background: rgba(15,31,46,0.08);
+    .checkin-btn.checked-in {
+      background: var(--sage);
+      color: white;
+    }
+
+    .checkin-btn:active {
+      transform: scale(0.95);
     }
   </style>
 </head>
@@ -406,153 +243,152 @@
 
     <header class="topbar">
 
-      <a href="trainer-dashboard.html" class="back">
-        ←
-      </a>
+      <div>
 
-      <div class="status-live">
-        <span class="dot"></span>
-        Live session
+        <p class="eyebrow">
+          Barkly Club
+        </p>
+
+        <h1>
+          Advanced<br />
+          Obedience
+        </h1>
+
+        <p>
+          Main training field · 4:30 PM · Trainer: Luke Gross
+        </p>
+
+      </div>
+
+      <div class="avatar">
+        LG
       </div>
 
     </header>
 
-    <section class="hero">
+    <section class="session-card hero-card">
 
-      <span class="badge">
-        Active training session
+      <span class="pill session-pill">
+        Live session
       </span>
 
-      <h1>
-        Advanced Obedience
-      </h1>
+      <div class="session-meta">
 
-      <p>
-        Tuesday · 4:30 PM · Main training field · Senior trainer Sarah Mitchell
-      </p>
-
-    </section>
-
-    <section class="stats">
-
-      <div class="stat">
-        <strong>12</strong>
-        <span>Dogs checked in</span>
-      </div>
-
-      <div class="stat">
-        <strong>94%</strong>
-        <span>Attendance rate</span>
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-card">
-
-        <div class="section-head">
-          <h2>Attendance</h2>
-
-          <a href="#">
-            Manage
-          </a>
+        <div class="meta-pill">
+          <i data-lucide="users"></i>
+          12 dogs
         </div>
 
-        <div class="dog-list">
+        <div class="meta-pill">
+          <i data-lucide="clock-3"></i>
+          60 mins
+        </div>
 
-          <div class="dog">
-
-            <div class="dog-left">
-
-              <div class="dog-avatar">
-                🐕
-              </div>
-
-              <div>
-                <h3>Bella</h3>
-                <p>Golden Retriever</p>
-              </div>
-
-            </div>
-
-            <div class="check">
-              ✓
-            </div>
-
-          </div>
-
-          <div class="dog">
-
-            <div class="dog-left">
-
-              <div class="dog-avatar">
-                🐶
-              </div>
-
-              <div>
-                <h3>Charlie</h3>
-                <p>Border Collie</p>
-              </div>
-
-            </div>
-
-            <div class="check">
-              ✓
-            </div>
-
-          </div>
-
-          <div class="dog">
-
-            <div class="dog-left">
-
-              <div class="dog-avatar">
-                🐕‍🦺
-              </div>
-
-              <div>
-                <h3>Luna</h3>
-                <p>Labrador</p>
-              </div>
-
-            </div>
-
-            <div class="check">
-              ✓
-            </div>
-
-          </div>
-
+        <div class="meta-pill">
+          <i data-lucide="shield-check"></i>
+          Intermediate
         </div>
 
       </div>
 
     </section>
 
-    <section class="section">
+    <section>
 
-      <div class="section-card">
+      <div class="section-head">
 
-        <div class="section-head">
-          <h2>Trainer notes</h2>
+        <h2>
+          Attendance
+        </h2>
+
+        <div class="attendance-count">
+          8 checked in
         </div>
 
-        <p class="notes">
-          Strong engagement during recall drills today.
-          Bella showed improved leash control around distractions.
-          Charlie responded well to group positioning exercises.
-          Continue confidence-building activities for Luna near agility obstacles.
-        </p>
+      </div>
 
-        <div class="actions">
+      <div class="attendance-list">
 
-          <button class="action primary">
-            Complete session
+        <div class="dog-row glass-card">
+
+          <div class="dog-left">
+
+            <div class="dog-avatar">
+              <i data-lucide="dog"></i>
+            </div>
+
+            <div>
+              <h3>Bella</h3>
+              <p>Golden Retriever</p>
+            </div>
+
+          </div>
+
+          <button class="checkin-btn checked-in">
+            <i data-lucide="check"></i>
           </button>
 
-          <button class="action secondary">
-            Add note
+        </div>
+
+        <div class="dog-row glass-card">
+
+          <div class="dog-left">
+
+            <div class="dog-avatar">
+              <i data-lucide="paw-print"></i>
+            </div>
+
+            <div>
+              <h3>Charlie</h3>
+              <p>Border Collie</p>
+            </div>
+
+          </div>
+
+          <button class="checkin-btn checked-in">
+            <i data-lucide="check"></i>
+          </button>
+
+        </div>
+
+        <div class="dog-row glass-card">
+
+          <div class="dog-left">
+
+            <div class="dog-avatar">
+              <i data-lucide="dog"></i>
+            </div>
+
+            <div>
+              <h3>Luna</h3>
+              <p>Labrador</p>
+            </div>
+
+          </div>
+
+          <button class="checkin-btn">
+            <i data-lucide="plus"></i>
+          </button>
+
+        </div>
+
+        <div class="dog-row glass-card">
+
+          <div class="dog-left">
+
+            <div class="dog-avatar">
+              <i data-lucide="paw-print"></i>
+            </div>
+
+            <div>
+              <h3>Max</h3>
+              <p>German Shepherd</p>
+            </div>
+
+          </div>
+
+          <button class="checkin-btn">
+            <i data-lucide="plus"></i>
           </button>
 
         </div>
@@ -563,29 +399,63 @@
 
   </main>
 
-  <nav class="nav">
+  <nav class="bottom-nav">
 
-    <a href="trainer-dashboard.html" class="nav-item">
-      <div class="nav-icon">🏠</div>
+    <a href="trainer-dashboard.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon">
+        <i data-lucide="home"></i>
+      </div>
       Home
     </a>
 
-    <a href="session-detail.html" class="nav-item active">
-      <div class="nav-icon">📋</div>
+    <a href="session-detail.html" class="bottom-nav-item active">
+      <div class="bottom-nav-icon">
+        <i data-lucide="calendar-check"></i>
+      </div>
       Sessions
     </a>
 
-    <a href="dogs.html" class="nav-item">
-      <div class="nav-icon">🐕</div>
+    <a href="dogs.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon">
+        <i data-lucide="dog"></i>
+      </div>
       Dogs
     </a>
 
-    <a href="club-dashboard.html" class="nav-item">
-      <div class="nav-icon">👥</div>
+    <a href="club-dashboard.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon">
+        <i data-lucide="users"></i>
+      </div>
       Club
     </a>
 
   </nav>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    lucide.createIcons();
+
+    document.querySelectorAll(".checkin-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        button.classList.toggle("checked-in");
+
+        const icon = button.querySelector("svg");
+
+        if (button.classList.contains("checked-in")) {
+          icon.setAttribute("data-lucide", "check");
+        } else {
+          icon.setAttribute("data-lucide", "plus");
+        }
+
+        button.innerHTML = button.classList.contains("checked-in")
+          ? '<i data-lucide="check"></i>'
+          : '<i data-lucide="plus"></i>';
+
+        lucide.createIcons();
+      });
+    });
+  </script>
 
 </body>
 </html>
