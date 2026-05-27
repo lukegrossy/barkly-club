@@ -91,8 +91,8 @@
   --shadow-card:
     0 12px 30px rgba(15,31,46,0.08);
 
-  --shadow-hero:
-    0 18px 36px rgba(15,31,46,0.16);
+ --shadow-hero:
+  0 10px 24px rgba(15,31,46,0.10);
 
   --shadow-drawer:
     -18px 0 44px rgba(15,31,46,0.18);
@@ -213,7 +213,12 @@ body {
 ======================================== */
 
 .hero-card {
-  background: var(--navy);
+  background:
+  linear-gradient(
+    180deg,
+    rgba(15,31,46,0.96) 0%,
+    rgba(15,31,46,0.92) 100%
+  );
 
   color: white;
 
