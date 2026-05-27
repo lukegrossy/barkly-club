@@ -141,6 +141,8 @@
     }
 
     .session {
+      display: block;
+
       background: var(--navy);
 
       color: white;
@@ -151,8 +153,18 @@
 
       margin-bottom: 28px;
 
+      text-decoration: none;
+
       box-shadow:
         0 18px 36px rgba(15,31,46,0.16);
+
+      transition:
+        transform 0.15s ease,
+        opacity 0.2s ease;
+    }
+
+    .session:active {
+      transform: scale(0.985);
     }
 
     .session-label {
@@ -378,7 +390,10 @@
 
     </section>
 
-    <section class="session">
+    <a
+      href="session-detail.html"
+      class="session"
+    >
 
       <span class="session-label">
         Next session
@@ -392,7 +407,7 @@
         12 dogs attending · Main training field · 4:30 PM
       </p>
 
-    </section>
+    </a>
 
     <section>
 
