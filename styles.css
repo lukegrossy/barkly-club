@@ -302,3 +302,35 @@ body {
 
   text-decoration: none;
 }
+/* FIX: Create account screen sizing */
+.auth-screen .auth-logo {
+  width: 118px !important;
+  max-width: 118px !important;
+  height: auto !important;
+  display: block;
+  margin: 0 auto 28px;
+  object-fit: contain;
+}
+
+.auth-screen {
+  overflow: hidden;
+}
+
+.auth-panel {
+  min-height: calc(100dvh - 88px);
+  justify-content: center;
+  padding-bottom: 40px;
+}
+
+.auth-form input {
+  display: block;
+  width: 100%;
+}
+
+.auth-form {
+  width: 100%;
+}
+
+.auth-form .btn {
+  width: 100%;
+}
