@@ -334,3 +334,11 @@ body {
 .auth-form .btn {
   width: 100%;
 }
+.auth-logo-small {
+  width: 118px !important;
+  max-width: 118px !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 auto 28px !important;
+  object-fit: contain !important;
+}
