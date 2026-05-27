@@ -133,23 +133,30 @@
     }
 
     .dog-card {
-      display: block;
+  display: block;
 
-      text-decoration: none;
+  text-decoration: none;
 
-      color: inherit;
+  color: inherit;
 
-      background: rgba(255,255,255,0.76);
+  background: var(--glass);
 
-      border: 1.5px solid rgba(15,31,46,0.08);
+  border: 1.5px solid var(--glass-border);
 
-      border-radius: 32px;
+  border-radius: var(--radius-xl);
 
-      overflow: hidden;
+  overflow: hidden;
 
-      box-shadow:
-        0 12px 30px rgba(15,31,46,0.06);
-    }
+  box-shadow: var(--shadow-card);
+
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.dog-card:active {
+  transform: scale(0.985);
+}
 
     .dog-photo {
       width: 100%;
