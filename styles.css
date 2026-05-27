@@ -25,11 +25,18 @@ body {
 
   background: var(--cream);
   color: var(--navy);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  overflow: hidden;
+  overflow-x: hidden;
 }
+
+/* =========================
+   SPLASH SCREEN
+========================= */
 
 .splash-screen {
   min-height: 100dvh;
@@ -69,6 +76,7 @@ body {
 .brand-logo {
   width: min(72vw, 340px);
   height: auto;
+
   object-fit: contain;
   display: block;
 }
@@ -78,8 +86,13 @@ body {
 
   display: flex;
   flex-direction: column;
+
   gap: 18px;
 }
+
+/* =========================
+   BUTTONS
+========================= */
 
 .btn {
   width: 100%;
@@ -102,6 +115,8 @@ body {
     opacity 0.2s ease;
 
   -webkit-tap-highlight-color: transparent;
+
+  border: none;
 }
 
 .btn:active {
@@ -126,21 +141,10 @@ body {
   backdrop-filter: blur(8px);
 }
 
-@media (max-height: 720px) {
+/* =========================
+   AUTH SCREEN
+========================= */
 
-  .brand-area {
-    padding-bottom: 34px;
-  }
-
-  .brand-logo {
-    width: min(62vw, 280px);
-  }
-
-  .btn {
-    min-height: 66px;
-    font-size: 18px;
-  }
-}
 .auth-screen {
   min-height: 100dvh;
 
@@ -198,25 +202,29 @@ body {
   display: flex;
   flex-direction: column;
 
-  padding-top: 12px;
+  padding-top: 0;
 }
 
-.auth-logo {
-  width: 104px;
+.auth-logo-small {
+  width: 118px;
+  max-width: 118px;
   height: auto;
 
-  margin: 0 auto 26px;
+  display: block;
+
+  margin: 0 auto 28px;
 
   object-fit: contain;
 }
 
 .auth-copy {
   text-align: center;
+
   margin-bottom: 34px;
 }
 
 .auth-copy h1 {
-  font-size: 36px;
+  font-size: 30px;
   line-height: 1.02;
   letter-spacing: -0.05em;
 
@@ -235,13 +243,15 @@ body {
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+
+  gap: 22px;
 }
 
 .auth-form label {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+
+  gap: 12px;
 
   font-size: 14px;
   font-weight: 700;
@@ -251,17 +261,17 @@ body {
 
 .auth-form input {
   width: 100%;
-  height: 62px;
+  height: 72px;
 
-  border-radius: 20px;
+  border-radius: 24px;
 
   border: 1.5px solid rgba(15,31,46,0.08);
 
   background: rgba(255,255,255,0.72);
 
-  padding: 0 18px;
+  padding: 0 22px;
 
-  font-size: 17px;
+  font-size: 18px;
 
   color: var(--navy);
 
@@ -282,7 +292,7 @@ body {
 }
 
 .auth-form .btn {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .auth-switch {
@@ -302,43 +312,23 @@ body {
 
   text-decoration: none;
 }
-/* FIX: Create account screen sizing */
-.auth-screen .auth-logo {
-  width: 118px !important;
-  max-width: 118px !important;
-  height: auto !important;
-  display: block;
-  margin: 0 auto 28px;
-  object-fit: contain;
-}
 
-.auth-screen {
-  overflow: hidden;
-}
+/* =========================
+   MOBILE HEIGHT
+========================= */
 
-.auth-panel {
-  min-height: calc(100dvh - 88px);
-  justify-content: center;
-  padding-bottom: 40px;
-}
+@media (max-height: 720px) {
 
-.auth-form input {
-  display: block;
-  width: 100%;
-}
+  .brand-area {
+    padding-bottom: 34px;
+  }
 
-.auth-form {
-  width: 100%;
-}
+  .brand-logo {
+    width: min(62vw, 280px);
+  }
 
-.auth-form .btn {
-  width: 100%;
-}
-.auth-logo-small {
-  width: 118px !important;
-  max-width: 118px !important;
-  height: auto !important;
-  display: block !important;
-  margin: 0 auto 28px !important;
-  object-fit: contain !important;
+  .btn {
+    min-height: 66px;
+    font-size: 18px;
+  }
 }
