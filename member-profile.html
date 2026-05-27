@@ -43,7 +43,7 @@
       padding:
         max(26px, env(safe-area-inset-top))
         20px
-        max(34px, env(safe-area-inset-bottom));
+        110px;
     }
 
     .profile {
@@ -291,6 +291,74 @@
 
       color: rgba(15,31,46,0.72);
     }
+
+    .nav {
+      position: fixed;
+
+      left: 50%;
+      bottom: 18px;
+
+      transform: translateX(-50%);
+
+      width: calc(100% - 34px);
+      max-width: 540px;
+
+      background: rgba(255,255,255,0.82);
+
+      backdrop-filter: blur(24px);
+
+      border: 1px solid rgba(15,31,46,0.06);
+
+      border-radius: 24px;
+
+      padding:
+        10px
+        8px
+        calc(10px + env(safe-area-inset-bottom));
+
+      display: flex;
+      justify-content: space-around;
+
+      box-shadow:
+        0 10px 24px rgba(15,31,46,0.08);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      gap: 4px;
+
+      min-width: 62px;
+
+      text-decoration: none;
+
+      color: rgba(15,31,46,0.42);
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 36px;
+      height: 36px;
+
+      border-radius: 12px;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 18px;
+    }
+
+    .nav-item.active {
+      color: var(--navy);
+    }
+
+    .nav-item.active .nav-icon {
+      background: rgba(15,31,46,0.08);
+    }
   </style>
 </head>
 
@@ -440,6 +508,30 @@
     </section>
 
   </main>
+
+  <nav class="nav">
+
+    <a href="trainer-dashboard.html" class="nav-item">
+      <div class="nav-icon">🏠</div>
+      Home
+    </a>
+
+    <a href="session-detail.html" class="nav-item">
+      <div class="nav-icon">📋</div>
+      Sessions
+    </a>
+
+    <a href="member-profile.html" class="nav-item active">
+      <div class="nav-icon">🐕</div>
+      Dogs
+    </a>
+
+    <a href="club-dashboard.html" class="nav-item">
+      <div class="nav-icon">👥</div>
+      Club
+    </a>
+
+  </nav>
 
 </body>
 </html>
