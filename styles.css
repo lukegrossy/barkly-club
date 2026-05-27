@@ -669,3 +669,7 @@ body {
     font-size: 18px;
   }
 }
+.session {
+  text-decoration: none;
+  display: block;
+}
