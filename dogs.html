@@ -10,38 +10,10 @@
 
   <title>Dogs | Barkly Club</title>
 
-<link rel="stylesheet" href="design-system.css" />
+  <link rel="stylesheet" href="design-system.css" />
 
   <style>
-    :root {
-      --navy: #0F1F2E;
-      --sage: #8AA68F;
-      --cream: #F2EDE3;
-      --white: #FFFCF7;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      min-height: 100dvh;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Inter",
-        "Segoe UI",
-        sans-serif;
-
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.82), transparent 42%),
-        linear-gradient(180deg, #f8f4eb 0%, #f2ede3 100%);
-
-      color: var(--navy);
-
       padding:
         max(26px, env(safe-area-inset-top))
         20px
@@ -49,7 +21,7 @@
     }
 
     .dogs-page {
-      max-width: 560px;
+      max-width: var(--content-width);
       margin: 0 auto;
     }
 
@@ -58,19 +30,19 @@
       align-items: center;
       justify-content: space-between;
 
-      margin-bottom: 26px;
+      margin-bottom: var(--space-xl);
     }
 
     .topbar h1 {
-      font-size: 32px;
-      letter-spacing: -0.06em;
+      font-size: var(--display-md);
+      letter-spacing: var(--tracking-display);
     }
 
     .avatar {
       width: 46px;
       height: 46px;
 
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
 
       background: var(--navy);
 
@@ -79,33 +51,19 @@
       display: grid;
       place-items: center;
 
-      font-size: 14px;
-      font-weight: 800;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
     }
 
     .search-wrap {
       display: flex;
-      gap: 12px;
+      gap: var(--space-sm);
 
-      margin-bottom: 24px;
+      margin-bottom: var(--space-lg);
     }
 
     .search {
       flex: 1;
-
-      height: 58px;
-
-      border-radius: 20px;
-
-      border: 1.5px solid rgba(15,31,46,0.08);
-
-      background: rgba(255,255,255,0.72);
-
-      padding: 0 18px;
-
-      font-size: 15px;
-
-      outline: none;
     }
 
     .filter {
@@ -113,14 +71,16 @@
 
       padding: 0 18px;
 
-      border-radius: 20px;
+      border-radius: var(--radius-md);
 
-      border: 1.5px solid rgba(15,31,46,0.08);
+      border:
+        1.5px solid var(--glass-border);
 
-      background: rgba(255,255,255,0.72);
+      background:
+        rgba(255,255,255,0.72);
 
-      font-size: 14px;
-      font-weight: 800;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
 
       color: var(--navy);
     }
@@ -129,34 +89,35 @@
       display: flex;
       flex-direction: column;
 
-      gap: 18px;
+      gap: var(--space-md);
     }
 
     .dog-card {
-  display: block;
+      display: block;
 
-  text-decoration: none;
+      text-decoration: none;
 
-  color: inherit;
+      color: inherit;
 
-  background: var(--glass);
+      background: var(--glass);
 
-  border: 1.5px solid var(--glass-border);
+      border:
+        1.5px solid var(--glass-border);
 
-  border-radius: var(--radius-xl);
+      border-radius: var(--radius-xl);
 
-  overflow: hidden;
+      overflow: hidden;
 
-  box-shadow: var(--shadow-card);
+      box-shadow: var(--shadow-card);
 
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
+      transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+    }
 
-.dog-card:active {
-  transform: scale(0.985);
-}
+    .dog-card:active {
+      transform: scale(0.985);
+    }
 
     .dog-photo {
       width: 100%;
@@ -168,7 +129,7 @@
     }
 
     .dog-content {
-      padding: 22px;
+      padding: var(--space-lg);
     }
 
     .dog-top {
@@ -176,36 +137,19 @@
       align-items: flex-start;
       justify-content: space-between;
 
-      gap: 12px;
+      gap: var(--space-sm);
 
-      margin-bottom: 12px;
+      margin-bottom: var(--space-sm);
     }
 
     .dog-name {
-      font-size: 28px;
-      line-height: 1;
-      letter-spacing: -0.05em;
-
-      margin-bottom: 8px;
-    }
-
-    .dog-breed {
-      font-size: 15px;
-
-      color: rgba(15,31,46,0.62);
+      margin-bottom: var(--space-xs);
     }
 
     .status {
-      padding: 10px 14px;
-
-      border-radius: 999px;
-
       background: rgba(138,166,143,0.14);
 
       color: var(--sage);
-
-      font-size: 12px;
-      font-weight: 800;
 
       white-space: nowrap;
     }
@@ -218,84 +162,19 @@
     }
 
     .meta-pill {
-      padding: 10px 14px;
-
-      border-radius: 999px;
-
-      background: rgba(15,31,46,0.06);
-
-      font-size: 13px;
-      font-weight: 700;
-
-      color: rgba(15,31,46,0.72);
-    }
-
-    .nav {
-      position: fixed;
-
-      left: 50%;
-      bottom: 18px;
-
-      transform: translateX(-50%);
-
-      width: calc(100% - 34px);
-      max-width: 540px;
-
-      background: rgba(255,255,255,0.82);
-
-      backdrop-filter: blur(24px);
-
-      border: 1px solid rgba(15,31,46,0.06);
-
-      border-radius: 24px;
-
       padding:
         10px
-        8px
-        calc(10px + env(safe-area-inset-bottom));
+        14px;
 
-      display: flex;
-      justify-content: space-around;
+      border-radius: var(--radius-pill);
 
-      box-shadow:
-        0 10px 24px rgba(15,31,46,0.08);
-    }
+      background:
+        rgba(15,31,46,0.06);
 
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
 
-      gap: 4px;
-
-      min-width: 62px;
-
-      text-decoration: none;
-
-      color: rgba(15,31,46,0.42);
-
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .nav-icon {
-      width: 36px;
-      height: 36px;
-
-      border-radius: 12px;
-
-      display: grid;
-      place-items: center;
-
-      font-size: 18px;
-    }
-
-    .nav-item.active {
-      color: var(--navy);
-    }
-
-    .nav-item.active .nav-icon {
-      background: rgba(15,31,46,0.08);
+      color: var(--text-secondary);
     }
   </style>
 </head>
@@ -320,11 +199,11 @@
 
       <input
         type="text"
-        class="search"
+        class="input search"
         placeholder="Search dogs"
       />
 
-      <button class="filter">
+      <button class="filter btn">
         Filter
       </button>
 
@@ -348,16 +227,16 @@
           <div class="dog-top">
 
             <div>
-              <h2 class="dog-name">
+              <h2 class="dog-name display-sm">
                 Bella
               </h2>
 
-              <p class="dog-breed">
+              <p class="dog-breed text-secondary">
                 Golden Retriever · 3 years old
               </p>
             </div>
 
-            <span class="status">
+            <span class="status pill">
               Active
             </span>
 
@@ -395,16 +274,16 @@
           <div class="dog-top">
 
             <div>
-              <h2 class="dog-name">
+              <h2 class="dog-name display-sm">
                 Charlie
               </h2>
 
-              <p class="dog-breed">
+              <p class="dog-breed text-secondary">
                 Border Collie · 2 years old
               </p>
             </div>
 
-            <span class="status">
+            <span class="status pill">
               Training
             </span>
 
@@ -430,25 +309,25 @@
 
   </main>
 
-  <nav class="nav">
+  <nav class="bottom-nav">
 
-    <a href="trainer-dashboard.html" class="nav-item">
-      <div class="nav-icon">🏠</div>
+    <a href="trainer-dashboard.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon">🏠</div>
       Home
     </a>
 
-    <a href="session-detail.html" class="nav-item">
-      <div class="nav-icon">📋</div>
+    <a href="session-detail.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon">📋</div>
       Sessions
     </a>
 
-    <a href="dogs.html" class="nav-item active">
-      <div class="nav-icon">🐕</div>
+    <a href="dogs.html" class="bottom-nav-item active">
+      <div class="bottom-nav-icon">🐕</div>
       Dogs
     </a>
 
-    <a href="club-dashboard.html" class="nav-item">
-      <div class="nav-icon">👥</div>
+    <a href="club-dashboard.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon">👥</div>
       Club
     </a>
 
