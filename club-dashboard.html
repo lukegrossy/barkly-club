@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
+  <title>Barkly Club</title>
+
+  <style>
+    :root {
+      --navy: #0F1F2E;
+      --sage: #8AA68F;
+      --cream: #F2EDE3;
+      --white: #FFFCF7;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100dvh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Inter",
+        "Segoe UI",
+        sans-serif;
+
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.82), transparent 42%),
+        linear-gradient(180deg, #f8f4eb 0%, #f2ede3 100%);
+
+      color: var(--navy);
+
+      padding:
+        max(26px, env(safe-area-inset-top))
+        20px
+        max(34px, env(safe-area-inset-bottom));
+    }
+
+    .dashboard {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 56px;
+      height: 56px;
+
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 800;
+
+      color: var(--sage);
+
+      margin-bottom: 4px;
+    }
+
+    h1 {
+      font-size: 28px;
+      line-height: 1.04;
+      letter-spacing: -0.05em;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+
+      border-radius: 999px;
+
+      background: var(--navy);
+
+      color: white;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .hero {
+      background: var(--navy);
+
+      color: white;
+
+      border-radius: 34px;
+
+      padding: 26px;
+
+      margin-bottom: 18px;
+
+      box-shadow:
+        0 18px 36px rgba(15,31,46,0.16);
+    }
+
+    .hero-label {
+      display: inline-flex;
+
+      padding: 8px 12px;
+
+      border-radius: 999px;
+
+      background: rgba(138,166,143,0.22);
+
+      color: #dce8df;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      margin-bottom: 18px;
+    }
+
+    .hero h2 {
+      font-size: 32px;
+      line-height: 1.04;
+      letter-spacing: -0.06em;
+
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 15px;
+      line-height: 1.5;
+
+      color: rgba(255,255,255,0.72);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+
+      margin-bottom: 26px;
+    }
+
+    .metric {
+      background: rgba(255,255,255,0.72);
+
+      border: 1.5px solid rgba(15,31,46,0.08);
+
+      border-radius: 28px;
+
+      padding: 22px;
+    }
+
+    .metric strong {
+      display: block;
+
+      font-size: 40px;
+      line-height: 1;
+
+      letter-spacing: -0.06em;
+
+      margin-bottom: 10px;
+    }
+
+    .metric span {
+      font-size: 14px;
+      font-weight: 700;
+
+      color: rgba(15,31,46,0.62);
+    }
+
+    .section {
+      margin-bottom: 26px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 14px;
+    }
+
+    .section-head h3 {
+      font-size: 22px;
+      letter-spacing: -0.04em;
+    }
+
+    .section-head a {
+      color: var(--sage);
+
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .event-card {
+      background: rgba(255,255,255,0.72);
+
+      border: 1.5px solid rgba(15,31,46,0.08);
+
+      border-radius: 26px;
+
+      padding: 18px;
+
+      margin-bottom: 12px;
+    }
+
+    .event-card h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .event-card p {
+      font-size: 14px;
+      line-height: 1.5;
+
+      color: rgba(15,31,46,0.62);
+    }
+
+    .trainer-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 16px;
+
+      border-radius: 24px;
+
+      background: rgba(255,255,255,0.72);
+
+      border: 1.5px solid rgba(15,31,46,0.08);
+    }
+
+    .trainer-left {
+      display: flex;
+      align-items: center;
+
+      gap: 14px;
+    }
+
+    .trainer-avatar {
+      width: 50px;
+      height: 50px;
+
+      border-radius: 18px;
+
+      display: grid;
+      place-items: center;
+
+      background: rgba(138,166,143,0.12);
+
+      font-size: 22px;
+    }
+
+    .trainer h4 {
+      font-size: 17px;
+      margin-bottom: 4px;
+    }
+
+    .trainer p {
+      font-size: 14px;
+      color: rgba(15,31,46,0.62);
+    }
+
+    .status {
+      font-size: 13px;
+      font-weight: 800;
+
+      color: var(--sage);
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="dashboard">
+
+    <header class="topbar">
+
+      <div class="brand">
+
+        <img
+          src="assets/barkly-icon.png"
+          alt="Barkly"
+        />
+
+        <div>
+          <p class="eyebrow">
+            Barkly Club
+          </p>
+
+          <h1>
+            Club dashboard
+          </h1>
+        </div>
+
+      </div>
+
+      <div class="avatar">
+        LG
+      </div>
+
+    </header>
+
+    <section class="hero">
+
+      <span class="hero-label">
+        Club overview
+      </span>
+
+      <h2>
+        Melbourne Canine Club
+      </h2>
+
+      <p>
+        148 active members · 42 sessions this month · 94% attendance rate
+      </p>
+
+    </section>
+
+    <section class="metrics">
+
+      <div class="metric">
+        <strong>148</strong>
+        <span>Members</span>
+      </div>
+
+      <div class="metric">
+        <strong>26</strong>
+        <span>Dogs today</span>
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-head">
+        <h3>Upcoming events</h3>
+
+        <a href="#">
+          View all
+        </a>
+      </div>
+
+      <div class="event-card">
+        <h4>Advanced Obedience</h4>
+
+        <p>
+          Tuesday · 4:30 PM · Main training field
+        </p>
+      </div>
+
+      <div class="event-card">
+        <h4>Puppy Socialisation</h4>
+
+        <p>
+          Wednesday · 10:00 AM · Indoor arena
+        </p>
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-head">
+        <h3>Trainer roster</h3>
+
+        <a href="#">
+          Manage
+        </a>
+      </div>
+
+      <div class="trainer-list">
+
+        <div class="trainer">
+
+          <div class="trainer-left">
+
+            <div class="trainer-avatar">
+              🦮
+            </div>
+
+            <div>
+              <h4>Sarah Mitchell</h4>
+              <p>Senior trainer</p>
+            </div>
+
+          </div>
+
+          <span class="status">
+            Active
+          </span>
+
+        </div>
+
+        <div class="trainer">
+
+          <div class="trainer-left">
+
+            <div class="trainer-avatar">
+              🐕
+            </div>
+
+            <div>
+              <h4>James Carter</h4>
+              <p>Puppy development</p>
+            </div>
+
+          </div>
+
+          <span class="status">
+            Active
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
