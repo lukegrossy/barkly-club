@@ -1,0 +1,143 @@
+:root {
+  --navy: #0F1F2E;
+  --sage: #8AA68F;
+  --cream: #F2EDE3;
+  --soft-grey: #E6E8E6;
+  --white: #FFFCF7;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Inter",
+    "Segoe UI",
+    sans-serif;
+
+  background: var(--cream);
+  color: var(--navy);
+}
+
+body {
+  overflow: hidden;
+}
+
+.splash-screen {
+  min-height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding:
+    max(32px, env(safe-area-inset-top))
+    24px
+    max(34px, env(safe-area-inset-bottom));
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(255,255,255,0.85),
+      transparent 40%
+    ),
+    linear-gradient(
+      180deg,
+      #f8f4eb 0%,
+      #f2ede3 100%
+    );
+}
+
+.brand-area {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding-bottom: 72px;
+}
+
+.brand-logo {
+  width: min(72vw, 340px);
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.auth-actions {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.btn {
+  width: 100%;
+  min-height: 74px;
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.2s ease;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  transform: scale(0.985);
+}
+
+.btn-primary {
+  background: var(--navy);
+  color: white;
+
+  box-shadow:
+    0 12px 30px rgba(15,31,46,0.18);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.5);
+
+  color: var(--navy);
+
+  border: 1.5px solid rgba(15,31,46,0.12);
+
+  backdrop-filter: blur(8px);
+}
+
+@media (max-height: 720px) {
+
+  .brand-area {
+    padding-bottom: 34px;
+  }
+
+  .brand-logo {
+    width: min(62vw, 280px);
+  }
+
+  .btn {
+    min-height: 66px;
+    font-size: 18px;
+  }
+}
