@@ -15,7 +15,6 @@
       --navy: #0F1F2E;
       --sage: #8AA68F;
       --cream: #F2EDE3;
-      --white: #FFFCF7;
     }
 
     * {
@@ -26,19 +25,28 @@
 
     body {
       min-height: 100dvh;
-      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Inter",
+        "Segoe UI",
+        sans-serif;
+
       background:
         radial-gradient(circle at top, rgba(255,255,255,0.82), transparent 42%),
         linear-gradient(180deg, #f8f4eb 0%, #f2ede3 100%);
+
       color: var(--navy);
+
       padding:
         max(26px, env(safe-area-inset-top))
         20px
-        max(34px, env(safe-area-inset-bottom));
+        120px;
     }
 
     .dashboard {
-      max-width: 520px;
+      max-width: 560px;
       margin: 0 auto;
     }
 
@@ -46,12 +54,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       margin-bottom: 28px;
     }
 
     .brand {
       display: flex;
       align-items: center;
+
       gap: 12px;
     }
 
@@ -64,8 +74,10 @@
     .eyebrow {
       font-size: 13px;
       font-weight: 800;
+
       color: var(--sage);
-      margin-bottom: 3px;
+
+      margin-bottom: 4px;
     }
 
     h1 {
@@ -75,86 +87,102 @@
     }
 
     .avatar {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
+
       border-radius: 999px;
+
       background: var(--navy);
+
       color: white;
+
       display: grid;
       place-items: center;
-      font-weight: 800;
+
       font-size: 14px;
+      font-weight: 800;
     }
 
     .stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
+
       margin-bottom: 18px;
     }
 
     .stat {
       background: rgba(255,255,255,0.72);
+
       border: 1.5px solid rgba(15,31,46,0.08);
+
       border-radius: 28px;
+
       padding: 22px;
     }
 
     .stat strong {
       display: block;
+
       font-size: 40px;
       line-height: 1;
+
       letter-spacing: -0.06em;
+
       margin-bottom: 10px;
     }
 
     .stat span {
       font-size: 14px;
       font-weight: 700;
+
       color: rgba(15,31,46,0.62);
     }
 
     .session {
       background: var(--navy);
+
       color: white;
-      border-radius: 32px;
-      padding: 24px;
+
+      border-radius: 34px;
+
+      padding: 26px;
+
       margin-bottom: 28px;
-      box-shadow: 0 18px 36px rgba(15,31,46,0.16);
+
+      box-shadow:
+        0 18px 36px rgba(15,31,46,0.16);
     }
 
-    .session-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .session-label {
+      display: inline-flex;
+
+      padding: 8px 12px;
+
+      border-radius: 999px;
+
+      background: rgba(138,166,143,0.22);
+
+      color: #dce8df;
+
+      font-size: 12px;
+      font-weight: 800;
+
       margin-bottom: 18px;
     }
 
-    .badge {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(138,166,143,0.22);
-      color: #dce8df;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .time {
-      font-size: 14px;
-      font-weight: 800;
-      color: rgba(255,255,255,0.76);
-    }
-
     .session h2 {
-      font-size: 29px;
-      line-height: 1.08;
-      letter-spacing: -0.05em;
+      font-size: 30px;
+      line-height: 1.04;
+      letter-spacing: -0.06em;
+
       margin-bottom: 10px;
     }
 
     .session p {
       font-size: 15px;
-      line-height: 1.45;
+      line-height: 1.5;
+
       color: rgba(255,255,255,0.72);
     }
 
@@ -162,6 +190,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       margin-bottom: 14px;
     }
 
@@ -172,7 +201,9 @@
 
     .section-head a {
       color: var(--sage);
+
       text-decoration: none;
+
       font-size: 14px;
       font-weight: 800;
     }
@@ -186,22 +217,36 @@
     .dog {
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
+
       padding: 16px;
-      background: rgba(255,255,255,0.72);
-      border: 1.5px solid rgba(15,31,46,0.08);
+
       border-radius: 24px;
+
+      background: rgba(255,255,255,0.72);
+
+      border: 1.5px solid rgba(15,31,46,0.08);
     }
 
-    .dog-icon {
+    .dog-left {
+      display: flex;
+      align-items: center;
+
+      gap: 14px;
+    }
+
+    .dog-avatar {
       width: 50px;
       height: 50px;
+
       border-radius: 18px;
+
       background: rgba(138,166,143,0.12);
+
       display: grid;
       place-items: center;
+
       font-size: 24px;
-      flex-shrink: 0;
     }
 
     .dog h4 {
@@ -213,26 +258,105 @@
       font-size: 14px;
       color: rgba(15,31,46,0.62);
     }
+
+    .nav {
+      position: fixed;
+
+      left: 50%;
+      bottom: 22px;
+
+      transform: translateX(-50%);
+
+      width: calc(100% - 28px);
+      max-width: 560px;
+
+      background: rgba(255,255,255,0.76);
+
+      backdrop-filter: blur(20px);
+
+      border: 1px solid rgba(15,31,46,0.08);
+
+      border-radius: 32px;
+
+      padding: 12px 10px;
+
+      display: flex;
+      justify-content: space-around;
+
+      box-shadow:
+        0 12px 30px rgba(15,31,46,0.08);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      gap: 6px;
+
+      text-decoration: none;
+
+      color: rgba(15,31,46,0.46);
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 42px;
+      height: 42px;
+
+      border-radius: 16px;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 20px;
+    }
+
+    .nav-item.active {
+      color: var(--navy);
+    }
+
+    .nav-item.active .nav-icon {
+      background: rgba(15,31,46,0.08);
+    }
   </style>
 </head>
 
 <body>
+
   <main class="dashboard">
 
     <header class="topbar">
+
       <div class="brand">
-        <img src="assets/barkly-icon.png" alt="Barkly" />
+
+        <img
+          src="assets/barkly-icon.png"
+          alt="Barkly"
+        />
 
         <div>
-          <p class="eyebrow">Barkly Club</p>
-          <h1>Good afternoon, Luke</h1>
+          <p class="eyebrow">
+            Barkly Club
+          </p>
+
+          <h1>
+            Good afternoon, Luke
+          </h1>
         </div>
+
       </div>
 
-      <div class="avatar">LG</div>
+      <div class="avatar">
+        LG
+      </div>
+
     </header>
 
     <section class="stats">
+
       <div class="stat">
         <strong>18</strong>
         <span>Dogs today</span>
@@ -242,51 +366,109 @@
         <strong>4</strong>
         <span>Sessions</span>
       </div>
+
     </section>
 
     <section class="session">
-      <div class="session-row">
-        <span class="badge">Next session</span>
-        <span class="time">4:30 PM</span>
-      </div>
 
-      <h2>Advanced Obedience</h2>
-      <p>12 dogs attending · Main training field</p>
+      <span class="session-label">
+        Next session
+      </span>
+
+      <h2>
+        Advanced Obedience
+      </h2>
+
+      <p>
+        12 dogs attending · Main training field · 4:30 PM
+      </p>
+
     </section>
 
     <section>
+
       <div class="section-head">
         <h3>Recent dogs</h3>
-        <a href="#">View all</a>
+
+        <a href="member-profile.html">
+          View all
+        </a>
       </div>
 
       <div class="dog-list">
-        <article class="dog">
-          <div class="dog-icon">🐕</div>
-          <div>
-            <h4>Bella</h4>
-            <p>Golden Retriever</p>
-          </div>
-        </article>
 
-        <article class="dog">
-          <div class="dog-icon">🐶</div>
-          <div>
-            <h4>Charlie</h4>
-            <p>Border Collie</p>
-          </div>
-        </article>
+        <a
+          href="member-profile.html"
+          class="dog"
+          style="text-decoration:none;color:inherit;"
+        >
 
-        <article class="dog">
-          <div class="dog-icon">🐕‍🦺</div>
-          <div>
-            <h4>Luna</h4>
-            <p>Labrador</p>
+          <div class="dog-left">
+
+            <div class="dog-avatar">
+              🐕
+            </div>
+
+            <div>
+              <h4>Bella</h4>
+              <p>Golden Retriever</p>
+            </div>
+
           </div>
-        </article>
+
+        </a>
+
+        <div class="dog">
+
+          <div class="dog-left">
+
+            <div class="dog-avatar">
+              🐶
+            </div>
+
+            <div>
+              <h4>Charlie</h4>
+              <p>Border Collie</p>
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
+
     </section>
 
   </main>
+
+  <nav class="nav">
+
+    <a href="trainer-dashboard.html" class="nav-item active">
+      <div class="nav-icon">🏠</div>
+      Home
+    </a>
+
+    <a href="session-detail.html" class="nav-item">
+      <div class="nav-icon">📋</div>
+      Sessions
+    </a>
+
+    <a href="member-profile.html" class="nav-item">
+      <div class="nav-icon">🐕</div>
+      Dogs
+    </a>
+
+    <a href="club-dashboard.html" class="nav-item">
+      <div class="nav-icon">👥</div>
+      Members
+    </a>
+
+    <a href="#" class="nav-item">
+      <div class="nav-icon">⚙️</div>
+      Profile
+    </a>
+
+  </nav>
+
 </body>
 </html>
