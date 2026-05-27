@@ -29,22 +29,28 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       margin-bottom: var(--space-xl);
     }
 
     .topbar h1 {
-      font-size: var(--display-md);
+      font-size: var(--display-lg);
       letter-spacing: var(--tracking-display);
     }
 
     .avatar {
-      width: 46px;
-      height: 46px;
+      width: 48px;
+      height: 48px;
+
       border-radius: var(--radius-pill);
+
       background: var(--navy);
+
       color: white;
+
       display: grid;
       place-items: center;
+
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
     }
@@ -52,7 +58,8 @@
     .search-wrap {
       display: flex;
       gap: var(--space-sm);
-      margin-bottom: var(--space-lg);
+
+      margin-bottom: var(--space-xl);
     }
 
     .search {
@@ -60,12 +67,17 @@
     }
 
     .filter {
+      width: 62px;
       height: 58px;
-      padding: 0 18px;
+
       border-radius: var(--radius-md);
-      border: 1.5px solid var(--glass-border);
-      background: rgba(255,255,255,0.72);
-      color: var(--navy);
+
+      border:
+        1.5px solid var(--glass-border);
+
+      background:
+        rgba(255,255,255,0.72);
+
       display: grid;
       place-items: center;
     }
@@ -73,24 +85,35 @@
     .filter svg {
       width: 20px;
       height: 20px;
+
       stroke-width: 2.2;
     }
 
     .dog-grid {
       display: flex;
       flex-direction: column;
-      gap: var(--space-md);
+
+      gap: var(--space-lg);
     }
 
     .dog-card {
       display: block;
+
       text-decoration: none;
+
       color: inherit;
+
       background: var(--glass);
-      border: 1.5px solid var(--glass-border);
+
+      border:
+        1.5px solid var(--glass-border);
+
       border-radius: var(--radius-xl);
+
       overflow: hidden;
+
       box-shadow: var(--shadow-card);
+
       transition:
         transform var(--transition-fast),
         box-shadow var(--transition-fast);
@@ -103,7 +126,9 @@
     .dog-photo {
       width: 100%;
       height: 240px;
+
       object-fit: cover;
+
       display: block;
     }
 
@@ -115,7 +140,9 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
+
       gap: var(--space-sm);
+
       margin-bottom: var(--space-sm);
     }
 
@@ -124,33 +151,48 @@
     }
 
     .status {
-      background: rgba(138,166,143,0.14);
+      background:
+        rgba(138,166,143,0.14);
+
       color: var(--sage);
+
       white-space: nowrap;
     }
 
     .dog-meta {
       display: flex;
       flex-wrap: wrap;
+
       gap: 10px;
     }
 
     .meta-pill {
       display: inline-flex;
       align-items: center;
+
       gap: 7px;
-      padding: 10px 14px;
+
+      padding:
+        10px
+        14px;
+
       border-radius: var(--radius-pill);
-      background: rgba(15,31,46,0.06);
+
+      background:
+        rgba(15,31,46,0.06);
+
       font-size: var(--text-sm);
       font-weight: var(--font-bold);
+
       color: var(--text-secondary);
     }
 
     .meta-pill svg {
       width: 15px;
       height: 15px;
+
       stroke-width: 2.2;
+
       color: var(--sage);
     }
   </style>
@@ -161,11 +203,15 @@
   <main class="dogs-page">
 
     <header class="topbar">
-      <h1>Dogs</h1>
+
+      <h1>
+        Dogs
+      </h1>
 
       <div class="avatar">
         LG
       </div>
+
     </header>
 
     <section class="search-wrap">
@@ -184,7 +230,10 @@
 
     <section class="dog-grid">
 
-      <a href="member-profile.html" class="dog-card">
+      <a
+        href="member-profile.html"
+        class="dog-card"
+      >
 
         <img
           src="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=1200&auto=format&fit=crop"
@@ -230,7 +279,10 @@
 
       </a>
 
-      <a href="member-profile.html" class="dog-card">
+      <a
+        href="member-profile.html"
+        class="dog-card"
+      >
 
         <img
           src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?q=80&w=1200&auto=format&fit=crop"
@@ -313,6 +365,7 @@
   </nav>
 
   <script src="https://unpkg.com/lucide@latest"></script>
+
   <script>
     lucide.createIcons();
   </script>
