@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
+  <title>Log in | Barkly</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <main class="auth-screen">
+
+    <header class="auth-header">
+      <a href="index.html" class="back-link">
+        ←
+      </a>
+    </header>
+
+    <section class="auth-panel">
+
+      <img
+        src="assets/barkly-logo.png"
+        alt="Barkly"
+        class="auth-logo-small"
+      />
+
+      <div class="auth-copy">
+        <h1>Welcome back</h1>
+
+        <p>
+          Log in to continue remembering the dogs you meet.
+        </p>
+      </div>
+
+      <form class="auth-form">
+
+        <label>
+          Email
+
+          <input
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+        </label>
+
+        <label>
+          Password
+
+          <input
+            type="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+          />
+        </label>
+
+        <button type="submit" class="btn btn-primary">
+          Log in
+        </button>
+
+      </form>
+
+      <p class="auth-switch">
+        New to Barkly?
+        <a href="create-account.html">Create account</a>
+      </p>
+
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
