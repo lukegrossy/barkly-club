@@ -142,10 +142,12 @@ body {
 }
 
 /* =========================
-   AUTH SCREEN
+   AUTH SCREENS
 ========================= */
 
-.auth-screen {
+.auth-screen,
+.role-screen,
+.dashboard-screen {
   min-height: 100dvh;
 
   padding:
@@ -195,14 +197,13 @@ body {
   border: 1px solid rgba(15,31,46,0.08);
 }
 
-.auth-panel {
-  max-width: 460px;
+.auth-panel,
+.role-panel {
+  max-width: 520px;
   margin: 0 auto;
 
   display: flex;
   flex-direction: column;
-
-  padding-top: 0;
 }
 
 .auth-logo-small {
@@ -217,13 +218,15 @@ body {
   object-fit: contain;
 }
 
-.auth-copy {
+.auth-copy,
+.role-copy {
   text-align: center;
 
   margin-bottom: 34px;
 }
 
-.auth-copy h1 {
+.auth-copy h1,
+.role-copy h1 {
   font-size: 30px;
   line-height: 1.02;
   letter-spacing: -0.05em;
@@ -233,12 +236,17 @@ body {
   margin-bottom: 12px;
 }
 
-.auth-copy p {
+.auth-copy p,
+.role-copy p {
   font-size: 16px;
   line-height: 1.5;
 
   color: rgba(15,31,46,0.72);
 }
+
+/* =========================
+   FORMS
+========================= */
 
 .auth-form {
   display: flex;
@@ -314,81 +322,8 @@ body {
 }
 
 /* =========================
-   MOBILE HEIGHT
-========================= */
-
-@media (max-height: 720px) {
-
-  .brand-area {
-    padding-bottom: 34px;
-  }
-
-  .brand-logo {
-    width: min(62vw, 280px);
-  }
-
-  .btn {
-    min-height: 66px;
-    font-size: 18px;
-  }
-}
-/* =========================
    ROLE SELECTION
 ========================= */
-
-.role-screen {
-  min-height: 100dvh;
-
-  padding:
-    max(24px, env(safe-area-inset-top))
-    24px
-    max(32px, env(safe-area-inset-bottom));
-
-  background:
-    radial-gradient(
-      circle at top,
-      rgba(255,255,255,0.82),
-      transparent 42%
-    ),
-    linear-gradient(
-      180deg,
-      #f8f4eb 0%,
-      #f2ede3 100%
-    );
-}
-
-.role-panel {
-  max-width: 520px;
-  margin: 0 auto;
-
-  display: flex;
-  flex-direction: column;
-
-  padding-top: 0;
-}
-
-.role-copy {
-  text-align: center;
-
-  margin-bottom: 30px;
-}
-
-.role-copy h1 {
-  font-size: 30px;
-  line-height: 1.04;
-  letter-spacing: -0.05em;
-
-  color: var(--navy);
-
-  margin-bottom: 12px;
-}
-
-.role-copy p {
-  font-size: 16px;
-  line-height: 1.5;
-
-  color: rgba(15,31,46,0.72);
-}
 
 .role-options {
   display: flex;
@@ -427,13 +362,6 @@ body {
   transform: scale(0.985);
 }
 
-.role-card:hover {
-  border-color: rgba(138,166,143,0.45);
-
-  box-shadow:
-    0 10px 28px rgba(15,31,46,0.06);
-}
-
 .role-icon {
   width: 58px;
   height: 58px;
@@ -468,122 +396,151 @@ body {
 
   color: rgba(15,31,46,0.68);
 }
+
 /* =========================
-   TRAINER DASHBOARD
+   DASHBOARD
 ========================= */
 
 .dashboard-screen {
-  min-height: 100dvh;
-  padding:
-    max(24px, env(safe-area-inset-top))
-    20px
-    max(32px, env(safe-area-inset-bottom));
-
-  background:
-    radial-gradient(circle at top, rgba(255,255,255,0.82), transparent 42%),
-    linear-gradient(180deg, #f8f4eb 0%, #f2ede3 100%);
+  padding-top: max(28px, env(safe-area-inset-top));
 }
 
 .dashboard-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 16px;
-  margin-bottom: 26px;
+
+  margin-bottom: 28px;
 }
 
 .dashboard-brand {
   display: flex;
   align-items: center;
+
   gap: 14px;
 }
 
 .dashboard-icon {
   width: 54px;
   height: 54px;
+
   object-fit: contain;
+
+  flex-shrink: 0;
 }
 
 .dashboard-label {
   font-size: 13px;
   font-weight: 800;
+
   color: var(--sage);
+
   margin-bottom: 4px;
 }
 
 .dashboard-header h1 {
   font-size: 25px;
-  line-height: 1.05;
+  line-height: 1.04;
   letter-spacing: -0.045em;
+
   color: var(--navy);
 }
 
 .dashboard-avatar {
   width: 44px;
   height: 44px;
+
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: var(--navy);
+
   color: white;
+
   font-size: 14px;
   font-weight: 800;
-  flex-shrink: 0;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+
   gap: 14px;
-  margin-bottom: 16px;
+
+  margin-bottom: 18px;
 }
 
 .stat-card {
   min-height: 112px;
+
   border-radius: 28px;
+
   padding: 22px;
+
   background: rgba(255,255,255,0.68);
+
   border: 1.5px solid rgba(15,31,46,0.08);
 }
 
 .stat-number {
   display: block;
+
   font-size: 38px;
   line-height: 1;
+
   font-weight: 900;
+
   letter-spacing: -0.06em;
+
   color: var(--navy);
+
   margin-bottom: 10px;
 }
 
 .stat-label {
   font-size: 14px;
   font-weight: 700;
+
   color: rgba(15,31,46,0.62);
 }
 
 .session-card {
   border-radius: 32px;
+
   padding: 24px;
+
   margin-bottom: 28px;
+
   background: var(--navy);
+
   color: white;
-  box-shadow: 0 18px 36px rgba(15,31,46,0.16);
+
+  box-shadow:
+    0 18px 36px rgba(15,31,46,0.16);
 }
 
 .session-top {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
   margin-bottom: 18px;
 }
 
 .session-badge {
   padding: 8px 12px;
+
   border-radius: 999px;
+
   background: rgba(138,166,143,0.2);
+
   color: #dce8df;
+
   font-size: 12px;
   font-weight: 800;
 }
@@ -591,81 +548,124 @@ body {
 .session-time {
   font-size: 14px;
   font-weight: 800;
+
   color: rgba(255,255,255,0.76);
 }
 
 .session-card h2 {
   font-size: 28px;
   line-height: 1.08;
+
   letter-spacing: -0.045em;
+
   margin-bottom: 10px;
 }
 
 .session-card p {
   font-size: 15px;
   line-height: 1.45;
+
   color: rgba(255,255,255,0.72);
 }
 
 .dashboard-section {
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .section-heading {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
   margin-bottom: 14px;
 }
 
 .section-heading h3 {
   font-size: 22px;
+
   letter-spacing: -0.04em;
+
   color: var(--navy);
 }
 
 .section-heading a {
   font-size: 14px;
   font-weight: 800;
+
   color: var(--sage);
+
   text-decoration: none;
 }
 
 .dog-list {
   display: flex;
   flex-direction: column;
+
   gap: 12px;
 }
 
 .dog-card {
   display: flex;
   align-items: center;
+
   gap: 14px;
+
   padding: 16px;
+
   border-radius: 24px;
+
   background: rgba(255,255,255,0.68);
+
   border: 1.5px solid rgba(15,31,46,0.08);
 }
 
 .dog-avatar {
   width: 50px;
   height: 50px;
+
   border-radius: 18px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: rgba(138,166,143,0.12);
+
   font-size: 24px;
+
   flex-shrink: 0;
 }
 
 .dog-card h4 {
   font-size: 17px;
+
   color: var(--navy);
+
   margin-bottom: 4px;
 }
 
 .dog-card p {
   font-size: 14px;
+
   color: rgba(15,31,46,0.62);
+}
+
+/* =========================
+   MOBILE HEIGHT
+========================= */
+
+@media (max-height: 720px) {
+
+  .brand-area {
+    padding-bottom: 34px;
+  }
+
+  .brand-logo {
+    width: min(62vw, 280px);
+  }
+
+  .btn {
+    min-height: 66px;
+    font-size: 18px;
+  }
 }
