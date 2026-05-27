@@ -332,3 +332,139 @@ body {
     font-size: 18px;
   }
 }
+/* =========================
+   ROLE SELECTION
+========================= */
+
+.role-screen {
+  min-height: 100dvh;
+
+  padding:
+    max(24px, env(safe-area-inset-top))
+    24px
+    max(32px, env(safe-area-inset-bottom));
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(255,255,255,0.82),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #f8f4eb 0%,
+      #f2ede3 100%
+    );
+}
+
+.role-panel {
+  max-width: 520px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 0;
+}
+
+.role-copy {
+  text-align: center;
+
+  margin-bottom: 30px;
+}
+
+.role-copy h1 {
+  font-size: 30px;
+  line-height: 1.04;
+  letter-spacing: -0.05em;
+
+  color: var(--navy);
+
+  margin-bottom: 12px;
+}
+
+.role-copy p {
+  font-size: 16px;
+  line-height: 1.5;
+
+  color: rgba(15,31,46,0.72);
+}
+
+.role-options {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.role-card {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 22px 20px;
+
+  border-radius: 28px;
+
+  text-decoration: none;
+
+  background: rgba(255,255,255,0.68);
+
+  border: 1.5px solid rgba(15,31,46,0.08);
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.role-card:active {
+  transform: scale(0.985);
+}
+
+.role-card:hover {
+  border-color: rgba(138,166,143,0.45);
+
+  box-shadow:
+    0 10px 28px rgba(15,31,46,0.06);
+}
+
+.role-icon {
+  width: 58px;
+  height: 58px;
+
+  border-radius: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+
+  background: rgba(138,166,143,0.12);
+
+  flex-shrink: 0;
+}
+
+.role-text h2 {
+  font-size: 20px;
+  line-height: 1.1;
+
+  letter-spacing: -0.03em;
+
+  color: var(--navy);
+
+  margin-bottom: 6px;
+}
+
+.role-text p {
+  font-size: 14px;
+  line-height: 1.45;
+
+  color: rgba(15,31,46,0.68);
+}
