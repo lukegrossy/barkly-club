@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
+  <title>Member Profile | Barkly Club</title>
+
+  <style>
+    :root {
+      --navy: #0F1F2E;
+      --sage: #8AA68F;
+      --cream: #F2EDE3;
+      --white: #FFFCF7;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100dvh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Inter",
+        "Segoe UI",
+        sans-serif;
+
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.82), transparent 42%),
+        linear-gradient(180deg, #f8f4eb 0%, #f2ede3 100%);
+
+      color: var(--navy);
+
+      padding:
+        max(26px, env(safe-area-inset-top))
+        20px
+        max(34px, env(safe-area-inset-bottom));
+    }
+
+    .profile {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 22px;
+    }
+
+    .back {
+      width: 42px;
+      height: 42px;
+
+      border-radius: 999px;
+
+      background: rgba(255,255,255,0.68);
+
+      border: 1.5px solid rgba(15,31,46,0.08);
+
+      display: grid;
+      place-items: center;
+
+      text-decoration: none;
+
+      color: var(--navy);
+
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .menu {
+      width: 42px;
+      height: 42px;
+
+      border-radius: 999px;
+
+      background: rgba(255,255,255,0.68);
+
+      border: 1.5px solid rgba(15,31,46,0.08);
+
+      display: grid;
+      place-items: center;
+
+      color: var(--navy);
+
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .hero {
+      background: rgba(255,255,255,0.74);
+
+      border: 1.5px solid rgba(15,31,46,0.08);
+
+      border-radius: 36px;
+
+      padding: 24px;
+
+      margin-bottom: 18px;
+    }
+
+    .dog-image {
+      width: 100%;
+      height: 240px;
+
+      border-radius: 28px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(138,166,143,0.18),
+          rgba(15,31,46,0.08)
+        );
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 72px;
+
+      margin-bottom: 20px;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      gap: 14px;
+
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.06em;
+
+      margin-bottom: 8px;
+    }
+
+    .breed {
+      font-size: 15px;
+      color: rgba(15,31,46,0.62);
+    }
+
+    .badge {
+      padding: 10px 14px;
+
+      border-radius: 999px;
+
+      background: rgba(138,166,143,0.14);
+
+      color: var(--sage);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+
+      margin-top: 18px;
+    }
+
+    .meta-card {
+      flex: 1;
+
+      min-width: 120px;
+
+      background: rgba(255,255,255,0.72);
+
+      border: 1.5px solid rgba(15,31,46,0.08);
+
+      border-radius: 22px;
+
+      padding: 16px;
+    }
+
+    .meta-card strong {
+      display: block;
+
+      font-size: 22px;
+      letter-spacing: -0.04em;
+
+      margin-bottom: 6px;
+    }
+
+    .meta-card span {
+      font-size: 13px;
+      font-weight: 700;
+
+      color: rgba(15,31,46,0.62);
+    }
+
+    .section {
+      margin-bottom: 18px;
+    }
+
+    .section-card {
+      background: rgba(255,255,255,0.74);
+
+      border: 1.5px solid rgba(15,31,46,0.08);
+
+      border-radius: 28px;
+
+      padding: 22px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      font-size: 22px;
+      letter-spacing: -0.04em;
+    }
+
+    .section-head a {
+      color: var(--sage);
+
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .session {
+      padding: 14px 0;
+
+      border-bottom: 1px solid rgba(15,31,46,0.08);
+    }
+
+    .session:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .session h3 {
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .session p {
+      font-size: 14px;
+      line-height: 1.45;
+
+      color: rgba(15,31,46,0.62);
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .achievement {
+      padding: 14px 16px;
+
+      border-radius: 20px;
+
+      background: rgba(138,166,143,0.12);
+
+      color: var(--navy);
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .notes {
+      font-size: 15px;
+      line-height: 1.65;
+
+      color: rgba(15,31,46,0.72);
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="profile">
+
+    <header class="topbar">
+
+      <a href="trainer-dashboard.html" class="back">
+        ←
+      </a>
+
+      <div class="menu">
+        •••
+      </div>
+
+    </header>
+
+    <section class="hero">
+
+      <div class="dog-image">
+        🐕
+      </div>
+
+      <div class="hero-top">
+
+        <div>
+          <h1>Bella</h1>
+
+          <p class="breed">
+            Golden Retriever · 3 years old
+          </p>
+        </div>
+
+        <span class="badge">
+          Active member
+        </span>
+
+      </div>
+
+      <div class="meta">
+
+        <div class="meta-card">
+          <strong>24</strong>
+          <span>Sessions attended</span>
+        </div>
+
+        <div class="meta-card">
+          <strong>94%</strong>
+          <span>Attendance rate</span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-card">
+
+        <div class="section-head">
+          <h2>Recent sessions</h2>
+
+          <a href="#">
+            View all
+          </a>
+        </div>
+
+        <div class="session">
+          <h3>Advanced Obedience</h3>
+
+          <p>
+            Tuesday · Excellent leash behaviour and recall work.
+          </p>
+        </div>
+
+        <div class="session">
+          <h3>Socialisation Group</h3>
+
+          <p>
+            Saturday · Calm interactions with new dogs.
+          </p>
+        </div>
+
+        <div class="session">
+          <h3>Agility Foundations</h3>
+
+          <p>
+            Thursday · Improving confidence through obstacles.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-card">
+
+        <div class="section-head">
+          <h2>Achievements</h2>
+
+          <a href="#">
+            Manage
+          </a>
+        </div>
+
+        <div class="badges">
+
+          <div class="achievement">
+            🏅 Recall Certified
+          </div>
+
+          <div class="achievement">
+            🦴 10 Sessions Completed
+          </div>
+
+          <div class="achievement">
+            ⭐ Puppy Graduate
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-card">
+
+        <div class="section-head">
+          <h2>Trainer notes</h2>
+        </div>
+
+        <p class="notes">
+          Bella continues to show strong improvement during group work.
+          Confidence around larger dogs has noticeably improved over the
+          last month. Recommend progressing into advanced recall drills
+          and agility confidence work.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
