@@ -8,92 +8,164 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
 
-  <title>Choose role | Barkly Club</title>
+  <title>Choose role | Barkly Schools</title>
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding:
+        max(26px, env(safe-area-inset-top))
+        20px
+        max(34px, env(safe-area-inset-bottom));
+    }
+
+    .role-page {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .logo {
+      width: 132px;
+      margin: 0 auto var(--space-xl);
+      display: block;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .intro h1 {
+      font-size: var(--display-md);
+      line-height: 1.04;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
+
+    .intro p {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .role-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .role-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .role-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .role-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2.2;
+    }
+
+    .role-card h2 {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .role-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+  </style>
 </head>
 
 <body>
 
-  <main class="role-screen">
+  <main class="role-page fade-in">
 
-    <header class="auth-header">
-      <a href="create-account.html" class="back-link">
-        ←
+    <img
+      src="assets/barkly-logo.png"
+      alt="Barkly Schools"
+      class="logo"
+    />
+
+    <section class="intro">
+
+      <h1>
+        Welcome to Barkly Schools
+      </h1>
+
+      <p>
+        Choose how you’ll use Barkly today.
+      </p>
+
+    </section>
+
+    <section class="role-list">
+
+      <a href="member-profile.html" class="role-card glass-card lift-card">
+
+        <div class="role-icon">
+          <i data-lucide="heart"></i>
+        </div>
+
+        <div>
+          <h2>Puppy parent</h2>
+          <p>Follow your puppy’s progress, notes and milestones.</p>
+        </div>
+
       </a>
-    </header>
 
-    <section class="role-panel">
+      <a href="trainer-dashboard.html" class="role-card glass-card lift-card">
 
-      <img
-        src="assets/barkly-logo.png"
-        alt="Barkly"
-        class="auth-logo-small"
-      />
+        <div class="role-icon">
+          <i data-lucide="sparkles"></i>
+        </div>
 
-      <div class="role-copy">
-        <h1>Welcome to Barkly Club</h1>
+        <div>
+          <h2>Puppy trainer</h2>
+          <p>Guide sessions, check-ins and puppy development moments.</p>
+        </div>
 
-        <p>
-          Choose how you’ll use Barkly.
-        </p>
-      </div>
+      </a>
 
-      <div class="role-options">
+      <a href="club-dashboard.html" class="role-card glass-card lift-card">
 
-        <a href="member-profile.html" class="role-card">
+        <div class="role-icon">
+          <i data-lucide="building-2"></i>
+        </div>
 
-          <div class="role-icon">
-            🐶
-          </div>
+        <div>
+          <h2>School owner</h2>
+          <p>Manage your puppy school, sessions and families.</p>
+        </div>
 
-          <div class="role-text">
-            <h2>Dog owner</h2>
-
-            <p>
-              Track your dogs, sessions and club activity.
-            </p>
-          </div>
-
-        </a>
-
-        <a href="trainer-dashboard.html" class="role-card">
-
-          <div class="role-icon">
-            🦮
-          </div>
-
-          <div class="role-text">
-            <h2>Trainer</h2>
-
-            <p>
-              Manage members, dogs and training sessions.
-            </p>
-          </div>
-
-        </a>
-
-        <a href="club-dashboard.html" class="role-card">
-
-          <div class="role-icon">
-            🏆
-          </div>
-
-          <div class="role-text">
-            <h2>Club owner</h2>
-
-            <p>
-              Run your club, attendance and member operations.
-            </p>
-          </div>
-
-        </a>
-
-      </div>
+      </a>
 
     </section>
 
   </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
 
 </body>
 </html>
