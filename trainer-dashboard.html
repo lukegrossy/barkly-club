@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
 
-  <title>Barkly Club</title>
+  <title>Trainer Dashboard | Barkly Club</title>
 
   <link rel="stylesheet" href="design-system.css" />
 
@@ -27,100 +27,154 @@
 
     .topbar {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
+
       margin-bottom: var(--space-xl);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .brand img {
-      width: 56px;
-      height: 56px;
-      object-fit: contain;
     }
 
     .eyebrow {
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
+
       color: var(--sage);
-      margin-bottom: var(--space-2xs);
+
+      margin-bottom: var(--space-xs);
+    }
+
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+
+      margin-bottom: var(--space-sm);
+    }
+
+    .topbar p {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+
+      line-height: 1.5;
     }
 
     .avatar {
       width: 48px;
       height: 48px;
+
       border-radius: var(--radius-pill);
+
       background: var(--navy);
+
       color: white;
+
       display: grid;
       place-items: center;
+
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
-      border: none;
-    }
 
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-sm);
-      margin-bottom: var(--space-md);
-    }
-
-    .stat {
-      padding: var(--space-lg);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: var(--display-lg);
-      line-height: 1;
-      letter-spacing: var(--tracking-display);
-      margin-bottom: var(--space-xs);
-    }
-
-    .stat span {
-      font-size: var(--text-sm);
-      font-weight: var(--font-bold);
-      color: var(--text-secondary);
+      flex-shrink: 0;
     }
 
     .session {
       display: block;
-      padding: 26px;
-      margin-bottom: var(--space-xl);
+
       text-decoration: none;
-      transition: transform var(--transition-fast);
+
+      color: inherit;
+
+      padding: 24px;
+
+      margin-bottom: var(--space-xl);
     }
 
-    .session:active {
-      transform: scale(0.985);
-    }
+    .session-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-    .session-label {
-      background: rgba(138,166,143,0.22);
-      color: #dce8df;
       margin-bottom: var(--space-md);
     }
 
+    .session-pill {
+      background:
+        rgba(255,255,255,0.14);
+
+      color:
+        rgba(255,255,255,0.92);
+
+      backdrop-filter: blur(12px);
+    }
+
+    .session-status {
+      color:
+        rgba(255,255,255,0.72);
+
+      font-size: var(--text-sm);
+
+      font-weight: var(--font-bold);
+    }
+
     .session h2 {
-      margin-bottom: var(--space-xs);
+      color: white;
+
+      font-size: var(--display-md);
+
+      margin-bottom: var(--space-sm);
     }
 
     .session p {
+      color:
+        rgba(255,255,255,0.76);
+
       font-size: var(--text-md);
-      line-height: 1.5;
-      color: rgba(255,255,255,0.72);
+
+      line-height: 1.6;
+    }
+
+    .session-meta {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: var(--space-md);
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      padding:
+        10px
+        14px;
+
+      border-radius: var(--radius-pill);
+
+      background:
+        rgba(255,255,255,0.08);
+
+      color:
+        rgba(255,255,255,0.76);
+
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
+    }
+
+    .meta-pill svg {
+      width: 16px;
+      height: 16px;
+
+      stroke-width: 2.2;
     }
 
     .section-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       margin-bottom: var(--space-sm);
     }
 
@@ -130,223 +184,141 @@
     }
 
     .section-head a {
-      color: var(--sage);
       text-decoration: none;
+
+      color: var(--sage);
+
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
     }
 
-    .dog-list {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-sm);
-    }
-
-    .dog {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .dog-avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: var(--radius-md);
-      background: rgba(138,166,143,0.12);
-      display: grid;
-      place-items: center;
-      color: var(--sage);
-      flex-shrink: 0;
-    }
-
-    .dog-avatar svg {
-      width: 24px;
-      height: 24px;
-      stroke-width: 2.2;
-    }
-
-    .dog h4 {
-      font-size: 17px;
-      margin-bottom: var(--space-2xs);
-    }
-
-    .dog p {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
-    }
-
-    .drawer {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: min(82vw, 340px);
-      height: 100dvh;
-
-      padding:
-        max(24px, env(safe-area-inset-top))
-        20px
-        max(26px, env(safe-area-inset-bottom));
-
-      background: rgba(255,252,247,0.92);
-      backdrop-filter: var(--blur-lg);
-      border-left: 1px solid var(--glass-border);
-      box-shadow: var(--shadow-drawer);
-
-      transform: translateX(104%);
-      transition: transform var(--transition-base);
-      z-index: 50;
-
-      display: flex;
-      flex-direction: column;
-    }
-
-    .drawer-overlay {
-      position: fixed;
-      inset: 0;
-      background: var(--overlay-dark);
-      backdrop-filter: var(--blur-sm);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--transition-base);
-      z-index: 40;
-    }
-
-    body.drawer-open .drawer-overlay {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    body.drawer-open .drawer {
-      transform: translateX(0);
-    }
-
-    .drawer-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .moments-section {
       margin-bottom: var(--space-xl);
     }
 
-    .drawer-user {
+    .moments-list {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+
       gap: var(--space-sm);
     }
 
-    .drawer-avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: var(--radius-pill);
-      background: var(--navy);
-      color: white;
+    .moment {
+      display: flex;
+      align-items: center;
+
+      gap: 14px;
+
+      padding: 16px;
+
+      text-decoration: none;
+
+      color: inherit;
+    }
+
+    .moment-icon {
+      width: 46px;
+      height: 46px;
+
+      border-radius: var(--radius-md);
+
+      background:
+        rgba(138,166,143,0.12);
+
+      color: var(--sage);
+
       display: grid;
       place-items: center;
-      font-size: var(--text-sm);
-      font-weight: var(--font-black);
+
+      flex-shrink: 0;
     }
 
-    .drawer-user h2 {
-      font-size: 20px;
-      letter-spacing: var(--tracking-tight);
-      margin-bottom: 3px;
-    }
-
-    .drawer-user p {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
-      font-weight: var(--font-bold);
-    }
-
-    .drawer-close {
-      width: 42px;
-      height: 42px;
-      border-radius: var(--radius-pill);
-      border: 1.5px solid var(--glass-border);
-      background: var(--glass);
-      color: var(--navy);
-      display: grid;
-      place-items: center;
-    }
-
-    .drawer-close svg {
+    .moment-icon svg {
       width: 21px;
       height: 21px;
-      stroke-width: 2.4;
+
+      stroke-width: 2.2;
     }
 
-    .drawer-card {
-      padding: 22px;
-      margin-bottom: var(--space-md);
+    .moment h4 {
+      font-size: 16px;
+
+      margin-bottom: 4px;
     }
 
-    .drawer-card span {
-      background: rgba(138,166,143,0.22);
-      color: #dce8df;
-      margin-bottom: var(--space-sm);
-    }
-
-    .drawer-card h3 {
-      margin-bottom: var(--space-xs);
-    }
-
-    .drawer-card p {
+    .moment p {
       font-size: var(--text-sm);
-      line-height: 1.45;
-      color: rgba(255,255,255,0.7);
+
+      color: var(--text-secondary);
+
+      line-height: 1.4;
     }
 
-    .drawer-menu {
+    .sessions-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+
+      gap: var(--space-sm);
     }
 
-    .drawer-link {
+    .session-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: var(--space-sm);
+
       padding: 16px;
-      border-radius: var(--radius-md);
+
       text-decoration: none;
-      color: var(--navy);
-      font-size: var(--text-md);
-      font-weight: var(--font-heavy);
+
+      color: inherit;
     }
 
-    .drawer-link-left {
+    .session-left {
       display: flex;
       align-items: center;
-      gap: var(--space-sm);
+
+      gap: 14px;
     }
 
-    .drawer-link svg {
-      width: 19px;
-      height: 19px;
-      stroke-width: 2.2;
-      color: var(--sage);
-    }
+    .session-icon {
+      width: 48px;
+      height: 48px;
 
-    .drawer-link span:last-child {
-      color: rgba(15,31,46,0.34);
-    }
-
-    .drawer-footer {
-      margin-top: auto;
-      padding-top: var(--space-lg);
-    }
-
-    .sign-out {
-      width: 100%;
-      height: 56px;
       border-radius: var(--radius-md);
-      background: rgba(15,31,46,0.08);
-      color: var(--navy);
-      font-size: var(--text-md);
-      font-weight: var(--font-black);
+
+      background:
+        rgba(138,166,143,0.12);
+
+      color: var(--sage);
+
+      display: grid;
+      place-items: center;
+    }
+
+    .session-icon svg {
+      width: 22px;
+      height: 22px;
+
+      stroke-width: 2.2;
+    }
+
+    .session-row h4 {
+      font-size: 16px;
+
+      margin-bottom: 4px;
+    }
+
+    .session-row p {
+      font-size: var(--text-sm);
+
+      color: var(--text-secondary);
+    }
+
+    .session-time {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+
+      color: var(--sage);
     }
   </style>
 </head>
@@ -357,83 +329,221 @@
 
     <header class="topbar">
 
-      <div class="brand">
-        <img src="assets/barkly-icon.png" alt="Barkly" />
+      <div>
 
-        <div>
-          <p class="eyebrow">Barkly Club</p>
-          <h1 class="display-sm">Good afternoon, Luke</h1>
-        </div>
+        <p class="eyebrow">
+          Barkly Club
+        </p>
+
+        <h1>
+          Good afternoon,<br />
+          Luke
+        </h1>
+
+        <p>
+          Today’s puppy sessions are progressing beautifully.
+        </p>
+
       </div>
 
-      <button class="avatar btn" id="openDrawer" aria-label="Open account menu">
+      <div class="avatar">
         LG
-      </button>
+      </div>
 
     </header>
 
-    <section class="stats">
+    <a
+      href="session-detail.html"
+      class="session hero-card"
+    >
 
-      <div class="stat glass-card">
-        <strong>18</strong>
-        <span>Dogs today</span>
+      <div class="session-top">
+
+        <span class="pill session-pill">
+          Live session
+        </span>
+
+        <span class="session-status">
+          9 checked in · 3 arriving
+        </span>
+
       </div>
 
-      <div class="stat glass-card">
-        <strong>4</strong>
-        <span>Sessions</span>
-      </div>
-
-    </section>
-
-    <a href="session-detail.html" class="session hero-card">
-
-      <span class="session-label pill">
-        Next session
-      </span>
-
-      <h2 class="display-md">
-        Advanced Obedience
+      <h2>
+        Puppy confidence class
       </h2>
 
       <p>
-        12 dogs attending · Main training field · 4:30 PM
+        Puppies are settling calmly today with strong engagement during recall and socialisation exercises.
       </p>
+
+      <div class="session-meta">
+
+        <div class="meta-pill">
+          <i data-lucide="users"></i>
+          12 puppies
+        </div>
+
+        <div class="meta-pill">
+          <i data-lucide="clock-3"></i>
+          4:30 PM
+        </div>
+
+        <div class="meta-pill">
+          <i data-lucide="sparkles"></i>
+          Calm energy
+        </div>
+
+      </div>
 
     </a>
 
-    <section>
+    <section class="moments-section">
 
       <div class="section-head">
-        <h3>Recent dogs</h3>
+
+        <h3>
+          Today’s moments
+        </h3>
 
         <a href="dogs.html">
           View all
         </a>
+
       </div>
 
-      <div class="dog-list">
+      <div class="moments-list">
 
-        <a href="member-profile.html" class="dog glass-card">
-          <div class="dog-avatar">
-            <i data-lucide="dog"></i>
+        <a href="member-profile.html" class="moment glass-card">
+
+          <div class="moment-icon">
+            <i data-lucide="sparkles"></i>
           </div>
 
           <div>
-            <h4>Bella</h4>
-            <p>Golden Retriever</p>
+            <h4>
+              Bella greeted calmly today
+            </h4>
+
+            <p>
+              Big improvement during puppy arrivals.
+            </p>
           </div>
+
         </a>
 
-        <a href="member-profile.html" class="dog glass-card">
-          <div class="dog-avatar">
-            <i data-lucide="paw-print"></i>
+        <a href="member-profile.html" class="moment glass-card">
+
+          <div class="moment-icon">
+            <i data-lucide="heart"></i>
           </div>
 
           <div>
-            <h4>Charlie</h4>
-            <p>Border Collie</p>
+            <h4>
+              Charlie completed first recall
+            </h4>
+
+            <p>
+              Strong focus with gentle reward prompts.
+            </p>
           </div>
+
+        </a>
+
+        <a href="member-profile.html" class="moment glass-card">
+
+          <div class="moment-icon">
+            <i data-lucide="badge-check"></i>
+          </div>
+
+          <div>
+            <h4>
+              Luna settled faster in group work
+            </h4>
+
+            <p>
+              Confidence is building around other puppies.
+            </p>
+          </div>
+
+        </a>
+
+      </div>
+
+    </section>
+
+    <section>
+
+      <div class="section-head">
+
+        <h3>
+          Upcoming sessions
+        </h3>
+
+        <a href="session-detail.html">
+          View all
+        </a>
+
+      </div>
+
+      <div class="sessions-list">
+
+        <a
+          href="session-detail.html"
+          class="session-row glass-card"
+        >
+
+          <div class="session-left">
+
+            <div class="session-icon">
+              <i data-lucide="dog"></i>
+            </div>
+
+            <div>
+              <h4>
+                Puppy socialisation
+              </h4>
+
+              <p>
+                Indoor studio · Beginner group
+              </p>
+            </div>
+
+          </div>
+
+          <div class="session-time">
+            6:00 PM
+          </div>
+
+        </a>
+
+        <a
+          href="session-detail.html"
+          class="session-row glass-card"
+        >
+
+          <div class="session-left">
+
+            <div class="session-icon">
+              <i data-lucide="heart"></i>
+            </div>
+
+            <div>
+              <h4>
+                Calm confidence foundations
+              </h4>
+
+              <p>
+                Small-group puppy session
+              </p>
+            </div>
+
+          </div>
+
+          <div class="session-time">
+            Tomorrow
+          </div>
+
         </a>
 
       </div>
@@ -474,117 +584,10 @@
 
   </nav>
 
-  <div class="drawer-overlay" id="drawerOverlay"></div>
-
-  <aside class="drawer" aria-label="Account menu">
-
-    <div class="drawer-head">
-
-      <div class="drawer-user">
-        <div class="drawer-avatar">LG</div>
-
-        <div>
-          <h2>Luke Gross</h2>
-          <p>Trainer · Barkly Club</p>
-        </div>
-      </div>
-
-      <button class="drawer-close btn" id="closeDrawer" aria-label="Close account menu">
-        <i data-lucide="x"></i>
-      </button>
-
-    </div>
-
-    <div class="drawer-card hero-card">
-      <span class="pill">Today</span>
-
-      <h3 class="display-sm">
-        4 sessions scheduled
-      </h3>
-
-      <p>
-        18 dogs checked in across today’s club program.
-      </p>
-    </div>
-
-    <div class="drawer-menu">
-
-      <a href="#" class="drawer-link glass-card">
-        <span class="drawer-link-left">
-          <i data-lucide="user"></i>
-          Profile
-        </span>
-        <span>›</span>
-      </a>
-
-      <a href="#" class="drawer-link glass-card">
-        <span class="drawer-link-left">
-          <i data-lucide="bell"></i>
-          Notifications
-        </span>
-        <span>›</span>
-      </a>
-
-      <a href="#" class="drawer-link glass-card">
-        <span class="drawer-link-left">
-          <i data-lucide="badge-check"></i>
-          Membership
-        </span>
-        <span>›</span>
-      </a>
-
-      <a href="club-dashboard.html" class="drawer-link glass-card">
-        <span class="drawer-link-left">
-          <i data-lucide="settings"></i>
-          Club settings
-        </span>
-        <span>›</span>
-      </a>
-
-      <a href="#" class="drawer-link glass-card">
-        <span class="drawer-link-left">
-          <i data-lucide="circle-help"></i>
-          Help
-        </span>
-        <span>›</span>
-      </a>
-
-    </div>
-
-    <div class="drawer-footer">
-      <button class="sign-out btn">
-        Sign out
-      </button>
-    </div>
-
-  </aside>
-
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
     lucide.createIcons();
-
-    const openDrawer = document.getElementById("openDrawer");
-    const closeDrawer = document.getElementById("closeDrawer");
-    const drawerOverlay = document.getElementById("drawerOverlay");
-
-    function showDrawer() {
-      document.body.classList.add("drawer-open");
-    }
-
-    function hideDrawer() {
-      document.body.classList.remove("drawer-open");
-    }
-
-    openDrawer.addEventListener("click", showDrawer);
-    closeDrawer.addEventListener("click", hideDrawer);
-    drawerOverlay.addEventListener("click", hideDrawer);
-
-    document.addEventListener("keydown", function(event) {
-      if (event.key === "Escape") {
-        hideDrawer();
-      }
-    });
   </script>
 
 </body>
