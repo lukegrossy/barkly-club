@@ -46,6 +46,23 @@
       margin-bottom: var(--space-sm);
     }
 
+    .topbar-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.header-icon {
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  flex-shrink: 0;
+
+  margin-top: 4px;
+}
+
     .topbar p {
       font-size: var(--text-md);
       color: var(--text-secondary);
@@ -242,26 +259,38 @@
 
     <header class="topbar">
 
-      <div>
-        <p class="eyebrow">
-          Barkly Schools
-        </p>
+  <div class="topbar-left">
 
-        <h1>
-          Good afternoon,<br />
-          Luke
-        </h1>
+    <img
+      src="assets/barkly-icon.png"
+      alt="Barkly"
+      class="header-icon"
+    />
 
-        <p>
-          Today’s puppy sessions are progressing beautifully.
-        </p>
-      </div>
+    <div>
 
-      <div class="avatar">
-        LG
-      </div>
+      <p class="eyebrow">
+        Barkly Schools
+      </p>
 
-    </header>
+      <h1>
+        Good afternoon,<br />
+        Luke
+      </h1>
+
+      <p>
+        Today’s puppy sessions are progressing beautifully.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="avatar">
+    LG
+  </div>
+
+</header>
 
     <a href="session-detail.html" class="session hero-card lift-card">
 
