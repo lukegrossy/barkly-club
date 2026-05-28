@@ -20,6 +20,10 @@
         110px;
     }
 
+    body.sheet-open {
+      overflow: hidden;
+    }
+
     .parent-page {
       max-width: var(--content-width);
       margin: 0 auto;
@@ -33,7 +37,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 18px;
     }
 
     .header-icon {
@@ -49,6 +53,26 @@
       font-weight: var(--font-heavy);
       color: var(--sage);
       margin: 0;
+    }
+
+    .puppy-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      border-radius: var(--radius-pill);
+      padding: 10px 16px;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      margin-bottom: var(--space-sm);
+    }
+
+    .puppy-switcher svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.4;
     }
 
     .topbar h1 {
@@ -209,6 +233,113 @@
       background: rgba(15,31,46,0.05);
       color: var(--text-secondary);
     }
+
+    .sheet-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,31,46,0.24);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-base);
+      z-index: 40;
+    }
+
+    .puppy-sheet {
+      position: fixed;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      padding: 18px;
+      border-radius: var(--radius-xl);
+      background: rgba(255,252,247,0.94);
+      border: 1.5px solid var(--glass-border);
+      box-shadow: var(--shadow-hero);
+      backdrop-filter: var(--blur-lg);
+      transform: translateY(110%);
+      transition: transform var(--transition-base);
+      z-index: 50;
+    }
+
+    body.sheet-open .sheet-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.sheet-open .puppy-sheet {
+      transform: translateY(0);
+    }
+
+    .sheet-handle {
+      width: 42px;
+      height: 5px;
+      border-radius: var(--radius-pill);
+      background: rgba(15,31,46,0.14);
+      margin: 0 auto 16px;
+    }
+
+    .sheet-title {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .puppy-option {
+      width: 100%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.7);
+      margin-bottom: 10px;
+      text-align: left;
+      color: inherit;
+    }
+
+    .puppy-option-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .puppy-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .puppy-avatar svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .puppy-option h3 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .puppy-option p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+
+    .selected-check {
+      color: var(--sage);
+      opacity: 0;
+    }
+
+    .puppy-option.active .selected-check {
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -232,12 +363,17 @@
 
       </div>
 
-      <h1>
+      <button class="puppy-switcher btn" id="openPuppySheet">
+        <span id="switcherName">Bella</span>
+        <i data-lucide="chevron-down"></i>
+      </button>
+
+      <h1 id="headline">
         Bella is progressing<br />
         beautifully
       </h1>
 
-      <p>
+      <p id="schoolLine">
         Connected through Little Explorers Puppy School.
       </p>
 
@@ -249,6 +385,7 @@
         src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1200&auto=format&fit=crop"
         alt="Bella"
         class="hero-image"
+        id="heroImage"
       />
 
       <div class="hero-content">
@@ -257,11 +394,11 @@
           Today’s moment
         </span>
 
-        <h2>
+        <h2 id="momentTitle">
           Bella greeted calmly today
         </h2>
 
-        <p>
+        <p id="momentCopy">
           She settled more quickly during puppy arrivals and showed growing confidence around unfamiliar puppies.
         </p>
 
@@ -276,11 +413,11 @@
       </div>
 
       <div>
-        <h3>
+        <h3 id="noteTitle">
           Note from Luke
         </h3>
 
-        <p>
+        <p id="trainerNote">
           “Bella is responding beautifully to calm praise. Try one short settling practice tonight before dinner.”
         </p>
       </div>
@@ -290,7 +427,7 @@
     <section class="section">
 
       <div class="section-head">
-        <h2>
+        <h2 id="journeyTitle">
           Bella’s journey
         </h2>
       </div>
@@ -303,8 +440,12 @@
           </div>
 
           <div>
-            <h3>First calm greeting</h3>
-            <p>Completed during today’s puppy arrivals.</p>
+            <h3 id="milestoneOne">
+              First calm greeting
+            </h3>
+            <p id="milestoneOneCopy">
+              Completed during today’s puppy arrivals.
+            </p>
           </div>
         </div>
 
@@ -314,8 +455,12 @@
           </div>
 
           <div>
-            <h3>Recall foundations</h3>
-            <p>Building consistency with gentle reward prompts.</p>
+            <h3 id="milestoneTwo">
+              Recall foundations
+            </h3>
+            <p id="milestoneTwoCopy">
+              Building consistency with gentle reward prompts.
+            </p>
           </div>
         </div>
 
@@ -325,8 +470,12 @@
           </div>
 
           <div>
-            <h3>Social confidence</h3>
-            <p>Growing comfort around new puppies and people.</p>
+            <h3 id="milestoneThree">
+              Social confidence
+            </h3>
+            <p id="milestoneThreeCopy">
+              Growing comfort around new puppies and people.
+            </p>
           </div>
         </div>
 
@@ -344,11 +493,11 @@
 
       <div class="next-class glass-card lift-card">
 
-        <h3>
+        <h3 id="nextClassTitle">
           Puppy confidence class
         </h3>
 
-        <p>
+        <p id="nextClassCopy">
           Tomorrow · 5:30 PM · Little Explorers Puppy School
         </p>
 
@@ -401,14 +550,185 @@
       <div class="bottom-nav-icon">
         <i data-lucide="dog"></i>
       </div>
-      Bella
+      <span id="navPuppyName">Bella</span>
     </a>
 
   </nav>
 
+  <div class="sheet-overlay" id="sheetOverlay"></div>
+
+  <aside class="puppy-sheet" aria-label="Switch puppy">
+
+    <div class="sheet-handle"></div>
+
+    <h2 class="sheet-title">
+      Your puppies
+    </h2>
+
+    <button class="puppy-option active" data-puppy="bella">
+      <span class="puppy-option-left">
+        <span class="puppy-avatar">
+          <i data-lucide="dog"></i>
+        </span>
+
+        <span>
+          <h3>Bella</h3>
+          <p>Golden Retriever · Puppy confidence</p>
+        </span>
+      </span>
+
+      <span class="selected-check">
+        <i data-lucide="check"></i>
+      </span>
+    </button>
+
+    <button class="puppy-option" data-puppy="charlie">
+      <span class="puppy-option-left">
+        <span class="puppy-avatar">
+          <i data-lucide="paw-print"></i>
+        </span>
+
+        <span>
+          <h3>Charlie</h3>
+          <p>Cavoodle · Puppy foundations</p>
+        </span>
+      </span>
+
+      <span class="selected-check">
+        <i data-lucide="check"></i>
+      </span>
+    </button>
+
+    <button class="puppy-option" data-puppy="luna">
+      <span class="puppy-option-left">
+        <span class="puppy-avatar">
+          <i data-lucide="heart"></i>
+        </span>
+
+        <span>
+          <h3>Luna</h3>
+          <p>Labrador · Social confidence</p>
+        </span>
+      </span>
+
+      <span class="selected-check">
+        <i data-lucide="check"></i>
+      </span>
+    </button>
+
+  </aside>
+
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
+    const puppies = {
+      bella: {
+        name: "Bella",
+        school: "Connected through Little Explorers Puppy School.",
+        headline: "Bella is progressing<br />beautifully",
+        image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1200&auto=format&fit=crop",
+        momentTitle: "Bella greeted calmly today",
+        momentCopy: "She settled more quickly during puppy arrivals and showed growing confidence around unfamiliar puppies.",
+        trainerNote: "“Bella is responding beautifully to calm praise. Try one short settling practice tonight before dinner.”",
+        journeyTitle: "Bella’s journey",
+        milestoneOne: "First calm greeting",
+        milestoneOneCopy: "Completed during today’s puppy arrivals.",
+        milestoneTwo: "Recall foundations",
+        milestoneTwoCopy: "Building consistency with gentle reward prompts.",
+        milestoneThree: "Social confidence",
+        milestoneThreeCopy: "Growing comfort around new puppies and people.",
+        nextClassTitle: "Puppy confidence class",
+        nextClassCopy: "Tomorrow · 5:30 PM · Little Explorers Puppy School"
+      },
+      charlie: {
+        name: "Charlie",
+        school: "Connected through Little Explorers Puppy School.",
+        headline: "Charlie is finding<br />his confidence",
+        image: "https://images.unsplash.com/photo-1583511655826-05700442b31b?q=80&w=1200&auto=format&fit=crop",
+        momentTitle: "Charlie completed first recall",
+        momentCopy: "He stayed focused through gentle reward prompts and returned quickly during a short recall activity.",
+        trainerNote: "“Charlie is still a little unsure at arrivals, but his focus today was excellent. Keep recall practice short and happy.”",
+        journeyTitle: "Charlie’s journey",
+        milestoneOne: "First recall win",
+        milestoneOneCopy: "Strong response with positive encouragement.",
+        milestoneTwo: "Settling practice",
+        milestoneTwoCopy: "Building calm behaviour before group work.",
+        milestoneThree: "Confidence with noise",
+        milestoneThreeCopy: "Still developing comfort around busier moments.",
+        nextClassTitle: "Puppy foundations",
+        nextClassCopy: "Thursday · 4:45 PM · Little Explorers Puppy School"
+      },
+      luna: {
+        name: "Luna",
+        school: "Connected through Little Explorers Puppy School.",
+        headline: "Luna is growing<br />more settled",
+        image: "https://images.unsplash.com/photo-1552053831-71594a27632d?q=80&w=1200&auto=format&fit=crop",
+        momentTitle: "Luna settled faster in group work",
+        momentCopy: "She recovered quickly after excitement spikes and stayed close during the calm greeting exercise.",
+        trainerNote: "“Luna’s social confidence is building nicely. Tonight, practise one calm settle near a mild distraction.”",
+        journeyTitle: "Luna’s journey",
+        milestoneOne: "Group settling",
+        milestoneOneCopy: "Improving around other puppies.",
+        milestoneTwo: "Calm greetings",
+        milestoneTwoCopy: "Practising slower approach and recovery.",
+        milestoneThree: "Social confidence",
+        milestoneThreeCopy: "Growing comfort during small-group sessions.",
+        nextClassTitle: "Social confidence class",
+        nextClassCopy: "Saturday · 9:30 AM · Little Explorers Puppy School"
+      }
+    };
+
+    const openPuppySheet = document.getElementById("openPuppySheet");
+    const sheetOverlay = document.getElementById("sheetOverlay");
+    const puppyOptions = document.querySelectorAll(".puppy-option");
+
+    function openSheet() {
+      document.body.classList.add("sheet-open");
+    }
+
+    function closeSheet() {
+      document.body.classList.remove("sheet-open");
+    }
+
+    function setPuppy(key) {
+      const puppy = puppies[key];
+
+      document.getElementById("switcherName").textContent = puppy.name;
+      document.getElementById("navPuppyName").textContent = puppy.name;
+      document.getElementById("headline").innerHTML = puppy.headline;
+      document.getElementById("schoolLine").textContent = puppy.school;
+      document.getElementById("heroImage").src = puppy.image;
+      document.getElementById("heroImage").alt = puppy.name;
+      document.getElementById("momentTitle").textContent = puppy.momentTitle;
+      document.getElementById("momentCopy").textContent = puppy.momentCopy;
+      document.getElementById("trainerNote").textContent = puppy.trainerNote;
+      document.getElementById("journeyTitle").textContent = puppy.journeyTitle;
+      document.getElementById("milestoneOne").textContent = puppy.milestoneOne;
+      document.getElementById("milestoneOneCopy").textContent = puppy.milestoneOneCopy;
+      document.getElementById("milestoneTwo").textContent = puppy.milestoneTwo;
+      document.getElementById("milestoneTwoCopy").textContent = puppy.milestoneTwoCopy;
+      document.getElementById("milestoneThree").textContent = puppy.milestoneThree;
+      document.getElementById("milestoneThreeCopy").textContent = puppy.milestoneThreeCopy;
+      document.getElementById("nextClassTitle").textContent = puppy.nextClassTitle;
+      document.getElementById("nextClassCopy").textContent = puppy.nextClassCopy;
+
+      puppyOptions.forEach((option) => {
+        option.classList.toggle("active", option.dataset.puppy === key);
+      });
+
+      closeSheet();
+      lucide.createIcons();
+    }
+
+    openPuppySheet.addEventListener("click", openSheet);
+    sheetOverlay.addEventListener("click", closeSheet);
+
+    puppyOptions.forEach((option) => {
+      option.addEventListener("click", () => {
+        setPuppy(option.dataset.puppy);
+      });
+    });
+
     lucide.createIcons();
   </script>
 
