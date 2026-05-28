@@ -8,268 +8,393 @@
   <style>
     :root {
       --navy: #0f1f2e;
+      --navy-2: #13293d;
       --sage: #8aa68f;
       --cream: #f2ede3;
-      --soft: #f8f6f1;
-      --card: #ffffff;
-      --muted: #6f7c84;
-      --line: rgba(15,31,46,.08);
-      --gold: #d8b85a;
+      --cream-2: #faf7f0;
+      --card: rgba(255,255,255,.78);
+      --white: #ffffff;
+      --muted: #71808a;
+      --line: rgba(15,31,46,.09);
+      --shadow: 0 20px 45px rgba(15,31,46,.09);
+      --soft-shadow: 0 12px 28px rgba(15,31,46,.07);
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
-      background: var(--soft);
+      background:
+        radial-gradient(circle at top left, rgba(138,166,143,.22), transparent 34%),
+        linear-gradient(180deg, #fbf8f1 0%, #f4efe5 100%);
       color: var(--navy);
     }
 
     .app {
+      width: 100%;
       max-width: 430px;
       margin: 0 auto;
       min-height: 100vh;
-      padding: 22px 18px 92px;
+      padding: 24px 18px 112px;
     }
 
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 9px;
-      font-weight: 700;
-      letter-spacing: -.02em;
-      font-size: 18px;
+      gap: 10px;
+      min-width: 0;
     }
 
-    .brand img {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
-    }
-
-    .icon-btn {
+    .brand-logo {
       width: 38px;
       height: 38px;
-      border-radius: 999px;
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
+
+    .brand-title {
+      font-size: 25px;
+      font-weight: 850;
+      letter-spacing: -.055em;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .circle-btn {
+      width: 48px;
+      height: 48px;
       border: 1px solid var(--line);
-      background: #fff;
+      border-radius: 999px;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--soft-shadow);
+      color: var(--navy);
       display: grid;
       place-items: center;
-      font-size: 18px;
+    }
+
+    .circle-btn svg,
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
     }
 
     .dog-switcher {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      background: var(--cream);
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 11px 16px;
       border-radius: 999px;
-      padding: 8px 13px;
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 18px;
+      border: 1px solid rgba(15,31,46,.06);
+      background: rgba(242,237,227,.86);
+      color: var(--navy);
+      font-size: 15px;
+      font-weight: 850;
+      letter-spacing: -.02em;
+      box-shadow: 0 10px 24px rgba(15,31,46,.045);
     }
 
-    .page { display: none; }
-    .page.active { display: block; }
+    .dog-switcher svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn .2s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     .hero {
-      background: linear-gradient(145deg, #102436, #193348);
-      color: white;
-      border-radius: 28px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
       padding: 24px;
-      margin-bottom: 18px;
-      box-shadow: 0 18px 42px rgba(15,31,46,.18);
+      margin-bottom: 22px;
+      color: white;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,0)),
+        linear-gradient(145deg, var(--navy) 0%, #17324a 100%);
+      box-shadow: 0 24px 52px rgba(15,31,46,.22);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      right: -70px;
+      top: -75px;
+      background: rgba(138,166,143,.22);
+      filter: blur(3px);
     }
 
     .eyebrow {
-      font-size: 13px;
-      opacity: .75;
-      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+      font-size: 15px;
+      color: rgba(255,255,255,.68);
+      margin-bottom: 10px;
+      letter-spacing: -.01em;
     }
 
     .hero h1 {
-      margin: 0 0 16px;
-      font-size: 28px;
-      letter-spacing: -.04em;
-      line-height: 1.05;
+      position: relative;
+      z-index: 1;
+      margin: 0 0 22px;
+      max-width: 320px;
+      font-size: 33px;
+      line-height: 1.02;
+      letter-spacing: -.065em;
     }
 
-    .hero-card {
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 22px;
-      padding: 16px;
+    .hero-panel {
+      position: relative;
+      z-index: 1;
+      border-radius: 26px;
+      padding: 18px;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.15);
+      backdrop-filter: blur(12px);
     }
 
-    .hero-card strong {
-      display: block;
-      font-size: 17px;
-      margin-bottom: 4px;
+    .hero-panel h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      letter-spacing: -.035em;
     }
 
-    .btn {
+    .hero-panel p {
+      margin: 0;
+      color: rgba(255,255,255,.78);
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .primary-btn {
+      width: 100%;
+      margin-top: 15px;
       border: 0;
       border-radius: 999px;
-      padding: 12px 16px;
-      font-weight: 700;
+      padding: 13px 16px;
       background: var(--sage);
       color: white;
-      margin-top: 14px;
-      width: 100%;
+      font-weight: 850;
+      font-size: 15px;
+      box-shadow: 0 12px 24px rgba(138,166,143,.24);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      margin: 24px 2px 12px;
     }
 
     .section-title {
-      font-size: 17px;
-      font-weight: 800;
-      margin: 24px 0 12px;
-      letter-spacing: -.02em;
+      margin: 0;
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: -.055em;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+    .section-link {
+      color: var(--sage);
+      font-weight: 850;
+      font-size: 13px;
+      text-decoration: none;
     }
 
     .card {
+      border-radius: var(--radius-lg);
       background: var(--card);
-      border-radius: 24px;
+      border: 1px solid rgba(15,31,46,.07);
+      box-shadow: var(--soft-shadow);
+      backdrop-filter: blur(18px);
       padding: 18px;
-      border: 1px solid var(--line);
-      box-shadow: 0 10px 28px rgba(15,31,46,.04);
     }
 
-    .metric {
-      font-size: 13px;
+    .card + .card {
+      margin-top: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric-card {
+      min-height: 112px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .metric-label {
       color: var(--muted);
-      margin-bottom: 7px;
+      font-weight: 700;
+      font-size: 14px;
     }
 
-    .score {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -.04em;
+    .metric-value {
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -.065em;
     }
 
-    .note {
-      line-height: 1.45;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .badge-feature {
+    .note-card {
       display: flex;
       gap: 14px;
-      align-items: center;
+      align-items: flex-start;
     }
 
-    .badge-medal {
-      width: 58px;
-      height: 58px;
-      border-radius: 20px;
-      background: linear-gradient(145deg, #f6e7a8, #d5ae46);
+    .soft-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: rgba(138,166,143,.16);
+      color: var(--sage);
       display: grid;
       place-items: center;
-      font-size: 28px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+      flex: 0 0 auto;
     }
 
-    .session {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 12px;
+    .soft-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
     }
 
-    .session h3,
     .card h3 {
       margin: 0 0 5px;
       font-size: 17px;
-      letter-spacing: -.02em;
+      font-weight: 900;
+      letter-spacing: -.035em;
     }
 
-    .session p,
     .card p {
       margin: 0;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.45;
+    }
+
+    .session-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
     }
 
     .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 8px 11px;
       background: var(--cream);
       color: var(--navy);
-      border-radius: 999px;
-      padding: 7px 11px;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 850;
       white-space: nowrap;
     }
 
-    .dog-profile {
+    .dog-hero {
       text-align: center;
-      padding: 26px 18px;
+      padding: 22px;
     }
 
     .dog-photo {
       width: 112px;
       height: 112px;
       border-radius: 36px;
-      background: linear-gradient(145deg, var(--cream), #fff);
       margin: 0 auto 14px;
+      background:
+        radial-gradient(circle at top, rgba(138,166,143,.28), transparent 55%),
+        var(--cream);
+      border: 1px solid rgba(15,31,46,.07);
       display: grid;
       place-items: center;
-      font-size: 54px;
-      border: 1px solid var(--line);
+      color: var(--navy);
+    }
+
+    .dog-photo svg {
+      width: 56px;
+      height: 56px;
+      stroke-width: 1.8;
+    }
+
+    .dog-hero h2 {
+      margin: 0 0 4px;
+      font-size: 30px;
+      font-weight: 950;
+      letter-spacing: -.07em;
     }
 
     .journey {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
       position: relative;
-      margin-top: 10px;
     }
 
-    .journey:before {
+    .journey::before {
       content: "";
       position: absolute;
-      top: 13px;
-      left: 20px;
-      right: 20px;
+      left: 10%;
+      right: 10%;
+      top: 16px;
       height: 2px;
-      background: var(--line);
+      background: rgba(15,31,46,.08);
     }
 
     .step {
       position: relative;
       z-index: 1;
       text-align: center;
-      font-size: 11px;
       color: var(--muted);
-      width: 20%;
+      font-size: 10.5px;
+      font-weight: 800;
     }
 
     .dot {
-      width: 28px;
-      height: 28px;
+      width: 34px;
+      height: 34px;
       border-radius: 999px;
-      background: white;
-      border: 2px solid var(--line);
-      margin: 0 auto 7px;
+      margin: 0 auto 8px;
       display: grid;
       place-items: center;
-      font-size: 13px;
-      font-weight: 800;
+      background: var(--white);
+      border: 1px solid rgba(15,31,46,.1);
+      color: var(--muted);
     }
 
     .step.done .dot {
@@ -282,101 +407,135 @@
       background: var(--navy);
       color: white;
       border-color: var(--navy);
+      box-shadow: 0 10px 22px rgba(15,31,46,.18);
+    }
+
+    .dot svg {
+      width: 17px;
+      height: 17px;
+      stroke-width: 2.5;
     }
 
     .badges {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 11px;
     }
 
     .badge {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 14px 8px;
+      min-height: 112px;
+      border-radius: 24px;
+      padding: 13px 8px 12px;
       text-align: center;
-      min-height: 106px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(15,31,46,.07);
+      box-shadow: 0 10px 24px rgba(15,31,46,.045);
     }
 
-    .badge-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 18px;
+    .badge-mark {
+      width: 48px;
+      height: 48px;
       margin: 0 auto 9px;
+      border-radius: 18px;
       display: grid;
       place-items: center;
-      font-size: 24px;
-      background: linear-gradient(145deg, #f8e9a9, #d5af47);
+      color: white;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.34), rgba(255,255,255,0)),
+        linear-gradient(145deg, #d7ba64, #b88930);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
     }
 
-    .badge.locked {
-      opacity: .45;
-    }
-
-    .badge.locked .badge-icon {
-      background: var(--cream);
+    .badge-mark svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2.2;
     }
 
     .badge span {
-      font-size: 12px;
-      font-weight: 800;
       display: block;
-      line-height: 1.2;
+      font-size: 12px;
+      line-height: 1.18;
+      font-weight: 900;
+      letter-spacing: -.02em;
     }
 
-    .trainer {
+    .badge.locked {
+      opacity: .48;
+    }
+
+    .badge.locked .badge-mark {
+      background: var(--cream);
+      color: var(--muted);
+    }
+
+    .trainer-card {
       display: flex;
       gap: 14px;
       align-items: center;
     }
 
     .avatar {
-      width: 54px;
-      height: 54px;
+      width: 56px;
+      height: 56px;
       border-radius: 20px;
       background: var(--cream);
+      color: var(--navy);
       display: grid;
       place-items: center;
-      font-size: 25px;
+      flex: 0 0 auto;
+    }
+
+    .avatar svg {
+      width: 28px;
+      height: 28px;
+      stroke-width: 2;
     }
 
     .bottom-nav {
       position: fixed;
       left: 50%;
-      bottom: 14px;
+      bottom: 16px;
       transform: translateX(-50%);
+      width: calc(100% - 30px);
       max-width: 390px;
-      width: calc(100% - 28px);
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(18px);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      padding: 9px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      box-shadow: 0 18px 40px rgba(15,31,46,.14);
+      gap: 4px;
+      padding: 8px;
+      border-radius: 30px;
+      border: 1px solid rgba(15,31,46,.08);
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(24px);
+      box-shadow: 0 22px 54px rgba(15,31,46,.16);
+      z-index: 50;
     }
 
     .nav-item {
       border: 0;
       background: transparent;
-      border-radius: 20px;
-      padding: 9px 4px;
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--muted);
-    }
-
-    .nav-item span {
-      display: block;
-      font-size: 19px;
-      margin-bottom: 3px;
+      color: #7b858c;
+      border-radius: 23px;
+      padding: 10px 6px 9px;
+      font-size: 11.5px;
+      font-weight: 900;
+      letter-spacing: -.02em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
     }
 
     .nav-item.active {
       background: var(--navy);
       color: white;
+      box-shadow: 0 12px 24px rgba(15,31,46,.18);
+    }
+
+    @media (max-width: 370px) {
+      .brand-title { font-size: 22px; }
+      .hero h1 { font-size: 29px; }
+      .app { padding-left: 14px; padding-right: 14px; }
     }
   </style>
 </head>
@@ -385,13 +544,24 @@
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <img src="assets/barkly-icon.png" alt="Barkly" />
-        <span>barkly schools</span>
+        <img src="assets/barkly-icon.png" alt="Barkly" class="brand-logo" />
+        <div class="brand-title">barkly schools</div>
       </div>
-      <button class="icon-btn">🔔</button>
+
+      <button class="circle-btn" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5" />
+          <path d="M10 21h4" />
+        </svg>
+      </button>
     </header>
 
-    <div class="dog-switcher">Luna ▾</div>
+    <button class="dog-switcher">
+      Luna
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="m6 9 6 6 6-6" />
+      </svg>
+    </button>
 
     <!-- HOME -->
     <section class="page active" id="home">
@@ -399,153 +569,359 @@
         <div class="eyebrow">Good afternoon Luke</div>
         <h1>Luna is building confidence beautifully.</h1>
 
-        <div class="hero-card">
-          <strong>Next session</strong>
-          Saturday 9:00am · Puppy Foundations
-          <button class="btn">View session</button>
+        <div class="hero-panel">
+          <h3>Next session</h3>
+          <p>Saturday 9:00am · Puppy Foundations</p>
+          <button class="primary-btn">View session</button>
         </div>
       </div>
 
-      <div class="section-title">Progress snapshot</div>
-      <div class="grid">
-        <div class="card"><div class="metric">Recall</div><div class="score">78%</div></div>
-        <div class="card"><div class="metric">Walking</div><div class="score">85%</div></div>
-        <div class="card"><div class="metric">Focus</div><div class="score">65%</div></div>
-        <div class="card"><div class="metric">Social</div><div class="score">91%</div></div>
+      <div class="section-head">
+        <h2 class="section-title">Progress snapshot</h2>
       </div>
 
-      <div class="section-title">Latest trainer note</div>
-      <div class="card">
-        <p class="note">Luna showed excellent confidence around larger dogs today. Keep practising calm sits before greeting.</p>
+      <div class="grid-2">
+        <div class="card metric-card">
+          <div class="metric-label">Recall</div>
+          <div class="metric-value">78%</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-label">Walking</div>
+          <div class="metric-value">85%</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-label">Focus</div>
+          <div class="metric-value">65%</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-label">Social</div>
+          <div class="metric-value">91%</div>
+        </div>
       </div>
 
-      <div class="section-title">Recent achievement</div>
-      <div class="card badge-feature">
-        <div class="badge-medal">🏅</div>
+      <div class="section-head">
+        <h2 class="section-title">Trainer update</h2>
+        <a href="#" class="section-link">View notes</a>
+      </div>
+
+      <div class="card note-card">
+        <div class="soft-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+          </svg>
+        </div>
+        <div>
+          <h3>Excellent confidence today</h3>
+          <p>Luna stayed calm around larger dogs and responded well to recall practice.</p>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2 class="section-title">Recent badge</h2>
+      </div>
+
+      <div class="card note-card">
+        <div class="soft-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="8" r="5" />
+            <path d="M8.5 12.5 7 22l5-3 5 3-1.5-9.5" />
+          </svg>
+        </div>
         <div>
           <h3>Recall Rookie</h3>
-          <p>Earned this week</p>
+          <p>Earned this week after consistent recall work across sessions.</p>
         </div>
       </div>
     </section>
 
     <!-- SESSIONS -->
     <section class="page" id="sessions">
-      <div class="section-title">Upcoming</div>
+      <div class="section-head">
+        <h2 class="section-title">Upcoming</h2>
+      </div>
 
-      <div class="card session">
+      <div class="card session-row">
         <div>
           <h3>Puppy Foundations</h3>
           <p>Saturday · 9:00am · Trainer Sarah</p>
         </div>
-        <div class="pill">Next</div>
+        <span class="pill">Next</span>
       </div>
 
-      <div class="card session">
+      <div class="card session-row">
         <div>
           <h3>Social Confidence</h3>
           <p>Tuesday · 5:30pm · Small group</p>
         </div>
       </div>
 
-      <div class="section-title">Completed</div>
-
-      <div class="card session">
-        <div>
-          <h3>Week 4 Recap</h3>
-          <p>Lead walking, recall drills, calm greetings</p>
-        </div>
-        <div class="pill">Done</div>
+      <div class="section-head">
+        <h2 class="section-title">Completed</h2>
       </div>
 
-      <div class="card session">
+      <div class="card session-row">
+        <div>
+          <h3>Week 4 Recap</h3>
+          <p>Lead walking, recall drills and calm greetings.</p>
+        </div>
+        <span class="pill">Done</span>
+      </div>
+
+      <div class="card session-row">
         <div>
           <h3>Week 3 Recap</h3>
-          <p>Focus work and puppy socialisation</p>
+          <p>Focus work and puppy socialisation foundations.</p>
         </div>
-        <div class="pill">Done</div>
+        <span class="pill">Done</span>
+      </div>
+
+      <div class="section-head">
+        <h2 class="section-title">Homework</h2>
+      </div>
+
+      <div class="card note-card">
+        <div class="soft-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+          </svg>
+        </div>
+        <div>
+          <h3>Calm greeting practice</h3>
+          <p>Practise three short sessions before Saturday.</p>
+        </div>
       </div>
     </section>
 
     <!-- DOG -->
     <section class="page" id="dog">
-      <div class="card dog-profile">
-        <div class="dog-photo">🐶</div>
-        <h3>Luna</h3>
-        <p>Groodle · 8 months old · Puppy Foundations Level 3</p>
+      <div class="card dog-hero">
+        <div class="dog-photo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M11.25 16.25c.5.5 1 .75 1.75.75s1.25-.25 1.75-.75" />
+            <path d="M8 10h.01M16 10h.01" />
+            <path d="M7 5c-2 0-4 2-4 5 0 5 4 9 9 9s9-4 9-9c0-3-2-5-4-5-1.5 0-2.5 1-3 2h-4c-.5-1-1.5-2-3-2z" />
+          </svg>
+        </div>
+        <h2>Luna</h2>
+        <p>Groodle · 8 months · Puppy Foundations Level 3</p>
       </div>
 
-      <div class="section-title">Training journey</div>
+      <div class="section-head">
+        <h2 class="section-title">Training journey</h2>
+      </div>
+
       <div class="card">
         <div class="journey">
-          <div class="step done"><div class="dot">✓</div>Enrol</div>
-          <div class="step done"><div class="dot">✓</div>Start</div>
-          <div class="step current"><div class="dot">3</div>Level 3</div>
-          <div class="step"><div class="dot"></div>Advance</div>
-          <div class="step"><div class="dot"></div>Graduate</div>
+          <div class="step done">
+            <div class="dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 13 4 4L19 7" /></svg>
+            </div>
+            Enrol
+          </div>
+
+          <div class="step done">
+            <div class="dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 13 4 4L19 7" /></svg>
+            </div>
+            Start
+          </div>
+
+          <div class="step current">
+            <div class="dot">3</div>
+            Level 3
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            Advance
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            Graduate
+          </div>
         </div>
       </div>
 
-      <div class="section-title">Badges</div>
+      <div class="section-head">
+        <h2 class="section-title">Badges</h2>
+      </div>
+
       <div class="badges">
-        <div class="badge"><div class="badge-icon">🏅</div><span>First Session</span></div>
-        <div class="badge"><div class="badge-icon">🎯</div><span>Recall Rookie</span></div>
-        <div class="badge"><div class="badge-icon">🐾</div><span>Lead Walker</span></div>
-        <div class="badge"><div class="badge-icon">🌟</div><span>Social Star</span></div>
-        <div class="badge locked"><div class="badge-icon">?</div><span>Graduation Day</span></div>
-        <div class="badge locked"><div class="badge-icon">?</div><span>Off Leash Ready</span></div>
+        <div class="badge">
+          <div class="badge-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="8" r="5" />
+              <path d="M8.5 12.5 7 22l5-3 5 3-1.5-9.5" />
+            </svg>
+          </div>
+          <span>First Session</span>
+        </div>
+
+        <div class="badge">
+          <div class="badge-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="8" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+          <span>Recall Rookie</span>
+        </div>
+
+        <div class="badge">
+          <div class="badge-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M4 14c2-4 6-4 8 0s6 4 8 0" />
+              <path d="M7 18h10" />
+            </svg>
+          </div>
+          <span>Lead Walker</span>
+        </div>
+
+        <div class="badge">
+          <div class="badge-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2l2.8 6 6.2.7-4.6 4.2 1.2 6.1L12 15.8 6.4 19l1.2-6.1L3 8.7 9.2 8z" />
+            </svg>
+          </div>
+          <span>Social Star</span>
+        </div>
+
+        <div class="badge locked">
+          <div class="badge-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 17v1" />
+              <rect x="5" y="11" width="14" height="10" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </svg>
+          </div>
+          <span>Graduate</span>
+        </div>
+
+        <div class="badge locked">
+          <div class="badge-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 17v1" />
+              <rect x="5" y="11" width="14" height="10" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </svg>
+          </div>
+          <span>Off Leash Ready</span>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2 class="section-title">Assessment</h2>
+      </div>
+
+      <div class="grid-2">
+        <div class="card metric-card">
+          <div class="metric-label">Confidence</div>
+          <div class="metric-value">91%</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-label">Focus</div>
+          <div class="metric-value">65%</div>
+        </div>
       </div>
     </section>
 
     <!-- SCHOOL -->
     <section class="page" id="school">
-      <div class="section-title">Your trainer</div>
-      <div class="card trainer">
-        <div class="avatar">👩‍🏫</div>
+      <div class="section-head">
+        <h2 class="section-title">Your trainer</h2>
+      </div>
+
+      <div class="card trainer-card">
+        <div class="avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="7" r="4" />
+            <path d="M5.5 21a6.5 6.5 0 0 1 13 0" />
+          </svg>
+        </div>
         <div>
           <h3>Sarah Thompson</h3>
           <p>Lead Trainer · Barkly Schools</p>
         </div>
       </div>
 
-      <div class="section-title">School hub</div>
+      <div class="section-head">
+        <h2 class="section-title">School hub</h2>
+      </div>
 
-      <div class="card session">
+      <div class="card session-row">
         <div>
           <h3>Messages</h3>
-          <p>Chat with your trainer</p>
+          <p>Chat with Luna’s trainer.</p>
         </div>
-        <div class="pill">2 new</div>
+        <span class="pill">2 new</span>
       </div>
 
-      <div class="card session">
+      <div class="card session-row">
         <div>
           <h3>Announcements</h3>
-          <p>Class updates and school notices</p>
+          <p>Class updates and school notices.</p>
         </div>
       </div>
 
-      <div class="card session">
+      <div class="card session-row">
         <div>
           <h3>Family access</h3>
-          <p>Invite another parent or carer</p>
+          <p>Invite another parent or carer.</p>
         </div>
       </div>
 
-      <div class="card session">
+      <div class="card session-row">
         <div>
           <h3>Billing</h3>
-          <p>Membership, invoices and payments</p>
+          <p>Membership, invoices and payments.</p>
         </div>
       </div>
     </section>
   </main>
 
   <nav class="bottom-nav">
-    <button class="nav-item active" data-tab="home"><span>🏠</span>Home</button>
-    <button class="nav-item" data-tab="sessions"><span>📅</span>Sessions</button>
-    <button class="nav-item" data-tab="dog"><span>🐶</span>Dog</button>
-    <button class="nav-item" data-tab="school"><span>🎓</span>School</button>
+    <button class="nav-item active" data-tab="home" aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M3 11.5 12 4l9 7.5" />
+        <path d="M5 10.5V21h14V10.5" />
+        <path d="M9 21v-6h6v6" />
+      </svg>
+      Home
+    </button>
+
+    <button class="nav-item" data-tab="sessions" aria-label="Sessions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="3" y="5" width="18" height="16" rx="3" />
+        <path d="M8 3v4M16 3v4M3 10h18" />
+      </svg>
+      Sessions
+    </button>
+
+    <button class="nav-item" data-tab="dog" aria-label="Dog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="6" cy="9" r="2.2" />
+        <circle cx="18" cy="9" r="2.2" />
+        <circle cx="9" cy="5" r="2.2" />
+        <circle cx="15" cy="5" r="2.2" />
+        <path d="M7.5 16.5c0-3 2-5 4.5-5s4.5 2 4.5 5c0 1.9-1.4 3.2-4.5 3.2s-4.5-1.3-4.5-3.2z" />
+      </svg>
+      Dog
+    </button>
+
+    <button class="nav-item" data-tab="school" aria-label="School">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M22 10 12 5 2 10l10 5 10-5z" />
+        <path d="M6 12.5V17c2 2 10 2 12 0v-4.5" />
+        <path d="M22 10v6" />
+      </svg>
+      School
+    </button>
   </nav>
 
   <script>
@@ -556,8 +932,8 @@
       item.addEventListener("click", () => {
         const tab = item.dataset.tab;
 
-        navItems.forEach(i => i.classList.remove("active"));
-        pages.forEach(p => p.classList.remove("active"));
+        navItems.forEach(nav => nav.classList.remove("active"));
+        pages.forEach(page => page.classList.remove("active"));
 
         item.classList.add("active");
         document.getElementById(tab).classList.add("active");
