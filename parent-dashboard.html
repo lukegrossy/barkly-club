@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
+  <title>Parent Home | Barkly Schools</title>
+
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding:
+        max(26px, env(safe-area-inset-top))
+        20px
+        110px;
+    }
+
+    .parent-page {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      margin-bottom: var(--space-xl);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      opacity: 0.96;
+      flex-shrink: 0;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
+
+    .topbar p {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .hero {
+      overflow: hidden;
+      margin-bottom: var(--space-xl);
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-content {
+      padding: 24px;
+    }
+
+    .hero-pill {
+      background: rgba(138,166,143,0.14);
+      color: var(--sage);
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero h2 {
+      font-size: var(--display-sm);
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero p {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .trainer-note {
+      display: flex;
+      gap: 14px;
+      padding: 18px;
+      margin-bottom: var(--space-xl);
+    }
+
+    .trainer-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: var(--text-sm);
+      font-weight: var(--font-black);
+      flex-shrink: 0;
+    }
+
+    .trainer-note h3 {
+      font-size: 17px;
+      margin-bottom: 4px;
+    }
+
+    .trainer-note p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .section-head {
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-head h2 {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .journey-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .journey-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+    }
+
+    .journey-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .journey-icon svg {
+      width: 21px;
+      height: 21px;
+      stroke-width: 2.2;
+    }
+
+    .journey-item h3 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .journey-item p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .next-class {
+      padding: 22px;
+    }
+
+    .next-class h3 {
+      font-size: 20px;
+      margin-bottom: var(--space-xs);
+    }
+
+    .next-class p {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: var(--space-md);
+    }
+
+    .class-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .class-pill {
+      background: rgba(15,31,46,0.05);
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="parent-page fade-in">
+
+    <header class="topbar">
+
+      <div class="brand-row">
+
+        <img
+          src="assets/barkly-icon.png"
+          alt="Barkly"
+          class="header-icon"
+        />
+
+        <p class="eyebrow">
+          Barkly Parents
+        </p>
+
+      </div>
+
+      <h1>
+        Bella is progressing<br />
+        beautifully
+      </h1>
+
+      <p>
+        Connected through Little Explorers Puppy School.
+      </p>
+
+    </header>
+
+    <section class="hero glass-card lift-card">
+
+      <img
+        src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1200&auto=format&fit=crop"
+        alt="Bella"
+        class="hero-image"
+      />
+
+      <div class="hero-content">
+
+        <span class="pill hero-pill">
+          Today’s moment
+        </span>
+
+        <h2>
+          Bella greeted calmly today
+        </h2>
+
+        <p>
+          She settled more quickly during puppy arrivals and showed growing confidence around unfamiliar puppies.
+        </p>
+
+      </div>
+
+    </section>
+
+    <section class="trainer-note glass-card lift-card">
+
+      <div class="trainer-avatar">
+        LG
+      </div>
+
+      <div>
+        <h3>
+          Note from Luke
+        </h3>
+
+        <p>
+          “Bella is responding beautifully to calm praise. Try one short settling practice tonight before dinner.”
+        </p>
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-head">
+        <h2>
+          Bella’s journey
+        </h2>
+      </div>
+
+      <div class="journey-list">
+
+        <div class="journey-item glass-card lift-card">
+          <div class="journey-icon">
+            <i data-lucide="sparkles"></i>
+          </div>
+
+          <div>
+            <h3>First calm greeting</h3>
+            <p>Completed during today’s puppy arrivals.</p>
+          </div>
+        </div>
+
+        <div class="journey-item glass-card lift-card">
+          <div class="journey-icon">
+            <i data-lucide="badge-check"></i>
+          </div>
+
+          <div>
+            <h3>Recall foundations</h3>
+            <p>Building consistency with gentle reward prompts.</p>
+          </div>
+        </div>
+
+        <div class="journey-item glass-card lift-card">
+          <div class="journey-icon">
+            <i data-lucide="heart"></i>
+          </div>
+
+          <div>
+            <h3>Social confidence</h3>
+            <p>Growing comfort around new puppies and people.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-head">
+        <h2>
+          Next class
+        </h2>
+      </div>
+
+      <div class="next-class glass-card lift-card">
+
+        <h3>
+          Puppy confidence class
+        </h3>
+
+        <p>
+          Tomorrow · 5:30 PM · Little Explorers Puppy School
+        </p>
+
+        <div class="class-pills">
+
+          <span class="pill class-pill">
+            Bring treats
+          </span>
+
+          <span class="pill class-pill">
+            Lead
+          </span>
+
+          <span class="pill class-pill">
+            Calm energy
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+
+    <a href="parent-dashboard.html" class="bottom-nav-item active">
+      <div class="bottom-nav-icon">
+        <i data-lucide="home"></i>
+      </div>
+      Home
+    </a>
+
+    <a href="member-profile.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon">
+        <i data-lucide="sparkles"></i>
+      </div>
+      Journey
+    </a>
+
+    <a href="session-detail.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon">
+        <i data-lucide="calendar-check"></i>
+      </div>
+      Sessions
+    </a>
+
+    <a href="member-profile.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon">
+        <i data-lucide="dog"></i>
+      </div>
+      Bella
+    </a>
+
+  </nav>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
