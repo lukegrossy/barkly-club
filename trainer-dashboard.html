@@ -33,29 +33,35 @@
     }
 
     .topbar-left {
-      position: relative;
-      padding-left: 78px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      margin-bottom: 10px;
     }
 
     .header-icon {
-      position: absolute;
-
-      top: 2px;
-      left: 0;
-
-      width: 46px;
-      height: 46px;
+      width: 42px;
+      height: 42px;
 
       object-fit: contain;
 
       opacity: 0.96;
+
+      flex-shrink: 0;
     }
 
     .eyebrow {
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
       color: var(--sage);
-      margin-bottom: var(--space-xs);
+
+      margin: 0;
     }
 
     .topbar h1 {
@@ -65,7 +71,7 @@
       margin-bottom: var(--space-sm);
     }
 
-    .topbar p {
+    .topbar-copy {
       font-size: var(--text-md);
       color: var(--text-secondary);
       line-height: 1.5;
@@ -263,28 +269,28 @@
 
       <div class="topbar-left">
 
-        <img
-          src="assets/barkly-icon.png"
-          alt="Barkly"
-          class="header-icon"
-        />
+        <div class="brand-row">
 
-        <div>
+          <img
+            src="assets/barkly-icon.png"
+            alt="Barkly"
+            class="header-icon"
+          />
 
           <p class="eyebrow">
             Barkly Schools
           </p>
 
-          <h1>
-            Good afternoon,<br />
-            Luke
-          </h1>
-
-          <p>
-            Today’s puppy sessions are progressing beautifully.
-          </p>
-
         </div>
+
+        <h1>
+          Good afternoon,<br />
+          Luke
+        </h1>
+
+        <p class="topbar-copy">
+          Today’s puppy sessions are progressing beautifully.
+        </p>
 
       </div>
 
