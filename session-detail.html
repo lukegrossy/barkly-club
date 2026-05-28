@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
 
-  <title>Session | Barkly Club</title>
+  <title>Session | Barkly Schools</title>
 
   <link rel="stylesheet" href="design-system.css" />
 
@@ -29,16 +29,13 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-
       margin-bottom: var(--space-xl);
     }
 
     .eyebrow {
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
-
       color: var(--sage);
-
       margin-bottom: var(--space-xs);
     }
 
@@ -46,69 +43,48 @@
       font-size: var(--display-md);
       line-height: 1.02;
       letter-spacing: var(--tracking-display);
-
       margin-bottom: var(--space-sm);
     }
 
     .topbar p {
       font-size: var(--text-md);
       color: var(--text-secondary);
-
       line-height: 1.5;
     }
 
     .avatar {
       width: 48px;
       height: 48px;
-
       border-radius: var(--radius-pill);
-
       background: var(--navy);
-
       color: white;
-
       display: grid;
       place-items: center;
-
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
-
       flex-shrink: 0;
     }
 
     .session-card {
       padding: 24px;
-
       margin-bottom: var(--space-xl);
     }
 
     .session-meta {
       display: flex;
       flex-wrap: wrap;
-
       gap: 10px;
-
       margin-top: var(--space-md);
     }
 
     .meta-pill {
       display: inline-flex;
       align-items: center;
-
       gap: 8px;
-
-      padding:
-        10px
-        14px;
-
+      padding: 10px 14px;
       border-radius: var(--radius-pill);
-
-      background:
-        rgba(255,255,255,0.08);
-
-      color:
-        rgba(255,255,255,0.76);
-
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.76);
       font-size: var(--text-sm);
       font-weight: var(--font-bold);
     }
@@ -116,7 +92,6 @@
     .meta-pill svg {
       width: 16px;
       height: 16px;
-
       stroke-width: 2.2;
     }
 
@@ -124,7 +99,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       margin-bottom: var(--space-md);
     }
 
@@ -136,14 +110,12 @@
     .attendance-count {
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
-
       color: var(--sage);
     }
 
     .attendance-list {
       display: flex;
       flex-direction: column;
-
       gap: var(--space-sm);
     }
 
@@ -151,44 +123,34 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       padding: 16px;
     }
 
     .dog-left {
       display: flex;
       align-items: center;
-
       gap: 14px;
     }
 
     .dog-avatar {
       width: 52px;
       height: 52px;
-
       border-radius: var(--radius-md);
-
-      background:
-        rgba(138,166,143,0.12);
-
+      background: rgba(138,166,143,0.12);
       display: grid;
       place-items: center;
-
       color: var(--sage);
-
       flex-shrink: 0;
     }
 
     .dog-avatar svg {
       width: 24px;
       height: 24px;
-
       stroke-width: 2.2;
     }
 
     .dog-row h3 {
       font-size: 18px;
-
       margin-bottom: 4px;
     }
 
@@ -200,19 +162,12 @@
     .checkin-btn {
       width: 46px;
       height: 46px;
-
       border-radius: var(--radius-pill);
-
       border: none;
-
-      background:
-        rgba(15,31,46,0.08);
-
+      background: rgba(15,31,46,0.08);
       color: var(--text-secondary);
-
       display: grid;
       place-items: center;
-
       transition:
         transform var(--transition-fast),
         background var(--transition-fast),
@@ -222,7 +177,6 @@
     .checkin-btn svg {
       width: 22px;
       height: 22px;
-
       stroke-width: 2.6;
     }
 
@@ -239,25 +193,23 @@
 
 <body>
 
-  <main class="session-page">
+  <main class="session-page fade-in">
 
     <header class="topbar">
 
       <div>
-
         <p class="eyebrow">
-          Barkly Club
+          Barkly Schools
         </p>
 
         <h1>
-          Advanced<br />
-          Obedience
+          Puppy confidence<br />
+          class
         </h1>
 
         <p>
-          Main training field · 4:30 PM · Trainer: Luke Gross
+          Small-group puppy session · 4:30 PM · Trainer: Luke Gross
         </p>
-
       </div>
 
       <div class="avatar">
@@ -266,7 +218,7 @@
 
     </header>
 
-    <section class="session-card hero-card">
+    <section class="session-card hero-card lift-card">
 
       <span class="pill session-pill">
         Live session
@@ -276,7 +228,7 @@
 
         <div class="meta-pill">
           <i data-lucide="users"></i>
-          12 dogs
+          12 puppies
         </div>
 
         <div class="meta-pill">
@@ -285,8 +237,8 @@
         </div>
 
         <div class="meta-pill">
-          <i data-lucide="shield-check"></i>
-          Intermediate
+          <i data-lucide="sparkles"></i>
+          Calm focus
         </div>
 
       </div>
@@ -309,7 +261,7 @@
 
       <div class="attendance-list">
 
-        <div class="dog-row glass-card">
+        <div class="dog-row glass-card lift-card">
 
           <div class="dog-left">
 
@@ -319,7 +271,7 @@
 
             <div>
               <h3>Bella</h3>
-              <p>Golden Retriever</p>
+              <p>Golden Retriever · settled well</p>
             </div>
 
           </div>
@@ -330,7 +282,7 @@
 
         </div>
 
-        <div class="dog-row glass-card">
+        <div class="dog-row glass-card lift-card">
 
           <div class="dog-left">
 
@@ -340,7 +292,7 @@
 
             <div>
               <h3>Charlie</h3>
-              <p>Border Collie</p>
+              <p>Border Collie · first recall completed</p>
             </div>
 
           </div>
@@ -351,7 +303,7 @@
 
         </div>
 
-        <div class="dog-row glass-card">
+        <div class="dog-row glass-card lift-card">
 
           <div class="dog-left">
 
@@ -361,7 +313,7 @@
 
             <div>
               <h3>Luna</h3>
-              <p>Labrador</p>
+              <p>Labrador · arriving shortly</p>
             </div>
 
           </div>
@@ -372,7 +324,7 @@
 
         </div>
 
-        <div class="dog-row glass-card">
+        <div class="dog-row glass-card lift-card">
 
           <div class="dog-left">
 
@@ -382,7 +334,7 @@
 
             <div>
               <h3>Max</h3>
-              <p>German Shepherd</p>
+              <p>Cavoodle · first puppy session</p>
             </div>
 
           </div>
@@ -422,11 +374,11 @@
       Dogs
     </a>
 
-    <a href="school-dashboard.html" class="bottom-nav-item">
+    <a href="club-dashboard.html" class="bottom-nav-item">
       <div class="bottom-nav-icon">
-        <i data-lucide="users"></i>
+        <i data-lucide="building-2"></i>
       </div>
-      Club
+      School
     </a>
 
   </nav>
@@ -439,14 +391,6 @@
     document.querySelectorAll(".checkin-btn").forEach((button) => {
       button.addEventListener("click", () => {
         button.classList.toggle("checked-in");
-
-        const icon = button.querySelector("svg");
-
-        if (button.classList.contains("checked-in")) {
-          icon.setAttribute("data-lucide", "check");
-        } else {
-          icon.setAttribute("data-lucide", "plus");
-        }
 
         button.innerHTML = button.classList.contains("checked-in")
           ? '<i data-lucide="check"></i>'
