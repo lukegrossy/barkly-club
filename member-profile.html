@@ -39,7 +39,7 @@
 
     .hero-image {
       width: 100%;
-      height: 360px;
+      height: 380px;
 
       object-fit: cover;
 
@@ -53,7 +53,7 @@
       background:
         linear-gradient(
           180deg,
-          rgba(15,31,46,0.02) 0%,
+          rgba(15,31,46,0.04) 0%,
           rgba(15,31,46,0.72) 100%
         );
 
@@ -72,7 +72,8 @@
       background:
         rgba(255,255,255,0.16);
 
-      color: rgba(255,255,255,0.92);
+      color:
+        rgba(255,255,255,0.94);
 
       backdrop-filter: blur(12px);
     }
@@ -80,7 +81,7 @@
     .hero h1 {
       color: white;
 
-      font-size: 42px;
+      font-size: 44px;
       letter-spacing: var(--tracking-display);
 
       margin-bottom: var(--space-xs);
@@ -88,7 +89,7 @@
 
     .hero p {
       color:
-        rgba(255,255,255,0.76);
+        rgba(255,255,255,0.78);
 
       font-size: var(--text-md);
 
@@ -116,9 +117,15 @@
       padding: 22px;
     }
 
+    .progress-card p {
+      font-size: var(--text-md);
+      line-height: 1.6;
+    }
+
     .progress-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
+
       gap: var(--space-sm);
 
       margin-top: var(--space-md);
@@ -136,13 +143,14 @@
     .progress-item strong {
       display: block;
 
-      font-size: 26px;
+      font-size: 30px;
 
       margin-bottom: 6px;
     }
 
     .progress-item span {
       font-size: var(--text-sm);
+
       color: var(--text-secondary);
 
       line-height: 1.4;
@@ -154,6 +162,7 @@
 
     .note {
       display: flex;
+
       gap: 14px;
 
       margin-bottom: var(--space-lg);
@@ -214,6 +223,15 @@
       justify-content: space-between;
 
       padding: 16px;
+
+      transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background var(--transition-fast);
+    }
+
+    .milestone:active {
+      transform: scale(0.985);
     }
 
     .milestone-left {
@@ -332,7 +350,7 @@
     <section class="hero">
 
       <img
-        src="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=1200&auto=format&fit=crop"
+        src="https://images.unsplash.com/photo-1511044568932-338cba0ad803?q=80&w=1200&auto=format&fit=crop"
         alt="Bella"
         class="hero-image"
       />
@@ -427,7 +445,7 @@
             </h3>
 
             <p>
-              Bella settled much faster during today’s group exercises and showed less overstimulation around new puppies.
+              Bella settled much faster during today’s group exercises and showed less overstimulation around unfamiliar puppies.
             </p>
           </div>
 
@@ -445,7 +463,7 @@
             </h3>
 
             <p>
-              Food motivation remains excellent. Responding especially well to shorter positive reinforcement sessions.
+              Responding especially well to shorter positive reinforcement sessions and calm praise.
             </p>
           </div>
 
@@ -463,7 +481,7 @@
             </h3>
 
             <p>
-              Bella initiated healthy play with two unfamiliar puppies today and recovered quickly after excitement spikes.
+              Initiated healthy play with unfamiliar puppies and recovered quickly after excitement spikes.
             </p>
           </div>
 
