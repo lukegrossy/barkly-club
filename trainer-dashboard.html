@@ -32,6 +32,25 @@
       margin-bottom: var(--space-xl);
     }
 
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+
+      object-fit: contain;
+
+      flex-shrink: 0;
+
+      margin-top: 0;
+
+      opacity: 0.96;
+    }
+
     .eyebrow {
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
@@ -45,25 +64,6 @@
       letter-spacing: var(--tracking-display);
       margin-bottom: var(--space-sm);
     }
-
-    .topbar-left {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.header-icon {
-  width: 42px;
-  height: 42px;
-
-  object-fit: contain;
-
-  flex-shrink: 0;
-
-  margin-top: 8px;
-
-  opacity: 0.96;
-  }
 
     .topbar p {
       font-size: var(--text-md);
@@ -261,38 +261,38 @@
 
     <header class="topbar">
 
-  <div class="topbar-left">
+      <div class="topbar-left">
 
-    <img
-      src="assets/barkly-icon.png"
-      alt="Barkly"
-      class="header-icon"
-    />
+        <img
+          src="assets/barkly-icon.png"
+          alt="Barkly"
+          class="header-icon"
+        />
 
-    <div>
+        <div>
 
-      <p class="eyebrow">
-        Barkly Schools
-      </p>
+          <p class="eyebrow">
+            Barkly Schools
+          </p>
 
-      <h1>
-        Good afternoon,<br />
-        Luke
-      </h1>
+          <h1>
+            Good afternoon,<br />
+            Luke
+          </h1>
 
-      <p>
-        Today’s puppy sessions are progressing beautifully.
-      </p>
+          <p>
+            Today’s puppy sessions are progressing beautifully.
+          </p>
 
-    </div>
+        </div>
 
-  </div>
+      </div>
 
-  <div class="avatar">
-    LG
-  </div>
+      <div class="avatar">
+        LG
+      </div>
 
-</header>
+    </header>
 
     <a href="session-detail.html" class="session hero-card lift-card">
 
