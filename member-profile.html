@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
 
-  <title>Bella | Barkly Club</title>
+  <title>Bella | Barkly Schools</title>
 
   <link rel="stylesheet" href="design-system.css" />
 
@@ -27,52 +27,72 @@
 
     .hero {
       position: relative;
+
       border-radius: var(--radius-xl);
+
       overflow: hidden;
+
       margin-bottom: var(--space-xl);
+
       box-shadow: var(--shadow-hero);
     }
 
     .hero-image {
       width: 100%;
       height: 380px;
+
       object-fit: cover;
+
       display: block;
     }
 
     .hero-overlay {
       position: absolute;
       inset: 0;
+
       background:
         linear-gradient(
           180deg,
           rgba(15,31,46,0.02) 0%,
           rgba(15,31,46,0.70) 100%
         );
+
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+
       padding: 24px;
     }
 
     .hero h1 {
       color: white;
+
       font-size: 44px;
       letter-spacing: var(--tracking-display);
+
       margin-bottom: 8px;
     }
 
     .hero p {
-      color: rgba(255,255,255,0.78);
+      color:
+        rgba(255,255,255,0.78);
+
       font-size: var(--text-md);
+
       line-height: 1.5;
+
       margin-bottom: var(--space-sm);
     }
 
     .hero-pill {
       align-self: flex-start;
-      background: rgba(255,255,255,0.14);
-      color: rgba(255,255,255,0.92);
+
+      background:
+        rgba(255,255,255,0.14);
+
+      color:
+        rgba(255,255,255,0.92);
+
       backdrop-filter: blur(12px);
     }
 
@@ -84,6 +104,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       margin-bottom: var(--space-sm);
     }
 
@@ -106,31 +127,42 @@
     .progress-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
+
       gap: var(--space-sm);
+
       margin-top: var(--space-md);
     }
 
     .progress-item {
       padding: 16px;
+
       border-radius: var(--radius-md);
-      background: rgba(15,31,46,0.04);
+
+      background:
+        rgba(15,31,46,0.04);
     }
 
     .progress-item strong {
       display: block;
+
       font-size: 30px;
+
       margin-bottom: 6px;
     }
 
     .progress-item span {
       font-size: var(--text-sm);
+
       color: var(--text-secondary);
+
       line-height: 1.4;
     }
 
     .note {
       display: flex;
+
       gap: 14px;
+
       margin-bottom: var(--space-lg);
     }
 
@@ -141,10 +173,15 @@
     .note-icon,
     .milestone-icon {
       border-radius: var(--radius-md);
-      background: rgba(138,166,143,0.12);
+
+      background:
+        rgba(138,166,143,0.12);
+
       color: var(--sage);
+
       display: grid;
       place-items: center;
+
       flex-shrink: 0;
     }
 
@@ -156,25 +193,30 @@
     .note-icon svg {
       width: 20px;
       height: 20px;
+
       stroke-width: 2.2;
     }
 
     .note h3,
     .milestone h3 {
       font-size: 16px;
+
       margin-bottom: 4px;
     }
 
     .note p,
     .milestone p {
       font-size: var(--text-sm);
+
       color: var(--text-secondary);
+
       line-height: 1.5;
     }
 
     .milestone-list {
       display: flex;
       flex-direction: column;
+
       gap: var(--space-sm);
     }
 
@@ -182,19 +224,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px;
-      transition:
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast);
-    }
 
-    .milestone:active {
-      transform: scale(0.985);
+      padding: 16px;
     }
 
     .milestone-left {
       display: flex;
       align-items: center;
+
       gap: 14px;
     }
 
@@ -206,51 +243,69 @@
     .milestone-icon svg {
       width: 21px;
       height: 21px;
+
       stroke-width: 2.2;
     }
 
     .status-pill {
       padding: 8px 12px;
+
       border-radius: var(--radius-pill);
-      background: rgba(138,166,143,0.14);
+
+      background:
+        rgba(138,166,143,0.14);
+
       color: var(--sage);
+
       font-size: var(--text-xs);
       font-weight: var(--font-heavy);
+
       white-space: nowrap;
     }
 
     .owner-top {
       display: flex;
       align-items: center;
+
       gap: 14px;
+
       margin-bottom: var(--space-md);
     }
 
     .owner-avatar {
       width: 56px;
       height: 56px;
+
       border-radius: var(--radius-pill);
+
       background: var(--navy);
+
       color: white;
+
       display: grid;
       place-items: center;
+
       font-size: var(--text-sm);
       font-weight: var(--font-black);
     }
 
     .owner-top h3 {
       font-size: 18px;
+
       margin-bottom: 4px;
     }
 
     .owner-top p {
       font-size: var(--text-sm);
+
       color: var(--text-secondary);
     }
 
     .owner-notes {
       font-size: var(--text-md);
+
       line-height: 1.6;
+
       color: var(--text-secondary);
     }
   </style>
@@ -258,9 +313,10 @@
 
 <body>
 
-  <main class="profile-page">
+  <main class="profile-page fade-in">
 
     <section class="hero">
+
       <img
         src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1200&auto=format&fit=crop"
         alt="Bella"
@@ -268,7 +324,10 @@
       />
 
       <div class="hero-overlay">
-        <h1>Bella</h1>
+
+        <h1>
+          Bella
+        </h1>
 
         <p>
           Golden Retriever · 8 months old
@@ -277,158 +336,235 @@
         <span class="pill hero-pill">
           Puppy confidence class
         </span>
+
       </div>
+
     </section>
 
     <section class="section">
+
       <div class="section-head">
-        <h2>Progress overview</h2>
+        <h2>
+          Progress overview
+        </h2>
       </div>
 
-      <div class="progress-card glass-card">
+      <div class="progress-card glass-card lift-card">
+
         <p class="text-secondary">
           Bella has become noticeably calmer during socialisation activities and is responding well to structured recall work.
         </p>
 
         <div class="progress-grid">
+
           <div class="progress-item">
             <strong>12</strong>
-            <span>Session streak</span>
+            <span>
+              Session streak
+            </span>
           </div>
 
           <div class="progress-item">
             <strong>92%</strong>
-            <span>Confidence improvement</span>
+            <span>
+              Confidence improvement
+            </span>
           </div>
 
           <div class="progress-item">
             <strong>High</strong>
-            <span>Reward motivation</span>
+            <span>
+              Reward motivation
+            </span>
           </div>
 
           <div class="progress-item">
             <strong>Stable</strong>
-            <span>Socialisation comfort</span>
+            <span>
+              Socialisation comfort
+            </span>
           </div>
+
         </div>
+
       </div>
+
     </section>
 
     <section class="section">
+
       <div class="section-head">
-        <h2>Trainer observations</h2>
+        <h2>
+          Trainer observations
+        </h2>
       </div>
 
-      <div class="notes-card glass-card">
+      <div class="notes-card glass-card lift-card">
+
         <div class="note">
+
           <div class="note-icon">
             <i data-lucide="sparkles"></i>
           </div>
 
           <div>
-            <h3>Calm settling improving</h3>
+            <h3>
+              Calm settling improving
+            </h3>
+
             <p>
               Bella settled much faster during today’s group exercises and showed less overstimulation around unfamiliar puppies.
             </p>
           </div>
+
         </div>
 
         <div class="note">
+
           <div class="note-icon">
             <i data-lucide="heart"></i>
           </div>
 
           <div>
-            <h3>Strong reward engagement</h3>
+            <h3>
+              Strong reward engagement
+            </h3>
+
             <p>
               Responding especially well to shorter positive reinforcement sessions and calm praise.
             </p>
           </div>
+
         </div>
 
         <div class="note">
+
           <div class="note-icon">
             <i data-lucide="dog"></i>
           </div>
 
           <div>
-            <h3>Social confidence growing</h3>
+            <h3>
+              Social confidence growing
+            </h3>
+
             <p>
               Initiated healthy play with unfamiliar puppies and recovered quickly after excitement spikes.
             </p>
           </div>
+
         </div>
+
       </div>
+
     </section>
 
     <section class="section">
+
       <div class="section-head">
-        <h2>Milestones</h2>
+        <h2>
+          Milestones
+        </h2>
       </div>
 
       <div class="milestone-list">
-        <div class="milestone glass-card">
+
+        <div class="milestone glass-card lift-card">
+
           <div class="milestone-left">
+
             <div class="milestone-icon">
               <i data-lucide="badge-check"></i>
             </div>
 
             <div>
-              <h3>Recall foundations</h3>
-              <p>Strong response consistency achieved.</p>
+              <h3>
+                Recall foundations
+              </h3>
+
+              <p>
+                Strong response consistency achieved.
+              </p>
             </div>
+
           </div>
 
           <span class="status-pill">
             Completed
           </span>
+
         </div>
 
-        <div class="milestone glass-card">
+        <div class="milestone glass-card lift-card">
+
           <div class="milestone-left">
+
             <div class="milestone-icon">
               <i data-lucide="shield-check"></i>
             </div>
 
             <div>
-              <h3>Calm greetings</h3>
-              <p>Continuing confidence reinforcement.</p>
+              <h3>
+                Calm greetings
+              </h3>
+
+              <p>
+                Continuing confidence reinforcement.
+              </p>
             </div>
+
           </div>
 
           <span class="status-pill">
             In progress
           </span>
+
         </div>
+
       </div>
+
     </section>
 
     <section class="section">
+
       <div class="section-head">
-        <h2>Owner notes</h2>
+        <h2>
+          Owner notes
+        </h2>
       </div>
 
-      <div class="owner-card glass-card">
+      <div class="owner-card glass-card lift-card">
+
         <div class="owner-top">
+
           <div class="owner-avatar">
             SM
           </div>
 
           <div>
-            <h3>Sarah Mitchell</h3>
-            <p>Bella’s owner</p>
+            <h3>
+              Sarah Mitchell
+            </h3>
+
+            <p>
+              Bella’s owner
+            </p>
           </div>
+
         </div>
 
         <p class="owner-notes">
           “Bella has been much calmer at cafés and around visitors at home. We’ve especially noticed improvements after practicing the settling exercises between sessions.”
         </p>
+
       </div>
+
     </section>
 
   </main>
 
   <nav class="bottom-nav">
+
     <a href="trainer-dashboard.html" class="bottom-nav-item">
       <div class="bottom-nav-icon">
         <i data-lucide="home"></i>
@@ -450,12 +586,13 @@
       Dogs
     </a>
 
-    <a href="school-dashboard.html" class="bottom-nav-item">
+    <a href="club-dashboard.html" class="bottom-nav-item">
       <div class="bottom-nav-icon">
-        <i data-lucide="users"></i>
+        <i data-lucide="building-2"></i>
       </div>
-      Club
+      School
     </a>
+
   </nav>
 
   <script src="https://unpkg.com/lucide@latest"></script>
