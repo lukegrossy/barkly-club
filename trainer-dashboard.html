@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
 
-  <title>Trainer Dashboard | Barkly Club</title>
+  <title>Trainer Dashboard | Barkly Schools</title>
 
   <link rel="stylesheet" href="design-system.css" />
 
@@ -29,16 +29,13 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-
       margin-bottom: var(--space-xl);
     }
 
     .eyebrow {
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
-
       color: var(--sage);
-
       margin-bottom: var(--space-xs);
     }
 
@@ -46,45 +43,33 @@
       font-size: var(--display-md);
       line-height: 1.02;
       letter-spacing: var(--tracking-display);
-
       margin-bottom: var(--space-sm);
     }
 
     .topbar p {
       font-size: var(--text-md);
       color: var(--text-secondary);
-
       line-height: 1.5;
     }
 
     .avatar {
       width: 48px;
       height: 48px;
-
       border-radius: var(--radius-pill);
-
       background: var(--navy);
-
       color: white;
-
       display: grid;
       place-items: center;
-
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
-
       flex-shrink: 0;
     }
 
     .session {
       display: block;
-
       text-decoration: none;
-
       color: inherit;
-
       padding: 24px;
-
       margin-bottom: var(--space-xl);
     }
 
@@ -92,73 +77,48 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       margin-bottom: var(--space-md);
     }
 
     .session-pill {
-      background:
-        rgba(255,255,255,0.14);
-
-      color:
-        rgba(255,255,255,0.92);
-
+      background: rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
     }
 
     .session-status {
-      color:
-        rgba(255,255,255,0.72);
-
+      color: rgba(255,255,255,0.72);
       font-size: var(--text-sm);
-
       font-weight: var(--font-bold);
     }
 
     .session h2 {
       color: white;
-
       font-size: var(--display-md);
-
       margin-bottom: var(--space-sm);
     }
 
     .session p {
-      color:
-        rgba(255,255,255,0.76);
-
+      color: rgba(255,255,255,0.76);
       font-size: var(--text-md);
-
       line-height: 1.6;
     }
 
     .session-meta {
       display: flex;
       flex-wrap: wrap;
-
       gap: 10px;
-
       margin-top: var(--space-md);
     }
 
     .meta-pill {
       display: inline-flex;
       align-items: center;
-
       gap: 8px;
-
-      padding:
-        10px
-        14px;
-
+      padding: 10px 14px;
       border-radius: var(--radius-pill);
-
-      background:
-        rgba(255,255,255,0.08);
-
-      color:
-        rgba(255,255,255,0.76);
-
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.76);
       font-size: var(--text-sm);
       font-weight: var(--font-bold);
     }
@@ -166,7 +126,6 @@
     .meta-pill svg {
       width: 16px;
       height: 16px;
-
       stroke-width: 2.2;
     }
 
@@ -174,7 +133,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       margin-bottom: var(--space-sm);
     }
 
@@ -185,9 +143,7 @@
 
     .section-head a {
       text-decoration: none;
-
       color: var(--sage);
-
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
     }
@@ -196,128 +152,85 @@
       margin-bottom: var(--space-xl);
     }
 
-    .moments-list {
+    .moments-list,
+    .sessions-list {
       display: flex;
       flex-direction: column;
-
       gap: var(--space-sm);
     }
 
     .moment {
       display: flex;
       align-items: center;
-
       gap: 14px;
-
       padding: 16px;
-
       text-decoration: none;
-
       color: inherit;
+    }
+
+    .moment-icon,
+    .session-icon {
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
     }
 
     .moment-icon {
       width: 46px;
       height: 46px;
+    }
 
-      border-radius: var(--radius-md);
-
-      background:
-        rgba(138,166,143,0.12);
-
-      color: var(--sage);
-
-      display: grid;
-      place-items: center;
-
-      flex-shrink: 0;
+    .session-icon {
+      width: 48px;
+      height: 48px;
     }
 
     .moment-icon svg {
       width: 21px;
       height: 21px;
-
       stroke-width: 2.2;
     }
 
-    .moment h4 {
-      font-size: 16px;
+    .session-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
 
+    .moment h4,
+    .session-row h4 {
+      font-size: 16px;
       margin-bottom: 4px;
     }
 
-    .moment p {
+    .moment p,
+    .session-row p {
       font-size: var(--text-sm);
-
       color: var(--text-secondary);
-
       line-height: 1.4;
-    }
-
-    .sessions-list {
-      display: flex;
-      flex-direction: column;
-
-      gap: var(--space-sm);
     }
 
     .session-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       padding: 16px;
-
       text-decoration: none;
-
       color: inherit;
     }
 
     .session-left {
       display: flex;
       align-items: center;
-
       gap: 14px;
-    }
-
-    .session-icon {
-      width: 48px;
-      height: 48px;
-
-      border-radius: var(--radius-md);
-
-      background:
-        rgba(138,166,143,0.12);
-
-      color: var(--sage);
-
-      display: grid;
-      place-items: center;
-    }
-
-    .session-icon svg {
-      width: 22px;
-      height: 22px;
-
-      stroke-width: 2.2;
-    }
-
-    .session-row h4 {
-      font-size: 16px;
-
-      margin-bottom: 4px;
-    }
-
-    .session-row p {
-      font-size: var(--text-sm);
-
-      color: var(--text-secondary);
     }
 
     .session-time {
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
-
       color: var(--sage);
     }
   </style>
@@ -330,9 +243,8 @@
     <header class="topbar">
 
       <div>
-
         <p class="eyebrow">
-          Barkly Club
+          Barkly Schools
         </p>
 
         <h1>
@@ -343,7 +255,6 @@
         <p>
           Today’s puppy sessions are progressing beautifully.
         </p>
-
       </div>
 
       <div class="avatar">
@@ -352,10 +263,7 @@
 
     </header>
 
-    <a
-      href="session-detail.html"
-      class="session hero-card lift-card"
-    >
+    <a href="session-detail.html" class="session hero-card lift-card">
 
       <div class="session-top">
 
@@ -401,80 +309,46 @@
     <section class="moments-section">
 
       <div class="section-head">
-
-        <h3>
-          Today’s moments
-        </h3>
+        <h3>Today’s moments</h3>
 
         <a href="dogs.html">
           View all
         </a>
-
       </div>
 
       <div class="moments-list">
 
-        <a
-          href="member-profile.html"
-          class="moment glass-card lift-card"
-        >
-
+        <a href="member-profile.html" class="moment glass-card lift-card">
           <div class="moment-icon">
             <i data-lucide="sparkles"></i>
           </div>
 
           <div>
-            <h4>
-              Bella greeted calmly today
-            </h4>
-
-            <p>
-              Big improvement during puppy arrivals.
-            </p>
+            <h4>Bella greeted calmly today</h4>
+            <p>Big improvement during puppy arrivals.</p>
           </div>
-
         </a>
 
-        <a
-          href="member-profile.html"
-          class="moment glass-card lift-card"
-        >
-
+        <a href="member-profile.html" class="moment glass-card lift-card">
           <div class="moment-icon">
             <i data-lucide="heart"></i>
           </div>
 
           <div>
-            <h4>
-              Charlie completed first recall
-            </h4>
-
-            <p>
-              Strong focus with gentle reward prompts.
-            </p>
+            <h4>Charlie completed first recall</h4>
+            <p>Strong focus with gentle reward prompts.</p>
           </div>
-
         </a>
 
-        <a
-          href="member-profile.html"
-          class="moment glass-card lift-card"
-        >
-
+        <a href="member-profile.html" class="moment glass-card lift-card">
           <div class="moment-icon">
             <i data-lucide="badge-check"></i>
           </div>
 
           <div>
-            <h4>
-              Luna settled faster in group work
-            </h4>
-
-            <p>
-              Confidence is building around other puppies.
-            </p>
+            <h4>Luna settled faster in group work</h4>
+            <p>Confidence is building around other puppies.</p>
           </div>
-
         </a>
 
       </div>
@@ -484,75 +358,47 @@
     <section>
 
       <div class="section-head">
-
-        <h3>
-          Upcoming sessions
-        </h3>
+        <h3>Upcoming sessions</h3>
 
         <a href="session-detail.html">
           View all
         </a>
-
       </div>
 
       <div class="sessions-list">
 
-        <a
-          href="session-detail.html"
-          class="session-row glass-card lift-card"
-        >
-
+        <a href="session-detail.html" class="session-row glass-card lift-card">
           <div class="session-left">
-
             <div class="session-icon">
               <i data-lucide="dog"></i>
             </div>
 
             <div>
-              <h4>
-                Puppy socialisation
-              </h4>
-
-              <p>
-                Indoor studio · Beginner group
-              </p>
+              <h4>Puppy socialisation</h4>
+              <p>Indoor studio · Beginner group</p>
             </div>
-
           </div>
 
           <div class="session-time">
             6:00 PM
           </div>
-
         </a>
 
-        <a
-          href="session-detail.html"
-          class="session-row glass-card lift-card"
-        >
-
+        <a href="session-detail.html" class="session-row glass-card lift-card">
           <div class="session-left">
-
             <div class="session-icon">
               <i data-lucide="heart"></i>
             </div>
 
             <div>
-              <h4>
-                Calm confidence foundations
-              </h4>
-
-              <p>
-                Small-group puppy session
-              </p>
+              <h4>Calm confidence foundations</h4>
+              <p>Small-group puppy session</p>
             </div>
-
           </div>
 
           <div class="session-time">
             Tomorrow
           </div>
-
         </a>
 
       </div>
@@ -584,11 +430,11 @@
       Dogs
     </a>
 
-    <a href="school-dashboard.html" class="bottom-nav-item">
+    <a href="club-dashboard.html" class="bottom-nav-item">
       <div class="bottom-nav-icon">
-        <i data-lucide="users"></i>
+        <i data-lucide="building-2"></i>
       </div>
-      Club
+      School
     </a>
 
   </nav>
