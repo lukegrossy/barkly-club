@@ -392,3 +392,53 @@ body {
   height: 20px;
   stroke-width: 2.2;
 }
+/* ========================================
+   Barkly Motion System
+======================================== */
+
+.fade-in {
+  animation: barklyFadeIn 0.42s ease both;
+}
+
+.lift-card {
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.lift-card:active {
+  transform: scale(0.985);
+}
+
+.soft-pop {
+  animation: barklySoftPop 0.28s ease both;
+}
+
+.success-glow {
+  box-shadow:
+    0 0 0 4px rgba(138,166,143,0.14),
+    var(--shadow-card);
+}
+
+@keyframes barklyFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes barklySoftPop {
+  0% {
+    transform: scale(0.96);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
