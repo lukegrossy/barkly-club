@@ -53,8 +53,8 @@
       background:
         linear-gradient(
           180deg,
-          rgba(15,31,46,0.04) 0%,
-          rgba(15,31,46,0.72) 100%
+          rgba(15,31,46,0.02) 0%,
+          rgba(15,31,46,0.70) 100%
         );
 
       display: flex;
@@ -64,27 +64,13 @@
       padding: 24px;
     }
 
-    .hero-pill {
-      align-self: flex-start;
-
-      margin-bottom: var(--space-sm);
-
-      background:
-        rgba(255,255,255,0.16);
-
-      color:
-        rgba(255,255,255,0.94);
-
-      backdrop-filter: blur(12px);
-    }
-
     .hero h1 {
       color: white;
 
       font-size: 44px;
       letter-spacing: var(--tracking-display);
 
-      margin-bottom: var(--space-xs);
+      margin-bottom: 8px;
     }
 
     .hero p {
@@ -94,6 +80,20 @@
       font-size: var(--text-md);
 
       line-height: 1.5;
+
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero-pill {
+      align-self: flex-start;
+
+      background:
+        rgba(255,255,255,0.14);
+
+      color:
+        rgba(255,255,255,0.92);
+
+      backdrop-filter: blur(12px);
     }
 
     .section {
@@ -226,8 +226,7 @@
 
       transition:
         transform var(--transition-fast),
-        box-shadow var(--transition-fast),
-        background var(--transition-fast);
+        box-shadow var(--transition-fast);
     }
 
     .milestone:active {
@@ -350,24 +349,24 @@
     <section class="hero">
 
       <img
-        src="https://images.unsplash.com/photo-1511044568932-338cba0ad803?q=80&w=1200&auto=format&fit=crop"
+        src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1200&auto=format&fit=crop"
         alt="Bella"
         class="hero-image"
       />
 
       <div class="hero-overlay">
 
-        <span class="pill hero-pill">
-          Puppy development
-        </span>
-
         <h1>
           Bella
         </h1>
 
         <p>
-          Golden Retriever · 8 months old · Puppy confidence class
+          Golden Retriever · 8 months old
         </p>
+
+        <span class="pill hero-pill">
+          Puppy confidence class
+        </span>
 
       </div>
 
@@ -418,176 +417,6 @@
           </div>
 
         </div>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-head">
-        <h2>
-          Trainer observations
-        </h2>
-      </div>
-
-      <div class="notes-card glass-card">
-
-        <div class="note">
-
-          <div class="note-icon">
-            <i data-lucide="sparkles"></i>
-          </div>
-
-          <div>
-            <h3>
-              Calm settling improving
-            </h3>
-
-            <p>
-              Bella settled much faster during today’s group exercises and showed less overstimulation around unfamiliar puppies.
-            </p>
-          </div>
-
-        </div>
-
-        <div class="note">
-
-          <div class="note-icon">
-            <i data-lucide="heart"></i>
-          </div>
-
-          <div>
-            <h3>
-              Strong reward engagement
-            </h3>
-
-            <p>
-              Responding especially well to shorter positive reinforcement sessions and calm praise.
-            </p>
-          </div>
-
-        </div>
-
-        <div class="note">
-
-          <div class="note-icon">
-            <i data-lucide="dog"></i>
-          </div>
-
-          <div>
-            <h3>
-              Social confidence growing
-            </h3>
-
-            <p>
-              Initiated healthy play with unfamiliar puppies and recovered quickly after excitement spikes.
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-head">
-        <h2>
-          Milestones
-        </h2>
-      </div>
-
-      <div class="milestone-list">
-
-        <div class="milestone glass-card">
-
-          <div class="milestone-left">
-
-            <div class="milestone-icon">
-              <i data-lucide="badge-check"></i>
-            </div>
-
-            <div>
-              <h3>
-                Recall foundations
-              </h3>
-
-              <p>
-                Strong response consistency achieved.
-              </p>
-            </div>
-
-          </div>
-
-          <span class="status-pill">
-            Completed
-          </span>
-
-        </div>
-
-        <div class="milestone glass-card">
-
-          <div class="milestone-left">
-
-            <div class="milestone-icon">
-              <i data-lucide="shield-check"></i>
-            </div>
-
-            <div>
-              <h3>
-                Calm greetings
-              </h3>
-
-              <p>
-                Continuing confidence reinforcement.
-              </p>
-            </div>
-
-          </div>
-
-          <span class="status-pill">
-            In progress
-          </span>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-head">
-        <h2>
-          Owner notes
-        </h2>
-      </div>
-
-      <div class="owner-card glass-card">
-
-        <div class="owner-top">
-
-          <div class="owner-avatar">
-            SM
-          </div>
-
-          <div>
-            <h3>
-              Sarah Mitchell
-            </h3>
-
-            <p>
-              Bella’s owner
-            </p>
-          </div>
-
-        </div>
-
-        <p class="owner-notes">
-          “Bella has been much calmer at cafés and around visitors at home. We’ve especially noticed improvements after practicing the settling exercises between sessions.”
-        </p>
 
       </div>
 
