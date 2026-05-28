@@ -2,735 +2,569 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
-
-  <title>Parent Home | Barkly Schools</title>
-
-  <link rel="stylesheet" href="design-system.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barkly Schools | Parent Portal</title>
 
   <style>
+    :root {
+      --navy: #0f1f2e;
+      --sage: #8aa68f;
+      --cream: #f2ede3;
+      --soft: #f8f6f1;
+      --card: #ffffff;
+      --muted: #6f7c84;
+      --line: rgba(15,31,46,.08);
+      --gold: #d8b85a;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      padding:
-        max(26px, env(safe-area-inset-top))
-        20px
-        110px;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+      background: var(--soft);
+      color: var(--navy);
     }
 
-    body.sheet-open {
-      overflow: hidden;
-    }
-
-    .parent-page {
-      max-width: var(--content-width);
+    .app {
+      max-width: 430px;
       margin: 0 auto;
+      min-height: 100vh;
+      padding: 22px 18px 92px;
     }
 
     .topbar {
-      margin-bottom: var(--space-xl);
-    }
-
-    .brand-row {
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
       margin-bottom: 18px;
     }
 
-    .header-icon {
-      width: 42px;
-      height: 42px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      font-size: 18px;
+    }
+
+    .brand img {
+      width: 30px;
+      height: 30px;
       object-fit: contain;
-      opacity: 0.96;
-      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+    }
+
+    .dog-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--cream);
+      border-radius: 999px;
+      padding: 8px 13px;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .hero {
+      background: linear-gradient(145deg, #102436, #193348);
+      color: white;
+      border-radius: 28px;
+      padding: 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 18px 42px rgba(15,31,46,.18);
     }
 
     .eyebrow {
-      font-size: var(--text-sm);
-      font-weight: var(--font-heavy);
-      color: var(--sage);
-      margin: 0;
+      font-size: 13px;
+      opacity: .75;
+      margin-bottom: 8px;
     }
 
-    .puppy-switcher {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      border: none;
-      background: rgba(138,166,143,0.12);
-      color: var(--sage);
-      border-radius: var(--radius-pill);
-      padding: 10px 16px;
-      font-size: var(--text-sm);
-      font-weight: var(--font-heavy);
-      margin-bottom: var(--space-sm);
+    .hero h1 {
+      margin: 0 0 16px;
+      font-size: 28px;
+      letter-spacing: -.04em;
+      line-height: 1.05;
     }
 
-    .puppy-switcher svg {
-      width: 16px;
-      height: 16px;
-      stroke-width: 2.4;
+    .hero-card {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 22px;
+      padding: 16px;
     }
 
-    .topbar h1 {
-      font-size: var(--display-md);
-      line-height: 1.02;
-      letter-spacing: var(--tracking-display);
-      margin-bottom: var(--space-sm);
-    }
-
-    .topbar p {
-      font-size: var(--text-md);
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    .hero {
-      overflow: hidden;
-      margin-bottom: var(--space-xl);
-    }
-
-    .hero-image {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
+    .hero-card strong {
       display: block;
-    }
-
-    .hero-content {
-      padding: 24px;
-    }
-
-    .hero-pill {
-      background: rgba(138,166,143,0.14);
-      color: var(--sage);
-      margin-bottom: var(--space-sm);
-    }
-
-    .hero h2 {
-      font-size: var(--display-sm);
-      letter-spacing: var(--tracking-display);
-      margin-bottom: var(--space-sm);
-    }
-
-    .hero p {
-      font-size: var(--text-md);
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .trainer-note {
-      display: flex;
-      gap: 14px;
-      padding: 18px;
-      margin-bottom: var(--space-xl);
-    }
-
-    .trainer-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-pill);
-      background: var(--navy);
-      color: white;
-      display: grid;
-      place-items: center;
-      font-size: var(--text-sm);
-      font-weight: var(--font-black);
-      flex-shrink: 0;
-    }
-
-    .trainer-note h3 {
       font-size: 17px;
       margin-bottom: 4px;
     }
 
-    .trainer-note p {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
-      line-height: 1.5;
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 700;
+      background: var(--sage);
+      color: white;
+      margin-top: 14px;
+      width: 100%;
     }
 
-    .section {
-      margin-bottom: var(--space-xl);
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin: 24px 0 12px;
+      letter-spacing: -.02em;
     }
 
-    .section-head {
-      margin-bottom: var(--space-sm);
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
     }
 
-    .section-head h2 {
-      font-size: var(--text-xl);
-      letter-spacing: var(--tracking-tight);
+    .card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 28px rgba(15,31,46,.04);
     }
 
-    .journey-list {
+    .metric {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    .score {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -.04em;
+    }
+
+    .note {
+      line-height: 1.45;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .badge-feature {
       display: flex;
-      flex-direction: column;
-      gap: var(--space-sm);
-    }
-
-    .journey-item {
-      display: flex;
-      align-items: center;
       gap: 14px;
-      padding: 16px;
+      align-items: center;
     }
 
-    .journey-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: var(--radius-md);
-      background: rgba(138,166,143,0.12);
-      color: var(--sage);
+    .badge-medal {
+      width: 58px;
+      height: 58px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #f6e7a8, #d5ae46);
       display: grid;
       place-items: center;
-      flex-shrink: 0;
+      font-size: 28px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
     }
 
-    .journey-icon svg {
-      width: 21px;
-      height: 21px;
-      stroke-width: 2.2;
+    .session {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
     }
 
-    .journey-item h3 {
-      font-size: 16px;
-      margin-bottom: 4px;
+    .session h3,
+    .card h3 {
+      margin: 0 0 5px;
+      font-size: 17px;
+      letter-spacing: -.02em;
     }
 
-    .journey-item p {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
+    .session p,
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
       line-height: 1.4;
     }
 
-    .next-class {
-      padding: 22px;
+    .pill {
+      background: var(--cream);
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
     }
 
-    .next-class h3 {
-      font-size: 20px;
-      margin-bottom: var(--space-xs);
+    .dog-profile {
+      text-align: center;
+      padding: 26px 18px;
     }
 
-    .next-class p {
-      font-size: var(--text-md);
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin-bottom: var(--space-md);
-    }
-
-    .class-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .class-pill {
-      background: rgba(15,31,46,0.05);
-      color: var(--text-secondary);
-    }
-
-    .sheet-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,31,46,0.24);
-      backdrop-filter: blur(10px);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--transition-base);
-      z-index: 40;
-    }
-
-    .puppy-sheet {
-      position: fixed;
-      left: 14px;
-      right: 14px;
-      bottom: 14px;
-      padding: 18px;
-      border-radius: var(--radius-xl);
-      background: rgba(255,252,247,0.94);
-      border: 1.5px solid var(--glass-border);
-      box-shadow: var(--shadow-hero);
-      backdrop-filter: var(--blur-lg);
-      transform: translateY(110%);
-      transition: transform var(--transition-base);
-      z-index: 50;
-    }
-
-    body.sheet-open .sheet-overlay {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    body.sheet-open .puppy-sheet {
-      transform: translateY(0);
-    }
-
-    .sheet-handle {
-      width: 42px;
-      height: 5px;
-      border-radius: var(--radius-pill);
-      background: rgba(15,31,46,0.14);
-      margin: 0 auto 16px;
-    }
-
-    .sheet-title {
-      font-size: var(--text-xl);
-      letter-spacing: var(--tracking-tight);
-      margin-bottom: var(--space-sm);
-    }
-
-    .puppy-option {
-      width: 100%;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 16px;
-      border-radius: var(--radius-lg);
-      background: rgba(255,255,255,0.7);
-      margin-bottom: 10px;
-      text-align: left;
-      color: inherit;
-    }
-
-    .puppy-option-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .puppy-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-md);
-      background: rgba(138,166,143,0.12);
-      color: var(--sage);
+    .dog-photo {
+      width: 112px;
+      height: 112px;
+      border-radius: 36px;
+      background: linear-gradient(145deg, var(--cream), #fff);
+      margin: 0 auto 14px;
       display: grid;
       place-items: center;
-      flex-shrink: 0;
+      font-size: 54px;
+      border: 1px solid var(--line);
     }
 
-    .puppy-avatar svg {
-      width: 22px;
-      height: 22px;
-      stroke-width: 2.2;
+    .journey {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-top: 10px;
     }
 
-    .puppy-option h3 {
-      font-size: 16px;
-      margin-bottom: 4px;
+    .journey:before {
+      content: "";
+      position: absolute;
+      top: 13px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: var(--line);
     }
 
-    .puppy-option p {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
+    .step {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      width: 20%;
     }
 
-    .selected-check {
-      color: var(--sage);
-      opacity: 0;
+    .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: white;
+      border: 2px solid var(--line);
+      margin: 0 auto 7px;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 800;
     }
 
-    .puppy-option.active .selected-check {
-      opacity: 1;
+    .step.done .dot {
+      background: var(--sage);
+      color: white;
+      border-color: var(--sage);
+    }
+
+    .step.current .dot {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+    }
+
+    .badges {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .badge {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 14px 8px;
+      text-align: center;
+      min-height: 106px;
+    }
+
+    .badge-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 18px;
+      margin: 0 auto 9px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      background: linear-gradient(145deg, #f8e9a9, #d5af47);
+    }
+
+    .badge.locked {
+      opacity: .45;
+    }
+
+    .badge.locked .badge-icon {
+      background: var(--cream);
+    }
+
+    .badge span {
+      font-size: 12px;
+      font-weight: 800;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .trainer {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 20px;
+      background: var(--cream);
+      display: grid;
+      place-items: center;
+      font-size: 25px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      max-width: 390px;
+      width: calc(100% - 28px);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 9px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      box-shadow: 0 18px 40px rgba(15,31,46,.14);
+    }
+
+    .nav-item {
+      border: 0;
+      background: transparent;
+      border-radius: 20px;
+      padding: 9px 4px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .nav-item span {
+      display: block;
+      font-size: 19px;
+      margin-bottom: 3px;
+    }
+
+    .nav-item.active {
+      background: var(--navy);
+      color: white;
     }
   </style>
 </head>
 
 <body>
-
-  <main class="parent-page fade-in">
-
+  <main class="app">
     <header class="topbar">
-
-      <div class="brand-row">
-
-        <img
-          src="assets/barkly-icon.png"
-          alt="Barkly"
-          class="header-icon"
-        />
-
-        <p class="eyebrow">
-          Barkly Schools
-        </p>
-
+      <div class="brand">
+        <img src="assets/barkly-icon.png" alt="Barkly" />
+        <span>barkly schools</span>
       </div>
-
-      <button class="puppy-switcher btn" id="openPuppySheet">
-        <span id="switcherName">Bella</span>
-        <i data-lucide="chevron-down"></i>
-      </button>
-
-      <h1 id="headline">
-        Bella is progressing<br />
-        beautifully
-      </h1>
-
-      <p id="schoolLine">
-        Connected through Little Explorers Puppy School.
-      </p>
-
+      <button class="icon-btn">🔔</button>
     </header>
 
-    <section class="hero glass-card lift-card">
+    <div class="dog-switcher">Luna ▾</div>
 
-      <img
-        src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1200&auto=format&fit=crop"
-        alt="Bella"
-        class="hero-image"
-        id="heroImage"
-      />
+    <!-- HOME -->
+    <section class="page active" id="home">
+      <div class="hero">
+        <div class="eyebrow">Good afternoon Luke</div>
+        <h1>Luna is building confidence beautifully.</h1>
 
-      <div class="hero-content">
-
-        <span class="pill hero-pill">
-          Today’s moment
-        </span>
-
-        <h2 id="momentTitle">
-          Bella greeted calmly today
-        </h2>
-
-        <p id="momentCopy">
-          She settled more quickly during puppy arrivals and showed growing confidence around unfamiliar puppies.
-        </p>
-
+        <div class="hero-card">
+          <strong>Next session</strong>
+          Saturday 9:00am · Puppy Foundations
+          <button class="btn">View session</button>
+        </div>
       </div>
 
+      <div class="section-title">Progress snapshot</div>
+      <div class="grid">
+        <div class="card"><div class="metric">Recall</div><div class="score">78%</div></div>
+        <div class="card"><div class="metric">Walking</div><div class="score">85%</div></div>
+        <div class="card"><div class="metric">Focus</div><div class="score">65%</div></div>
+        <div class="card"><div class="metric">Social</div><div class="score">91%</div></div>
+      </div>
+
+      <div class="section-title">Latest trainer note</div>
+      <div class="card">
+        <p class="note">Luna showed excellent confidence around larger dogs today. Keep practising calm sits before greeting.</p>
+      </div>
+
+      <div class="section-title">Recent achievement</div>
+      <div class="card badge-feature">
+        <div class="badge-medal">🏅</div>
+        <div>
+          <h3>Recall Rookie</h3>
+          <p>Earned this week</p>
+        </div>
+      </div>
     </section>
 
-    <section class="trainer-note glass-card lift-card">
+    <!-- SESSIONS -->
+    <section class="page" id="sessions">
+      <div class="section-title">Upcoming</div>
 
-      <div class="trainer-avatar">
-        LG
+      <div class="card session">
+        <div>
+          <h3>Puppy Foundations</h3>
+          <p>Saturday · 9:00am · Trainer Sarah</p>
+        </div>
+        <div class="pill">Next</div>
       </div>
 
-      <div>
-        <h3 id="noteTitle">
-          Note from Luke
-        </h3>
-
-        <p id="trainerNote">
-          “Bella is responding beautifully to calm praise. Try one short settling practice tonight before dinner.”
-        </p>
+      <div class="card session">
+        <div>
+          <h3>Social Confidence</h3>
+          <p>Tuesday · 5:30pm · Small group</p>
+        </div>
       </div>
 
+      <div class="section-title">Completed</div>
+
+      <div class="card session">
+        <div>
+          <h3>Week 4 Recap</h3>
+          <p>Lead walking, recall drills, calm greetings</p>
+        </div>
+        <div class="pill">Done</div>
+      </div>
+
+      <div class="card session">
+        <div>
+          <h3>Week 3 Recap</h3>
+          <p>Focus work and puppy socialisation</p>
+        </div>
+        <div class="pill">Done</div>
+      </div>
     </section>
 
-    <section class="section">
-
-      <div class="section-head">
-        <h2 id="journeyTitle">
-          Bella’s journey
-        </h2>
+    <!-- DOG -->
+    <section class="page" id="dog">
+      <div class="card dog-profile">
+        <div class="dog-photo">🐶</div>
+        <h3>Luna</h3>
+        <p>Groodle · 8 months old · Puppy Foundations Level 3</p>
       </div>
 
-      <div class="journey-list">
-
-        <div class="journey-item glass-card lift-card">
-          <div class="journey-icon">
-            <i data-lucide="sparkles"></i>
-          </div>
-
-          <div>
-            <h3 id="milestoneOne">
-              First calm greeting
-            </h3>
-            <p id="milestoneOneCopy">
-              Completed during today’s puppy arrivals.
-            </p>
-          </div>
+      <div class="section-title">Training journey</div>
+      <div class="card">
+        <div class="journey">
+          <div class="step done"><div class="dot">✓</div>Enrol</div>
+          <div class="step done"><div class="dot">✓</div>Start</div>
+          <div class="step current"><div class="dot">3</div>Level 3</div>
+          <div class="step"><div class="dot"></div>Advance</div>
+          <div class="step"><div class="dot"></div>Graduate</div>
         </div>
-
-        <div class="journey-item glass-card lift-card">
-          <div class="journey-icon">
-            <i data-lucide="badge-check"></i>
-          </div>
-
-          <div>
-            <h3 id="milestoneTwo">
-              Recall foundations
-            </h3>
-            <p id="milestoneTwoCopy">
-              Building consistency with gentle reward prompts.
-            </p>
-          </div>
-        </div>
-
-        <div class="journey-item glass-card lift-card">
-          <div class="journey-icon">
-            <i data-lucide="heart"></i>
-          </div>
-
-          <div>
-            <h3 id="milestoneThree">
-              Social confidence
-            </h3>
-            <p id="milestoneThreeCopy">
-              Growing comfort around new puppies and people.
-            </p>
-          </div>
-        </div>
-
       </div>
 
+      <div class="section-title">Badges</div>
+      <div class="badges">
+        <div class="badge"><div class="badge-icon">🏅</div><span>First Session</span></div>
+        <div class="badge"><div class="badge-icon">🎯</div><span>Recall Rookie</span></div>
+        <div class="badge"><div class="badge-icon">🐾</div><span>Lead Walker</span></div>
+        <div class="badge"><div class="badge-icon">🌟</div><span>Social Star</span></div>
+        <div class="badge locked"><div class="badge-icon">?</div><span>Graduation Day</span></div>
+        <div class="badge locked"><div class="badge-icon">?</div><span>Off Leash Ready</span></div>
+      </div>
     </section>
 
-    <section class="section">
-
-      <div class="section-head">
-        <h2>
-          Next class
-        </h2>
-      </div>
-
-      <div class="next-class glass-card lift-card">
-
-        <h3 id="nextClassTitle">
-          Puppy confidence class
-        </h3>
-
-        <p id="nextClassCopy">
-          Tomorrow · 5:30 PM · Little Explorers Puppy School
-        </p>
-
-        <div class="class-pills">
-
-          <span class="pill class-pill">
-            Bring treats
-          </span>
-
-          <span class="pill class-pill">
-            Lead
-          </span>
-
-          <span class="pill class-pill">
-            Calm energy
-          </span>
-
+    <!-- SCHOOL -->
+    <section class="page" id="school">
+      <div class="section-title">Your trainer</div>
+      <div class="card trainer">
+        <div class="avatar">👩‍🏫</div>
+        <div>
+          <h3>Sarah Thompson</h3>
+          <p>Lead Trainer · Barkly Schools</p>
         </div>
-
       </div>
 
-    </section>
+      <div class="section-title">School hub</div>
 
+      <div class="card session">
+        <div>
+          <h3>Messages</h3>
+          <p>Chat with your trainer</p>
+        </div>
+        <div class="pill">2 new</div>
+      </div>
+
+      <div class="card session">
+        <div>
+          <h3>Announcements</h3>
+          <p>Class updates and school notices</p>
+        </div>
+      </div>
+
+      <div class="card session">
+        <div>
+          <h3>Family access</h3>
+          <p>Invite another parent or carer</p>
+        </div>
+      </div>
+
+      <div class="card session">
+        <div>
+          <h3>Billing</h3>
+          <p>Membership, invoices and payments</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <nav class="bottom-nav">
-
-    <a href="parent-dashboard.html" class="bottom-nav-item active">
-      <div class="bottom-nav-icon">
-        <i data-lucide="home"></i>
-      </div>
-      Home
-    </a>
-
-    <a href="member-profile.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="sparkles"></i>
-      </div>
-      Journey
-    </a>
-
-    <a href="session-detail.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="calendar-check"></i>
-      </div>
-      Sessions
-    </a>
-
-    <a href="member-profile.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="dog"></i>
-      </div>
-      <span id="navPuppyName">Bella</span>
-    </a>
-
+    <button class="nav-item active" data-tab="home"><span>🏠</span>Home</button>
+    <button class="nav-item" data-tab="sessions"><span>📅</span>Sessions</button>
+    <button class="nav-item" data-tab="dog"><span>🐶</span>Dog</button>
+    <button class="nav-item" data-tab="school"><span>🎓</span>School</button>
   </nav>
 
-  <div class="sheet-overlay" id="sheetOverlay"></div>
-
-  <aside class="puppy-sheet" aria-label="Switch puppy">
-
-    <div class="sheet-handle"></div>
-
-    <h2 class="sheet-title">
-      Your puppies
-    </h2>
-
-    <button class="puppy-option active" data-puppy="bella">
-      <span class="puppy-option-left">
-        <span class="puppy-avatar">
-          <i data-lucide="dog"></i>
-        </span>
-
-        <span>
-          <h3>Bella</h3>
-          <p>Golden Retriever · Puppy confidence</p>
-        </span>
-      </span>
-
-      <span class="selected-check">
-        <i data-lucide="check"></i>
-      </span>
-    </button>
-
-    <button class="puppy-option" data-puppy="charlie">
-      <span class="puppy-option-left">
-        <span class="puppy-avatar">
-          <i data-lucide="paw-print"></i>
-        </span>
-
-        <span>
-          <h3>Charlie</h3>
-          <p>Cavoodle · Puppy foundations</p>
-        </span>
-      </span>
-
-      <span class="selected-check">
-        <i data-lucide="check"></i>
-      </span>
-    </button>
-
-    <button class="puppy-option" data-puppy="luna">
-      <span class="puppy-option-left">
-        <span class="puppy-avatar">
-          <i data-lucide="heart"></i>
-        </span>
-
-        <span>
-          <h3>Luna</h3>
-          <p>Labrador · Social confidence</p>
-        </span>
-      </span>
-
-      <span class="selected-check">
-        <i data-lucide="check"></i>
-      </span>
-    </button>
-
-  </aside>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
-
   <script>
-    const puppies = {
-      bella: {
-        name: "Bella",
-        school: "Connected through Little Explorers Puppy School.",
-        headline: "Bella is progressing<br />beautifully",
-        image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1200&auto=format&fit=crop",
-        momentTitle: "Bella greeted calmly today",
-        momentCopy: "She settled more quickly during puppy arrivals and showed growing confidence around unfamiliar puppies.",
-        trainerNote: "“Bella is responding beautifully to calm praise. Try one short settling practice tonight before dinner.”",
-        journeyTitle: "Bella’s journey",
-        milestoneOne: "First calm greeting",
-        milestoneOneCopy: "Completed during today’s puppy arrivals.",
-        milestoneTwo: "Recall foundations",
-        milestoneTwoCopy: "Building consistency with gentle reward prompts.",
-        milestoneThree: "Social confidence",
-        milestoneThreeCopy: "Growing comfort around new puppies and people.",
-        nextClassTitle: "Puppy confidence class",
-        nextClassCopy: "Tomorrow · 5:30 PM · Little Explorers Puppy School"
-      },
-      charlie: {
-        name: "Charlie",
-        school: "Connected through Little Explorers Puppy School.",
-        headline: "Charlie is finding<br />his confidence",
-        image: "https://images.unsplash.com/photo-1583511655826-05700442b31b?q=80&w=1200&auto=format&fit=crop",
-        momentTitle: "Charlie completed first recall",
-        momentCopy: "He stayed focused through gentle reward prompts and returned quickly during a short recall activity.",
-        trainerNote: "“Charlie is still a little unsure at arrivals, but his focus today was excellent. Keep recall practice short and happy.”",
-        journeyTitle: "Charlie’s journey",
-        milestoneOne: "First recall win",
-        milestoneOneCopy: "Strong response with positive encouragement.",
-        milestoneTwo: "Settling practice",
-        milestoneTwoCopy: "Building calm behaviour before group work.",
-        milestoneThree: "Confidence with noise",
-        milestoneThreeCopy: "Still developing comfort around busier moments.",
-        nextClassTitle: "Puppy foundations",
-        nextClassCopy: "Thursday · 4:45 PM · Little Explorers Puppy School"
-      },
-      luna: {
-        name: "Luna",
-        school: "Connected through Little Explorers Puppy School.",
-        headline: "Luna is growing<br />more settled",
-        image: "https://images.unsplash.com/photo-1552053831-71594a27632d?q=80&w=1200&auto=format&fit=crop",
-        momentTitle: "Luna settled faster in group work",
-        momentCopy: "She recovered quickly after excitement spikes and stayed close during the calm greeting exercise.",
-        trainerNote: "“Luna’s social confidence is building nicely. Tonight, practise one calm settle near a mild distraction.”",
-        journeyTitle: "Luna’s journey",
-        milestoneOne: "Group settling",
-        milestoneOneCopy: "Improving around other puppies.",
-        milestoneTwo: "Calm greetings",
-        milestoneTwoCopy: "Practising slower approach and recovery.",
-        milestoneThree: "Social confidence",
-        milestoneThreeCopy: "Growing comfort during small-group sessions.",
-        nextClassTitle: "Social confidence class",
-        nextClassCopy: "Saturday · 9:30 AM · Little Explorers Puppy School"
-      }
-    };
+    const navItems = document.querySelectorAll(".nav-item");
+    const pages = document.querySelectorAll(".page");
 
-    const openPuppySheet = document.getElementById("openPuppySheet");
-    const sheetOverlay = document.getElementById("sheetOverlay");
-    const puppyOptions = document.querySelectorAll(".puppy-option");
+    navItems.forEach(item => {
+      item.addEventListener("click", () => {
+        const tab = item.dataset.tab;
 
-    function openSheet() {
-      document.body.classList.add("sheet-open");
-    }
+        navItems.forEach(i => i.classList.remove("active"));
+        pages.forEach(p => p.classList.remove("active"));
 
-    function closeSheet() {
-      document.body.classList.remove("sheet-open");
-    }
+        item.classList.add("active");
+        document.getElementById(tab).classList.add("active");
 
-    function setPuppy(key) {
-      const puppy = puppies[key];
-
-      document.getElementById("switcherName").textContent = puppy.name;
-      document.getElementById("navPuppyName").textContent = puppy.name;
-      document.getElementById("headline").innerHTML = puppy.headline;
-      document.getElementById("schoolLine").textContent = puppy.school;
-      document.getElementById("heroImage").src = puppy.image;
-      document.getElementById("heroImage").alt = puppy.name;
-      document.getElementById("momentTitle").textContent = puppy.momentTitle;
-      document.getElementById("momentCopy").textContent = puppy.momentCopy;
-      document.getElementById("trainerNote").textContent = puppy.trainerNote;
-      document.getElementById("journeyTitle").textContent = puppy.journeyTitle;
-      document.getElementById("milestoneOne").textContent = puppy.milestoneOne;
-      document.getElementById("milestoneOneCopy").textContent = puppy.milestoneOneCopy;
-      document.getElementById("milestoneTwo").textContent = puppy.milestoneTwo;
-      document.getElementById("milestoneTwoCopy").textContent = puppy.milestoneTwoCopy;
-      document.getElementById("milestoneThree").textContent = puppy.milestoneThree;
-      document.getElementById("milestoneThreeCopy").textContent = puppy.milestoneThreeCopy;
-      document.getElementById("nextClassTitle").textContent = puppy.nextClassTitle;
-      document.getElementById("nextClassCopy").textContent = puppy.nextClassCopy;
-
-      puppyOptions.forEach((option) => {
-        option.classList.toggle("active", option.dataset.puppy === key);
-      });
-
-      closeSheet();
-      lucide.createIcons();
-    }
-
-    openPuppySheet.addEventListener("click", openSheet);
-    sheetOverlay.addEventListener("click", closeSheet);
-
-    puppyOptions.forEach((option) => {
-      option.addEventListener("click", () => {
-        setPuppy(option.dataset.puppy);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
     });
-
-    lucide.createIcons();
   </script>
-
 </body>
 </html>
