@@ -941,12 +941,12 @@
 
   </div>
 
-  <script>
+<script>
   const SUPABASE_URL =
     "https://woolaaiunapsaowheifj.supabase.co";
 
   const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+    "YOUR_ANON_KEY_HERE";
 
   const db = supabase.createClient(
     SUPABASE_URL,
@@ -971,6 +971,7 @@
   let currentDogId = null;
 
   function openTab(tab) {
+
     navItems.forEach(item => {
       item.classList.toggle(
         "active",
@@ -993,26 +994,47 @@
     lucide.createIcons();
   }
 
-  function badgeIcon(name, fallbackIcon) {
-    const label = (name || "").toLowerCase();
+  function badgeIcon(name) {
 
+    const label =
+      (name || "").toLowerCase();
 
-    if (label.includes("recall")) return "target";
-    if (label.includes("lead") || label.includes("walk")) return "footprints";
-    if (label.includes("social")) return "star";
-    if (label.includes("first")) return "sparkles";
-    if (label.includes("graduate")) return "badge-check";
-    if (label.includes("leash")) return "badge-check";
+    if (label.includes("recall"))
+      return "target";
 
-    return "badge-check";
+    if (
+      label.includes("lead") ||
+      label.includes("walk")
+    )
+      return "footprints";
+
+    if (label.includes("social"))
+      return "star";
+
+    if (label.includes("first"))
+      return "sparkles";
+
+    if (label.includes("graduate"))
+      return "award";
+
+    if (label.includes("leash"))
+      return "shield-check";
+
+    return "award";
   }
 
-  function renderBadgeCard(badge, locked = false) {
+  function renderBadgeCard(
+    badge,
+    locked = false
+  ) {
+
     const name =
       badge.name || "Badge";
 
     const icon =
-      locked ? "lock" : badgeIcon(name, badge.icon);
+      locked
+        ? "lock"
+        : badgeIcon(name);
 
     return `
       <div class="badge-card glass-card lift-card ${locked ? "locked" : ""}">
@@ -1024,30 +1046,21 @@
     `;
   }
 
-  function renderEmptyBadgeCard(name) {
-    return `
-      <div class="badge-card glass-card lift-card locked">
-        <div class="badge-mark">
-          <i data-lucide="lock"></i>
-        </div>
-        <span>${name}</span>
-      </div>
-    `;
-  }
-
   async function loadBadges(dogId) {
+
     if (!dogId) return;
 
-    const { data: earnedRows, error: earnedError } = await db
+    const {
+      data: earnedRows,
+      error: earnedError
+    } = await db
       .from("dog_badges")
       .select(`
         id,
         awarded_at,
-        trainer_comment,
         badge_templates (
           id,
           name,
-          description,
           icon,
           sort_order
         )
@@ -1055,7 +1068,7 @@
       .eq("dog_id", dogId);
 
     if (earnedError) {
-      console.error("Badge load error:", earnedError);
+      console.error(earnedError);
       return;
     }
 
@@ -1063,87 +1076,137 @@
       (earnedRows || [])
         .map(row => row.badge_templates)
         .filter(Boolean)
-        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+        .sort(
+          (a, b) =>
+            (a.sort_order || 0) -
+            (b.sort_order || 0)
+        );
 
     const earnedIds =
-      earnedBadges.map(badge => badge.id);
+      earnedBadges.map(
+        badge => badge.id
+      );
 
-    const { data: allTemplates, error: templateError } = await db
+    const {
+      data: allTemplates,
+      error: templateError
+    } = await db
       .from("badge_templates")
-      .select("id, name, description, icon, sort_order")
-      .order("sort_order", { ascending: true });
+      .select(`
+        id,
+        name,
+        icon,
+        sort_order
+      `)
+      .order(
+        "sort_order",
+        { ascending: true }
+      );
 
     if (templateError) {
-      console.error("Badge template load error:", templateError);
+      console.error(templateError);
       return;
     }
 
     const lockedBadges =
       (allTemplates || [])
-        .filter(template => !earnedIds.includes(template.id));
+        .filter(
+          badge =>
+            !earnedIds.includes(
+              badge.id
+            )
+        );
 
     const previewGrid =
-      document.querySelector("#dog .badges-grid");
+      document.querySelector(
+        "#dog .badges-grid"
+      );
 
     if (previewGrid) {
+
       const previewEarned =
         earnedBadges
           .slice(0, 4)
-          .map(badge => renderBadgeCard(badge, false));
+          .map(badge =>
+            renderBadgeCard(
+              badge,
+              false
+            )
+          );
 
       const previewLocked =
         lockedBadges
-          .slice(0, Math.max(0, 6 - previewEarned.length))
-          .map(badge => renderBadgeCard(badge, true));
-
-      const fallbackLocked =
-        previewEarned.length + previewLocked.length < 6
-          ? [
-              renderEmptyBadgeCard("Future Badge"),
-              renderEmptyBadgeCard("Graduate")
-            ].slice(0, 6 - previewEarned.length - previewLocked.length)
-          : [];
+          .slice(
+            0,
+            Math.max(
+              0,
+              6 - previewEarned.length
+            )
+          )
+          .map(badge =>
+            renderBadgeCard(
+              badge,
+              true
+            )
+          );
 
       previewGrid.innerHTML =
-        [...previewEarned, ...previewLocked, ...fallbackLocked].join("");
+        [
+          ...previewEarned,
+          ...previewLocked
+        ].join("");
     }
 
-    const allDrawerSections =
-      document.querySelectorAll(".badge-sheet .badges-grid");
+    const drawerGrids =
+      document.querySelectorAll(
+        ".badge-sheet .badges-grid"
+      );
 
     const earnedGrid =
-      allDrawerSections[0];
+      drawerGrids[0];
 
     const nextGrid =
-      allDrawerSections[1];
+      drawerGrids[1];
 
     const futureGrid =
-      allDrawerSections[2];
+      drawerGrids[2];
 
     if (earnedGrid) {
       earnedGrid.innerHTML =
-        earnedBadges.length
-          ? earnedBadges.map(badge => renderBadgeCard(badge, false)).join("")
-          : renderEmptyBadgeCard("No badges yet");
+        earnedBadges
+          .map(badge =>
+            renderBadgeCard(
+              badge,
+              false
+            )
+          )
+          .join("");
     }
 
     if (nextGrid) {
       nextGrid.innerHTML =
-        lockedBadges.slice(0, 3)
-          .map(badge => renderBadgeCard(badge, true))
+        lockedBadges
+          .slice(0, 3)
+          .map(badge =>
+            renderBadgeCard(
+              badge,
+              true
+            )
+          )
           .join("");
     }
 
     if (futureGrid) {
       futureGrid.innerHTML =
-        lockedBadges.slice(3, 6)
-          .map(badge => renderBadgeCard(badge, true))
-          .join("") ||
-        [
-          renderEmptyBadgeCard("Adventure Dog"),
-          renderEmptyBadgeCard("Recall Pro"),
-          renderEmptyBadgeCard("School Graduate")
-        ].join("");
+        lockedBadges
+          .slice(3, 6)
+          .map(badge =>
+            renderBadgeCard(
+              badge,
+              true
+            )
+          )
+          .join("");
     }
 
     lucide.createIcons();
@@ -1151,7 +1214,10 @@
 
   async function loadDashboard() {
 
-    const { data, error } = await db
+    const {
+      data,
+      error
+    } = await db
       .from("parent_dashboard_view")
       .select("*")
       .limit(1)
@@ -1224,7 +1290,9 @@
       `${breed}<br />${className}`;
 
     const badgeTitle =
-      document.querySelector(".badge-sheet-head h3");
+      document.querySelector(
+        ".badge-sheet-head h3"
+      );
 
     if (badgeTitle) {
       badgeTitle.textContent =
@@ -1265,27 +1333,56 @@
   }
 
   navItems.forEach(item => {
-    item.addEventListener("click", event => {
+
+    item.addEventListener(
+      "click",
+      event => {
+
+        event.preventDefault();
+
+        openTab(
+          item.dataset.tab
+        );
+      }
+    );
+  });
+
+  openBadges.addEventListener(
+    "click",
+    event => {
+
       event.preventDefault();
-      openTab(item.dataset.tab);
-    });
-  });
 
-  openBadges.addEventListener("click", event => {
-    event.preventDefault();
-    badgeDrawer.classList.add("active");
-    lucide.createIcons();
-  });
+      badgeDrawer.classList.add(
+        "active"
+      );
 
-  closeBadges.addEventListener("click", () => {
-    badgeDrawer.classList.remove("active");
-  });
-
-  badgeDrawer.addEventListener("click", event => {
-    if (event.target === badgeDrawer) {
-      badgeDrawer.classList.remove("active");
+      lucide.createIcons();
     }
-  });
+  );
+
+  closeBadges.addEventListener(
+    "click",
+    () => {
+      badgeDrawer.classList.remove(
+        "active"
+      );
+    }
+  );
+
+  badgeDrawer.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === badgeDrawer
+      ) {
+        badgeDrawer.classList.remove(
+          "active"
+        );
+      }
+    }
+  );
 
   lucide.createIcons();
 
