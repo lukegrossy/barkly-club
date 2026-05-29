@@ -1083,21 +1083,17 @@
     </div>
 
   </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script>
+<script>
   const SUPABASE_URL =
     "https://woolaaiunapsaowheifj.supabase.co";
 
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-  const db = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
   const pages = document.querySelectorAll(".page");
@@ -1114,6 +1110,7 @@
 
     if (error) {
       console.error("Dog lookup failed:", error);
+      alert("Could not find Luna.");
       return null;
     }
 
@@ -1124,10 +1121,15 @@
     const dog = await getLuna();
     if (!dog) return;
 
-    const text =
-      document.querySelector("#noteSheet .note-box")?.value?.trim();
+    const text = document
+      .querySelector("#noteSheet .note-box")
+      ?.value
+      ?.trim();
 
-    if (!text) return;
+    if (!text) {
+      alert("Add a note first.");
+      return;
+    }
 
     const { error } = await db
       .from("parent_updates")
@@ -1152,10 +1154,15 @@
     const dog = await getLuna();
     if (!dog) return;
 
-    const text =
-      document.querySelector("#homeworkSheet .note-box")?.value?.trim();
+    const text = document
+      .querySelector("#homeworkSheet .note-box")
+      ?.value
+      ?.trim();
 
-    if (!text) return;
+    if (!text) {
+      alert("Add homework first.");
+      return;
+    }
 
     const { error } = await db
       .from("homework_assignments")
@@ -1173,6 +1180,44 @@
     }
 
     alert("Homework assigned.");
+    closeSheets();
+  }
+
+  async function awardBadge() {
+    const dog = await getLuna();
+    if (!dog) return;
+
+    const badgeName = "Graduate";
+
+    const { data: badge, error: badgeError } = await db
+      .from("badge_templates")
+      .select("id, name")
+      .eq("school_id", dog.school_id)
+      .eq("name", badgeName)
+      .single();
+
+    if (badgeError || !badge) {
+      console.error("Badge lookup failed:", badgeError);
+      alert("Could not find badge.");
+      return;
+    }
+
+    const { error } = await db
+      .from("dog_badges")
+      .insert({
+        school_id: dog.school_id,
+        dog_id: dog.id,
+        badge_template_id: badge.id,
+        trainer_comment: "Awarded from Trainer Portal."
+      });
+
+    if (error) {
+      console.error("Badge award failed:", error);
+      alert("Could not award badge. It may already be awarded.");
+      return;
+    }
+
+    alert(`${badge.name} awarded.`);
     closeSheets();
   }
 
@@ -1245,8 +1290,15 @@
     homeworkSaveButton.addEventListener("click", saveHomework);
   }
 
+  const badgeAwardButton =
+    document.querySelector("#badgeSheet .publish-btn");
+
+  if (badgeAwardButton) {
+    badgeAwardButton.addEventListener("click", awardBadge);
+  }
+
   lucide.createIcons();
 </script>
-
+  
 </body>
 </html>
