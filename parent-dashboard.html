@@ -996,7 +996,7 @@
   function badgeIcon(name, fallbackIcon) {
     const label = (name || "").toLowerCase();
 
-    if (fallbackIcon) return fallbackIcon;
+
     if (label.includes("recall")) return "target";
     if (label.includes("lead") || label.includes("walk")) return "footprints";
     if (label.includes("social")) return "star";
