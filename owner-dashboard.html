@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+  <title>Owner Portal | Barkly Schools</title>
+
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: var(--space-xl);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+    }
+
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
+
+    .topbar-copy {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      flex-shrink: 0;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: var(--space-xl);
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-pill {
+      background: rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-status {
+      color: rgba(255,255,255,0.72);
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
+    }
+
+    .hero h2 {
+      color: white;
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.76);
+      font-size: var(--text-md);
+      line-height: 1.6;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .stat-card {
+      padding: 18px;
+      min-height: 104px;
+    }
+
+    .stat-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-sm);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: var(--display-sm);
+      letter-spacing: var(--tracking-display);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-head h3 {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .section-head a {
+      text-decoration: none;
+      color: var(--sage);
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .owner-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .owner-card h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .owner-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .row-status {
+      margin-left: auto;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      white-space: nowrap;
+    }
+
+    .bottom-nav {
+      max-width: 540px;
+    }
+
+    .bottom-nav-item {
+      min-width: 58px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="dashboard fade-in">
+
+    <header class="topbar">
+      <div>
+        <div class="brand-row">
+          <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+          <p class="eyebrow">Barkly Schools</p>
+        </div>
+
+        <h1>
+          School<br />
+          overview
+        </h1>
+
+        <p class="topbar-copy">
+          Manage programs, classes, people and school performance.
+        </p>
+      </div>
+
+      <div class="avatar">LG</div>
+    </header>
+
+    <!-- OVERVIEW -->
+    <section class="page active" id="overview">
+
+      <section class="hero hero-card lift-card">
+        <div class="hero-top">
+          <span class="pill hero-pill">Today</span>
+          <span class="hero-status">14 sessions this week</span>
+        </div>
+
+        <h2>Everything is running smoothly.</h2>
+
+        <p>
+          Trainers are active, classes are filling well, and parent updates are being published.
+        </p>
+      </section>
+
+      <div class="stats-grid">
+        <div class="stat-card glass-card lift-card">
+          <p>Active dogs</p>
+          <strong>128</strong>
+        </div>
+
+        <div class="stat-card glass-card lift-card">
+          <p>Upcoming sessions</p>
+          <strong>14</strong>
+        </div>
+
+        <div class="stat-card glass-card lift-card">
+          <p>Attendance</p>
+          <strong>92%</strong>
+        </div>
+
+        <div class="stat-card glass-card lift-card">
+          <p>Active trainers</p>
+          <strong>6</strong>
+        </div>
+      </div>
+
+      <section>
+        <div class="section-head">
+          <h3>Quick actions</h3>
+        </div>
+
+        <div class="card-list">
+          <a href="#" class="owner-card glass-card lift-card" data-tab-link="programs">
+            <div class="card-icon"><i data-lucide="layers-3"></i></div>
+            <div>
+              <h4>Create program</h4>
+              <p>Set up curriculum, stages, badges and homework templates.</p>
+            </div>
+          </a>
+
+          <a href="#" class="owner-card glass-card lift-card" data-tab-link="classes">
+            <div class="card-icon"><i data-lucide="calendar-plus"></i></div>
+            <div>
+              <h4>Create class</h4>
+              <p>Schedule a group, assign trainer and set capacity.</p>
+            </div>
+          </a>
+
+          <a href="#" class="owner-card glass-card lift-card" data-tab-link="people">
+            <div class="card-icon"><i data-lucide="user-plus"></i></div>
+            <div>
+              <h4>Add dog or owner</h4>
+              <p>Enrol dogs and connect them to parent portals.</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- PROGRAMS -->
+    <section class="page" id="programs">
+
+      <div class="section-head">
+        <h3>Programs</h3>
+        <a href="#">Add program</a>
+      </div>
+
+      <div class="card-list">
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="sparkles"></i></div>
+          <div>
+            <h4>Puppy Foundations</h4>
+            <p>Stages, badges and homework templates configured.</p>
+          </div>
+          <div class="row-status">Active</div>
+        </a>
+
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="target"></i></div>
+          <div>
+            <h4>Recall Workshop</h4>
+            <p>Short-course program with custom badge pathway.</p>
+          </div>
+          <div class="row-status">Active</div>
+        </a>
+
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="footprints"></i></div>
+          <div>
+            <h4>Loose Lead Walking</h4>
+            <p>Template ready for new class groups.</p>
+          </div>
+          <div class="row-status">Draft</div>
+        </a>
+      </div>
+
+    </section>
+
+    <!-- CLASSES -->
+    <section class="page" id="classes">
+
+      <div class="section-head">
+        <h3>Classes</h3>
+        <a href="#">Add class</a>
+      </div>
+
+      <div class="card-list">
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="calendar-check"></i></div>
+          <div>
+            <h4>Saturday 9:00am Puppy Foundations</h4>
+            <p>Trainer Sarah · Indoor studio · 10/12 enrolled</p>
+          </div>
+        </a>
+
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="users"></i></div>
+          <div>
+            <h4>Tuesday 6:00pm Teen Manners</h4>
+            <p>Trainer Michael · Outdoor yard · 8/10 enrolled</p>
+          </div>
+        </a>
+
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="map-pin"></i></div>
+          <div>
+            <h4>Sunday Recall Workshop</h4>
+            <p>Trainer Sarah · Open field · 6/8 enrolled</p>
+          </div>
+        </a>
+      </div>
+
+    </section>
+
+    <!-- PEOPLE -->
+    <section class="page" id="people">
+
+      <div class="section-head">
+        <h3>People</h3>
+        <a href="#">Add person</a>
+      </div>
+
+      <div class="card-list">
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="dog"></i></div>
+          <div>
+            <h4>Luna</h4>
+            <p>Groodle · Puppy Foundations · Owner: Luke</p>
+          </div>
+        </a>
+
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="user-round"></i></div>
+          <div>
+            <h4>Sarah Thompson</h4>
+            <p>Trainer · 3 active classes</p>
+          </div>
+        </a>
+
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="users"></i></div>
+          <div>
+            <h4>Luke Gross</h4>
+            <p>Owner · 1 dog · Parent portal active</p>
+          </div>
+        </a>
+      </div>
+
+    </section>
+
+    <!-- REPORTS -->
+    <section class="page" id="reports">
+
+      <div class="section-head">
+        <h3>Reports</h3>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card glass-card lift-card">
+          <p>Class capacity</p>
+          <strong>86%</strong>
+        </div>
+
+        <div class="stat-card glass-card lift-card">
+          <p>Badges awarded</p>
+          <strong>42</strong>
+        </div>
+
+        <div class="stat-card glass-card lift-card">
+          <p>Homework assigned</p>
+          <strong>71</strong>
+        </div>
+
+        <div class="stat-card glass-card lift-card">
+          <p>Programs active</p>
+          <strong>5</strong>
+        </div>
+      </div>
+
+      <div class="card-list">
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="bar-chart-3"></i></div>
+          <div>
+            <h4>Attendance report</h4>
+            <p>Track attendance by class, trainer and program.</p>
+          </div>
+        </a>
+
+        <a href="#" class="owner-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="trending-up"></i></div>
+          <div>
+            <h4>Program performance</h4>
+            <p>See enrolments, completions and popular programs.</p>
+          </div>
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+
+    <a href="#" class="bottom-nav-item active" data-tab="overview">
+      <div class="bottom-nav-icon"><i data-lucide="layout-dashboard"></i></div>
+      Overview
+    </a>
+
+    <a href="#" class="bottom-nav-item" data-tab="programs">
+      <div class="bottom-nav-icon"><i data-lucide="layers-3"></i></div>
+      Programs
+    </a>
+
+    <a href="#" class="bottom-nav-item" data-tab="classes">
+      <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+      Classes
+    </a>
+
+    <a href="#" class="bottom-nav-item" data-tab="people">
+      <div class="bottom-nav-icon"><i data-lucide="users"></i></div>
+      People
+    </a>
+
+    <a href="#" class="bottom-nav-item" data-tab="reports">
+      <div class="bottom-nav-icon"><i data-lucide="bar-chart-3"></i></div>
+      Reports
+    </a>
+
+  </nav>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
+    const pages = document.querySelectorAll(".page");
+    const tabLinks = document.querySelectorAll("[data-tab-link]");
+
+    function openTab(tab) {
+      navItems.forEach(item => {
+        item.classList.toggle("active", item.dataset.tab === tab);
+      });
+
+      pages.forEach(page => {
+        page.classList.toggle("active", page.id === tab);
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      lucide.createIcons();
+    }
+
+    navItems.forEach(item => {
+      item.addEventListener("click", event => {
+        event.preventDefault();
+        openTab(item.dataset.tab);
+      });
+    });
+
+    tabLinks.forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault();
+        openTab(link.dataset.tabLink);
+      });
+    });
+
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
