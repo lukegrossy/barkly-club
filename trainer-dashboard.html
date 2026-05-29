@@ -1084,71 +1084,169 @@
 
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
-    const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
-    const pages = document.querySelectorAll(".page");
-    const sheetButtons = document.querySelectorAll("[data-sheet]");
-    const closeButtons = document.querySelectorAll("[data-close-sheet]");
-    const sheets = document.querySelectorAll(".sheet-overlay");
+  const SUPABASE_URL =
+    "https://woolaaiunapsaowheifj.supabase.co";
 
-    function openTab(tab) {
-      navItems.forEach(item => {
-        item.classList.toggle("active", item.dataset.tab === tab);
+  const SUPABASE_ANON_KEY =
+    "PASTE_YOUR_ANON_KEY_HERE";
+
+  const db = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
+  const pages = document.querySelectorAll(".page");
+  const sheetButtons = document.querySelectorAll("[data-sheet]");
+  const closeButtons = document.querySelectorAll("[data-close-sheet]");
+  const sheets = document.querySelectorAll(".sheet-overlay");
+
+  async function getLuna() {
+    const { data, error } = await db
+      .from("dogs")
+      .select("id, school_id, name")
+      .eq("name", "Luna")
+      .single();
+
+    if (error) {
+      console.error("Dog lookup failed:", error);
+      return null;
+    }
+
+    return data;
+  }
+
+  async function saveParentUpdate() {
+    const dog = await getLuna();
+    if (!dog) return;
+
+    const text =
+      document.querySelector("#noteSheet .note-box")?.value?.trim();
+
+    if (!text) return;
+
+    const { error } = await db
+      .from("parent_updates")
+      .insert({
+        school_id: dog.school_id,
+        dog_id: dog.id,
+        title: "Luna is progressing beautifully",
+        update_text: text
       });
 
-      pages.forEach(page => {
-        page.classList.toggle("active", page.id === tab);
+    if (error) {
+      console.error("Parent update failed:", error);
+      alert("Could not save update.");
+      return;
+    }
+
+    alert("Parent update saved.");
+    closeSheets();
+  }
+
+  async function saveHomework() {
+    const dog = await getLuna();
+    if (!dog) return;
+
+    const text =
+      document.querySelector("#homeworkSheet .note-box")?.value?.trim();
+
+    if (!text) return;
+
+    const { error } = await db
+      .from("homework_assignments")
+      .insert({
+        school_id: dog.school_id,
+        dog_id: dog.id,
+        title: "Calm greeting practice",
+        instructions: text
       });
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    if (error) {
+      console.error("Homework save failed:", error);
+      alert("Could not assign homework.");
+      return;
+    }
+
+    alert("Homework assigned.");
+    closeSheets();
+  }
+
+  function openTab(tab) {
+    navItems.forEach(item => {
+      item.classList.toggle("active", item.dataset.tab === tab);
+    });
+
+    pages.forEach(page => {
+      page.classList.toggle("active", page.id === tab);
+    });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    lucide.createIcons();
+  }
+
+  function openSheet(id) {
+    sheets.forEach(sheet => sheet.classList.remove("active"));
+
+    const sheet = document.getElementById(id);
+
+    if (sheet) {
+      sheet.classList.add("active");
       lucide.createIcons();
     }
+  }
 
-    function openSheet(id) {
-      sheets.forEach(sheet => sheet.classList.remove("active"));
-      const sheet = document.getElementById(id);
+  function closeSheets() {
+    sheets.forEach(sheet => sheet.classList.remove("active"));
+  }
 
-      if (sheet) {
-        sheet.classList.add("active");
-        lucide.createIcons();
+  navItems.forEach(item => {
+    item.addEventListener("click", event => {
+      event.preventDefault();
+      openTab(item.dataset.tab);
+    });
+  });
+
+  sheetButtons.forEach(button => {
+    button.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      openSheet(button.dataset.sheet);
+    });
+  });
+
+  closeButtons.forEach(button => {
+    button.addEventListener("click", closeSheets);
+  });
+
+  sheets.forEach(sheet => {
+    sheet.addEventListener("click", event => {
+      if (event.target === sheet) {
+        closeSheets();
       }
-    }
-
-    function closeSheets() {
-      sheets.forEach(sheet => sheet.classList.remove("active"));
-    }
-
-    navItems.forEach(item => {
-      item.addEventListener("click", event => {
-        event.preventDefault();
-        openTab(item.dataset.tab);
-      });
     });
+  });
 
-    sheetButtons.forEach(button => {
-      button.addEventListener("click", event => {
-        event.preventDefault();
-        event.stopPropagation();
-        openSheet(button.dataset.sheet);
-      });
-    });
+  const noteSaveButton =
+    document.querySelector("#noteSheet .publish-btn");
 
-    closeButtons.forEach(button => {
-      button.addEventListener("click", closeSheets);
-    });
+  if (noteSaveButton) {
+    noteSaveButton.addEventListener("click", saveParentUpdate);
+  }
 
-    sheets.forEach(sheet => {
-      sheet.addEventListener("click", event => {
-        if (event.target === sheet) {
-          closeSheets();
-        }
-      });
-    });
+  const homeworkSaveButton =
+    document.querySelector("#homeworkSheet .publish-btn");
 
-    lucide.createIcons();
-  </script>
+  if (homeworkSaveButton) {
+    homeworkSaveButton.addEventListener("click", saveHomework);
+  }
+
+  lucide.createIcons();
+</script>
 
 </body>
 </html>
