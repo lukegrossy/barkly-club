@@ -941,54 +941,187 @@
 
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
-    const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
-    const pages = document.querySelectorAll(".page");
-    const badgeDrawer = document.getElementById("badgeDrawer");
-    const openBadges = document.getElementById("openBadges");
-    const closeBadges = document.getElementById("closeBadges");
+  const SUPABASE_URL =
+    "https://woolaaiunapsaowheifj.supabase.co";
 
-    function openTab(tab) {
-      navItems.forEach(item => {
-        item.classList.toggle("active", item.dataset.tab === tab);
-      });
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-      pages.forEach(page => {
-        page.classList.toggle("active", page.id === tab);
-      });
+  const db = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+  const navItems =
+    document.querySelectorAll(".bottom-nav-item[data-tab]");
 
-      lucide.createIcons();
-    }
+  const pages =
+    document.querySelectorAll(".page");
 
+  const badgeDrawer =
+    document.getElementById("badgeDrawer");
+
+  const openBadges =
+    document.getElementById("openBadges");
+
+  const closeBadges =
+    document.getElementById("closeBadges");
+
+  function openTab(tab) {
     navItems.forEach(item => {
-      item.addEventListener("click", event => {
-        event.preventDefault();
-        openTab(item.dataset.tab);
-      });
+      item.classList.toggle(
+        "active",
+        item.dataset.tab === tab
+      );
     });
 
-    openBadges.addEventListener("click", event => {
-      event.preventDefault();
-      badgeDrawer.classList.add("active");
-      lucide.createIcons();
+    pages.forEach(page => {
+      page.classList.toggle(
+        "active",
+        page.id === tab
+      );
     });
 
-    closeBadges.addEventListener("click", () => {
-      badgeDrawer.classList.remove("active");
-    });
-
-    badgeDrawer.addEventListener("click", event => {
-      if (event.target === badgeDrawer) {
-        badgeDrawer.classList.remove("active");
-      }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
     });
 
     lucide.createIcons();
-  </script>
+  }
 
+  navItems.forEach(item => {
+    item.addEventListener("click", event => {
+      event.preventDefault();
+      openTab(item.dataset.tab);
+    });
+  });
+
+  openBadges.addEventListener("click", event => {
+    event.preventDefault();
+    badgeDrawer.classList.add("active");
+    lucide.createIcons();
+  });
+
+  closeBadges.addEventListener("click", () => {
+    badgeDrawer.classList.remove("active");
+  });
+
+  badgeDrawer.addEventListener("click", event => {
+    if (event.target === badgeDrawer) {
+      badgeDrawer.classList.remove("active");
+    }
+  });
+
+  async function loadDashboard() {
+
+    const { data, error } = await db
+      .from("parent_dashboard_view")
+      .select("*")
+      .limit(1)
+      .single();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    const dogName =
+      data.dog_name || "Dog";
+
+    const breed =
+      data.breed || "";
+
+    const ownerName =
+      data.owner_name || "Owner";
+
+    const updateTitle =
+      data.latest_update_title ||
+      "Training Update";
+
+    const updateText =
+      data.latest_update ||
+      "No trainer updates yet.";
+
+    const homeworkTitle =
+      data.homework_title ||
+      "Homework";
+
+    const homeworkText =
+      data.homework_instructions ||
+      "No homework assigned.";
+
+    const className =
+      data.class_name ||
+      "Training Program";
+
+    const firstName =
+      ownerName.split(" ")[0];
+
+    document.querySelector(
+      ".topbar h1"
+    ).innerHTML =
+      `Good afternoon,<br />${firstName}`;
+
+    document.querySelector(
+      ".topbar-copy"
+    ).textContent =
+      `${dogName}'s training journey is progressing beautifully.`;
+
+    document.querySelector(
+      ".dog-switcher"
+    ).innerHTML =
+      `${dogName}
+      <i data-lucide="chevron-down"></i>`;
+
+    document.querySelector(
+      ".dog-profile h2"
+    ).textContent =
+      dogName;
+
+    document.querySelector(
+      ".dog-profile p"
+    ).innerHTML =
+      `${breed}<br />${className}`;
+
+    const cards =
+      document.querySelectorAll(
+        "#dog .parent-card"
+      );
+
+    if (cards.length >= 2) {
+
+      cards[0]
+        .querySelector("h4")
+        .textContent =
+        updateTitle;
+
+      cards[0]
+        .querySelector("p")
+        .textContent =
+        updateText;
+
+      cards[1]
+        .querySelector("h4")
+        .textContent =
+        homeworkTitle;
+
+      cards[1]
+        .querySelector("p")
+        .textContent =
+        homeworkText;
+    }
+
+    lucide.createIcons();
+  }
+
+  lucide.createIcons();
+
+  loadDashboard();
+</script>
 </body>
 </html>
