@@ -14,10 +14,7 @@
 
   <style>
     body {
-      padding:
-        max(26px, env(safe-area-inset-top))
-        20px
-        110px;
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
     }
 
     .dashboard {
@@ -171,11 +168,9 @@
       letter-spacing: var(--tracking-tight);
     }
 
-    .section-head a,
     .section-head button {
       border: none;
       background: transparent;
-      text-decoration: none;
       color: var(--sage);
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
@@ -428,6 +423,12 @@
       font-weight: var(--font-heavy);
     }
 
+    .chip.selected {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+    }
+
     .note-box {
       width: 100%;
       min-height: 98px;
@@ -468,94 +469,49 @@
   <main class="dashboard fade-in">
 
     <header class="topbar">
-
       <div class="topbar-left">
-
         <div class="brand-row">
-
-          <img
-            src="assets/barkly-icon.png"
-            alt="Barkly"
-            class="header-icon"
-          />
-
-          <p class="eyebrow">
-            Barkly Schools
-          </p>
-
+          <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+          <p class="eyebrow">Barkly Schools</p>
         </div>
 
-        <h1>
-          Good afternoon,<br />
-          Luke
-        </h1>
+        <h1>Good afternoon,<br />Luke</h1>
 
         <p class="topbar-copy">
           Your sessions are ready for today.
         </p>
-
       </div>
 
-      <div class="avatar">
-        LG
-      </div>
-
+      <div class="avatar">LG</div>
     </header>
 
-    <!-- SESSIONS -->
     <section class="page active" id="sessions">
 
-      <a href="#" class="session-hero hero-card lift-card" id="openLiveSession">
-
+      <a href="#" class="session-hero hero-card lift-card" data-sheet="dogSheet">
         <div class="session-top">
-
-          <span class="pill session-pill">
-            Live session
-          </span>
-
-          <span class="session-status">
-            9 checked in · 3 arriving
-          </span>
-
+          <span class="pill session-pill">Live session</span>
+          <span class="session-status">9 checked in · 3 arriving</span>
         </div>
 
-        <h2>
-          Puppy confidence class
-        </h2>
+        <h2>Puppy confidence class</h2>
 
         <p>
           Puppies are settling calmly today with strong engagement during recall and socialisation exercises.
         </p>
 
         <div class="session-meta">
-
-          <div class="meta-pill">
-            <i data-lucide="users"></i>
-            12 puppies
-          </div>
-
-          <div class="meta-pill">
-            <i data-lucide="clock-3"></i>
-            4:30 PM
-          </div>
-
-          <div class="meta-pill">
-            <i data-lucide="sparkles"></i>
-            Calm energy
-          </div>
-
+          <div class="meta-pill"><i data-lucide="users"></i>12 puppies</div>
+          <div class="meta-pill"><i data-lucide="clock-3"></i>4:30 PM</div>
+          <div class="meta-pill"><i data-lucide="sparkles"></i>Calm energy</div>
         </div>
-
       </a>
 
       <section>
-
         <div class="section-head">
           <h3>Quick actions</h3>
         </div>
 
         <div class="quick-actions">
-
           <button class="quick-action glass-card lift-card" data-sheet="noteSheet">
             <i data-lucide="message-circle"></i>
             <h4>Add note</h4>
@@ -565,13 +521,7 @@
           <button class="quick-action glass-card lift-card" data-sheet="homeworkSheet">
             <i data-lucide="clipboard-check"></i>
             <h4>Homework</h4>
-            <p>Assign homework to a dog or whole session.</p>
-          </button>
-
-          <button class="quick-action glass-card lift-card" data-sheet="badgeSheet">
-            <i data-lucide="badge-check"></i>
-            <h4>Award badge</h4>
-            <p>Publish achievements to the parent portal.</p>
+            <p>Assign homework to Luna or the current dog.</p>
           </button>
 
           <button class="quick-action glass-card lift-card" data-sheet="completeSheet">
@@ -579,267 +529,158 @@
             <h4>Complete</h4>
             <p>Finish session and publish updates.</p>
           </button>
-
         </div>
-
       </section>
 
       <section>
-
         <div class="section-head">
           <h3>Session roster</h3>
           <button data-sheet="completeSheet">Complete session</button>
         </div>
 
         <div class="card-list">
-
           <a href="#" class="row-card glass-card lift-card" data-sheet="dogSheet">
-
             <div class="row-left">
-
-              <div class="card-icon">
-                <i data-lucide="dog"></i>
-              </div>
-
+              <div class="card-icon"><i data-lucide="dog"></i></div>
               <div>
                 <h4>Luna</h4>
                 <p>Settled faster today · parent update drafted</p>
               </div>
-
             </div>
-
-            <div class="row-status">
-              Checked in
-            </div>
-
+            <div class="row-status">Checked in</div>
           </a>
 
           <a href="#" class="row-card glass-card lift-card" data-sheet="dogSheet">
-
             <div class="row-left">
-
-              <div class="card-icon">
-                <i data-lucide="dog"></i>
-              </div>
-
+              <div class="card-icon"><i data-lucide="dog"></i></div>
               <div>
                 <h4>Bella</h4>
                 <p>Calm greeting improvement</p>
               </div>
-
             </div>
-
-            <div class="row-status">
-              Checked in
-            </div>
-
+            <div class="row-status">Checked in</div>
           </a>
 
           <a href="#" class="row-card glass-card lift-card" data-sheet="dogSheet">
-
             <div class="row-left">
-
-              <div class="card-icon">
-                <i data-lucide="dog"></i>
-              </div>
-
+              <div class="card-icon"><i data-lucide="dog"></i></div>
               <div>
                 <h4>Archie</h4>
                 <p>Not arrived yet</p>
               </div>
-
             </div>
-
-            <div class="row-status">
-              Arriving
-            </div>
-
+            <div class="row-status">Arriving</div>
           </a>
-
         </div>
-
       </section>
 
       <section>
-
         <div class="section-head">
           <h3>Upcoming sessions</h3>
         </div>
 
         <div class="card-list">
-
           <a href="#" class="row-card glass-card lift-card">
-
             <div class="row-left">
-
-              <div class="card-icon">
-                <i data-lucide="calendar-check"></i>
-              </div>
-
+              <div class="card-icon"><i data-lucide="calendar-check"></i></div>
               <div>
                 <h4>Teen manners</h4>
                 <p>Outdoor yard · Confidence group</p>
               </div>
-
             </div>
-
-            <div class="row-status">
-              6:00 PM
-            </div>
-
+            <div class="row-status">6:00 PM</div>
           </a>
 
           <a href="#" class="row-card glass-card lift-card">
-
             <div class="row-left">
-
-              <div class="card-icon">
-                <i data-lucide="target"></i>
-              </div>
-
+              <div class="card-icon"><i data-lucide="target"></i></div>
               <div>
                 <h4>Recall workshop</h4>
                 <p>Saturday morning · Open field</p>
               </div>
-
             </div>
-
-            <div class="row-status">
-              Sat
-            </div>
-
+            <div class="row-status">Sat</div>
           </a>
-
         </div>
-
       </section>
 
     </section>
 
-    <!-- DOGS -->
     <section class="page" id="dogs">
 
-      <input
-        class="dog-search"
-        type="search"
-        placeholder="Search dogs"
-      />
+      <input class="dog-search" type="search" placeholder="Search dogs" />
 
       <section>
-
         <div class="section-head">
           <h3>Dogs</h3>
         </div>
 
         <div class="card-list">
 
-          <a href="#" class="dog-card glass-card lift-card" data-sheet="dogSheet">
-
+          <a href="#" class="dog-card glass-card lift-card">
             <div class="dog-card-top">
-
               <div class="dog-left">
-
-                <div class="dog-avatar">
-                  <i data-lucide="dog"></i>
-                </div>
-
+                <div class="dog-avatar"><i data-lucide="dog"></i></div>
                 <div>
                   <h4>Luna</h4>
                   <p>Groodle · Puppy Foundations</p>
                 </div>
-
               </div>
-
-              <div class="dog-pill">
-                Active
-              </div>
-
+              <div class="dog-pill">Active</div>
             </div>
 
-            <p>
-              Last update: settling faster around other dogs. Homework assigned.
-            </p>
+            <p>Last update: settling faster around other dogs. Homework assigned.</p>
 
             <div class="dog-actions">
               <button class="dog-action" data-sheet="noteSheet">Note</button>
               <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
               <button class="dog-action" data-sheet="badgeSheet">Badge</button>
             </div>
-
           </a>
 
-          <a href="#" class="dog-card glass-card lift-card" data-sheet="dogSheet">
-
+          <a href="#" class="dog-card glass-card lift-card">
             <div class="dog-card-top">
-
               <div class="dog-left">
-
-                <div class="dog-avatar">
-                  <i data-lucide="dog"></i>
-                </div>
-
+                <div class="dog-avatar"><i data-lucide="dog"></i></div>
                 <div>
                   <h4>Bella</h4>
                   <p>Cavoodle · Puppy Foundations</p>
                 </div>
-
               </div>
-
-              <div class="dog-pill">
-                Active
-              </div>
-
+              <div class="dog-pill">Active</div>
             </div>
 
-            <p>
-              Last update: calm greeting improvement during arrivals.
-            </p>
+            <p>Last update: calm greeting improvement during arrivals.</p>
 
             <div class="dog-actions">
               <button class="dog-action" data-sheet="noteSheet">Note</button>
               <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
               <button class="dog-action" data-sheet="badgeSheet">Badge</button>
             </div>
-
           </a>
 
-          <a href="#" class="dog-card glass-card lift-card" data-sheet="dogSheet">
-
+          <a href="#" class="dog-card glass-card lift-card">
             <div class="dog-card-top">
-
               <div class="dog-left">
-
-                <div class="dog-avatar">
-                  <i data-lucide="dog"></i>
-                </div>
-
+                <div class="dog-avatar"><i data-lucide="dog"></i></div>
                 <div>
                   <h4>Charlie</h4>
                   <p>Labrador · Recall Workshop</p>
                 </div>
-
               </div>
-
-              <div class="dog-pill">
-                Active
-              </div>
-
+              <div class="dog-pill">Active</div>
             </div>
 
-            <p>
-              Last update: strong focus with gentle reward prompts.
-            </p>
+            <p>Last update: strong focus with gentle reward prompts.</p>
 
             <div class="dog-actions">
               <button class="dog-action" data-sheet="noteSheet">Note</button>
               <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
               <button class="dog-action" data-sheet="badgeSheet">Badge</button>
             </div>
-
           </a>
 
         </div>
-
       </section>
 
     </section>
@@ -847,58 +688,35 @@
   </main>
 
   <nav class="bottom-nav">
-
     <a href="#" class="bottom-nav-item active" data-tab="sessions">
-
-      <div class="bottom-nav-icon">
-        <i data-lucide="calendar-check"></i>
-      </div>
-
+      <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
       Sessions
-
     </a>
 
     <a href="#" class="bottom-nav-item" data-tab="dogs">
-
-      <div class="bottom-nav-icon">
-        <i data-lucide="dog"></i>
-      </div>
-
+      <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
       Dogs
-
     </a>
-
   </nav>
 
-  <!-- DOG QUICK SHEET -->
   <div class="sheet-overlay" id="dogSheet">
-
     <div class="sheet">
-
       <div class="sheet-head">
         <h3>Luna quick card</h3>
-
         <button class="close-sheet" data-close-sheet>
           <i data-lucide="x"></i>
         </button>
       </div>
 
       <div class="trainer-card glass-card">
-
-        <div class="card-icon">
-          <i data-lucide="dog"></i>
-        </div>
-
+        <div class="card-icon"><i data-lucide="dog"></i></div>
         <div>
           <h4>Luna</h4>
           <p>Groodle · Puppy Foundations · parent updates visible</p>
         </div>
-
       </div>
 
-      <div class="sheet-section-title">
-        Quick observations
-      </div>
+      <div class="sheet-section-title">Quick observations</div>
 
       <div class="chip-grid">
         <button class="chip">Settled faster</button>
@@ -912,142 +730,88 @@
       <button class="publish-btn" data-sheet="noteSheet">
         Add note for Luna
       </button>
-
     </div>
-
   </div>
 
-  <!-- NOTE SHEET -->
   <div class="sheet-overlay" id="noteSheet">
-
     <div class="sheet">
-
       <div class="sheet-head">
         <h3>Trainer note</h3>
-
         <button class="close-sheet" data-close-sheet>
           <i data-lucide="x"></i>
         </button>
       </div>
 
-      <div class="sheet-section-title">
-        Parent update
-      </div>
-
+      <div class="sheet-section-title">Parent update</div>
       <textarea class="note-box">Luna is progressing beautifully and settling faster around other dogs.</textarea>
 
-      <div class="sheet-section-title">
-        Private trainer note
-      </div>
-
+      <div class="sheet-section-title">Private trainer note</div>
       <textarea class="note-box" placeholder="Internal note only. Not shown to parents."></textarea>
 
-      <button class="publish-btn">
-        Save note
-      </button>
-
+      <button class="publish-btn">Save note</button>
     </div>
-
   </div>
 
-  <!-- HOMEWORK SHEET -->
   <div class="sheet-overlay" id="homeworkSheet">
-
     <div class="sheet">
-
       <div class="sheet-head">
         <h3>Assign homework</h3>
-
         <button class="close-sheet" data-close-sheet>
           <i data-lucide="x"></i>
         </button>
       </div>
 
-      <div class="sheet-section-title">
-        Homework templates
-      </div>
+      <div class="sheet-section-title">Homework templates</div>
 
       <div class="chip-grid">
-        <button class="chip">Calm greetings</button>
+        <button class="chip selected">Calm greetings</button>
         <button class="chip">Recall practice</button>
         <button class="chip">Loose lead walking</button>
         <button class="chip">Settle on mat</button>
         <button class="chip">Focus around distractions</button>
       </div>
 
-      <div class="sheet-section-title">
-        Homework note
-      </div>
-
+      <div class="sheet-section-title">Homework note</div>
       <textarea class="note-box">Practise calm greetings for 5 minutes each day before the next session.</textarea>
 
-      <button class="publish-btn">
-        Assign homework
-      </button>
-
+      <button class="publish-btn">Assign homework</button>
     </div>
-
   </div>
 
-  <!-- BADGE SHEET -->
   <div class="sheet-overlay" id="badgeSheet">
-
     <div class="sheet">
-
       <div class="sheet-head">
         <h3>Award badge</h3>
-
         <button class="close-sheet" data-close-sheet>
           <i data-lucide="x"></i>
         </button>
       </div>
 
-      <div class="sheet-section-title">
-        Available badges
+      <div class="sheet-section-title">Available badges</div>
+
+      <div class="chip-grid" id="badgeChoices">
+        <button class="chip selected" data-badge-name="Graduate">Graduate</button>
+        <button class="chip" data-badge-name="Off Leash Ready">Off Leash Ready</button>
+        <button class="chip" data-badge-name="Calm Café Dog">Calm Café Dog</button>
+        <button class="chip" data-badge-name="Adventure Dog">Adventure Dog</button>
       </div>
 
-      <div class="chip-grid">
-        <button class="chip">First Session</button>
-        <button class="chip">Recall Rookie</button>
-        <button class="chip">Lead Walker</button>
-        <button class="chip">Social Star</button>
-        <button class="chip">Calm Café Dog</button>
-        <button class="chip">Graduate</button>
-      </div>
-
-      <div class="sheet-section-title">
-        Badge comment
-      </div>
-
-      <textarea class="note-box">Awarded for consistent recall response during group work.</textarea>
-
-      <button class="publish-btn">
-        Award badge
-      </button>
-
+      <button class="publish-btn">Award badge</button>
     </div>
-
   </div>
 
-  <!-- COMPLETE SHEET -->
   <div class="sheet-overlay" id="completeSheet">
-
     <div class="sheet">
-
       <div class="sheet-head">
         <h3>Complete session</h3>
-
         <button class="close-sheet" data-close-sheet>
           <i data-lucide="x"></i>
         </button>
       </div>
 
       <div class="card-list">
-
         <div class="trainer-card glass-card">
-          <div class="card-icon">
-            <i data-lucide="users"></i>
-          </div>
+          <div class="card-icon"><i data-lucide="users"></i></div>
           <div>
             <h4>Attendance</h4>
             <p>9 checked in · 3 arriving · 0 absent</p>
@@ -1055,9 +819,7 @@
         </div>
 
         <div class="trainer-card glass-card">
-          <div class="card-icon">
-            <i data-lucide="message-circle"></i>
-          </div>
+          <div class="card-icon"><i data-lucide="message-circle"></i></div>
           <div>
             <h4>Parent updates</h4>
             <p>3 updates drafted for today’s session.</p>
@@ -1065,240 +827,270 @@
         </div>
 
         <div class="trainer-card glass-card">
-          <div class="card-icon">
-            <i data-lucide="badge-check"></i>
-          </div>
+          <div class="card-icon"><i data-lucide="badge-check"></i></div>
           <div>
             <h4>Badges</h4>
             <p>2 badges ready to publish.</p>
           </div>
         </div>
-
       </div>
 
-      <button class="publish-btn">
-        Publish session updates
-      </button>
-
+      <button class="publish-btn">Publish session updates</button>
     </div>
-
   </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
 
-<script>
-  const SUPABASE_URL =
-    "https://woolaaiunapsaowheifj.supabase.co";
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+  <script>
+    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
 
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-  const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
-  const pages = document.querySelectorAll(".page");
-  const sheetButtons = document.querySelectorAll("[data-sheet]");
-  const closeButtons = document.querySelectorAll("[data-close-sheet]");
-  const sheets = document.querySelectorAll(".sheet-overlay");
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  async function getLuna() {
-    const { data, error } = await db
-      .from("dogs")
-      .select("id, school_id, name")
-      .eq("name", "Luna")
-      .single();
+    const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
+    const pages = document.querySelectorAll(".page");
+    const sheetButtons = document.querySelectorAll("[data-sheet]");
+    const closeButtons = document.querySelectorAll("[data-close-sheet]");
+    const sheets = document.querySelectorAll(".sheet-overlay");
+    const dogActions = document.querySelectorAll(".dog-action");
+    const badgeChoiceButtons = document.querySelectorAll("#badgeChoices .chip");
 
-    if (error) {
-      console.error("Dog lookup failed:", error);
-      alert("Could not find Luna.");
-      return null;
+    let selectedDogName = "Luna";
+    let selectedBadgeName = "Graduate";
+
+    async function getSelectedDog() {
+      const { data, error } = await db
+        .from("dogs")
+        .select("id, school_id, name")
+        .eq("name", selectedDogName)
+        .single();
+
+      if (error) {
+        console.error("Dog lookup failed:", error);
+        alert(`Could not find ${selectedDogName}.`);
+        return null;
+      }
+
+      return data;
     }
 
-    return data;
-  }
+    async function saveParentUpdate() {
+      const dog = await getSelectedDog();
+      if (!dog) return;
 
-  async function saveParentUpdate() {
-    const dog = await getLuna();
-    if (!dog) return;
+      const text = document
+        .querySelector("#noteSheet .note-box")
+        ?.value
+        ?.trim();
 
-    const text = document
-      .querySelector("#noteSheet .note-box")
-      ?.value
-      ?.trim();
+      if (!text) {
+        alert("Add a note first.");
+        return;
+      }
 
-    if (!text) {
-      alert("Add a note first.");
-      return;
-    }
-
-    const { error } = await db
-      .from("parent_updates")
-      .insert({
+      const { error } = await db.from("parent_updates").insert({
         school_id: dog.school_id,
         dog_id: dog.id,
-        title: "Luna is progressing beautifully",
+        title: `${dog.name} is progressing beautifully`,
         update_text: text
       });
 
-    if (error) {
-      console.error("Parent update failed:", error);
-      alert("Could not save update.");
-      return;
+      if (error) {
+        console.error("Parent update failed:", error);
+        alert("Could not save update.");
+        return;
+      }
+
+      alert("Parent update saved.");
+      closeSheets();
     }
 
-    alert("Parent update saved.");
-    closeSheets();
-  }
+    async function saveHomework() {
+      const dog = await getSelectedDog();
+      if (!dog) return;
 
-  async function saveHomework() {
-    const dog = await getLuna();
-    if (!dog) return;
+      const text = document
+        .querySelector("#homeworkSheet .note-box")
+        ?.value
+        ?.trim();
 
-    const text = document
-      .querySelector("#homeworkSheet .note-box")
-      ?.value
-      ?.trim();
+      if (!text) {
+        alert("Add homework first.");
+        return;
+      }
 
-    if (!text) {
-      alert("Add homework first.");
-      return;
-    }
-
-    const { error } = await db
-      .from("homework_assignments")
-      .insert({
+      const { error } = await db.from("homework_assignments").insert({
         school_id: dog.school_id,
         dog_id: dog.id,
         title: "Calm greeting practice",
         instructions: text
       });
 
-    if (error) {
-      console.error("Homework save failed:", error);
-      alert("Could not assign homework.");
-      return;
+      if (error) {
+        console.error("Homework save failed:", error);
+        alert("Could not assign homework.");
+        return;
+      }
+
+      alert("Homework assigned.");
+      closeSheets();
     }
 
-    alert("Homework assigned.");
-    closeSheets();
-  }
+    async function awardBadge() {
+      const dog = await getSelectedDog();
+      if (!dog) return;
 
-  async function awardBadge() {
-    const dog = await getLuna();
-    if (!dog) return;
+      const { data: badge, error: badgeError } = await db
+        .from("badge_templates")
+        .select("id, name")
+        .eq("school_id", dog.school_id)
+        .eq("name", selectedBadgeName)
+        .single();
 
-    const badgeName = "Graduate";
+      if (badgeError || !badge) {
+        console.error("Badge lookup failed:", badgeError);
+        alert(`Could not find ${selectedBadgeName}.`);
+        return;
+      }
 
-    const { data: badge, error: badgeError } = await db
-      .from("badge_templates")
-      .select("id, name")
-      .eq("school_id", dog.school_id)
-      .eq("name", badgeName)
-      .single();
-
-    if (badgeError || !badge) {
-      console.error("Badge lookup failed:", badgeError);
-      alert("Could not find badge.");
-      return;
-    }
-
-    const { error } = await db
-      .from("dog_badges")
-      .insert({
+      const { error } = await db.from("dog_badges").insert({
         school_id: dog.school_id,
         dog_id: dog.id,
         badge_template_id: badge.id,
-        trainer_comment: "Awarded from Trainer Portal."
+        trainer_comment: `${badge.name} awarded to ${dog.name}.`
       });
 
-    if (error) {
-      console.error("Badge award failed:", error);
-      alert("Could not award badge. It may already be awarded.");
-      return;
+      if (error) {
+        console.error("Badge award failed:", error);
+        alert("Could not award badge. It may already be awarded.");
+        return;
+      }
+
+      alert(`${badge.name} awarded to ${dog.name}.`);
+      closeSheets();
     }
 
-    alert(`${badge.name} awarded.`);
-    closeSheets();
-  }
+    function setSelectedDogFromCard(button) {
+      const dogCard = button.closest(".dog-card");
+      const dogName =
+        dogCard?.querySelector("h4")?.textContent?.trim() || "Luna";
 
-  function openTab(tab) {
-    navItems.forEach(item => {
-      item.classList.toggle("active", item.dataset.tab === tab);
-    });
+      selectedDogName = dogName;
+    }
 
-    pages.forEach(page => {
-      page.classList.toggle("active", page.id === tab);
-    });
+    function updateSheetTitles() {
+      const noteTitle = document.querySelector("#noteSheet .sheet-head h3");
+      const homeworkTitle = document.querySelector("#homeworkSheet .sheet-head h3");
+      const badgeTitle = document.querySelector("#badgeSheet .sheet-head h3");
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    lucide.createIcons();
-  }
+      if (noteTitle) noteTitle.textContent = `Trainer note for ${selectedDogName}`;
+      if (homeworkTitle) homeworkTitle.textContent = `Assign homework to ${selectedDogName}`;
+      if (badgeTitle) badgeTitle.textContent = `Award badge to ${selectedDogName}`;
+    }
 
-  function openSheet(id) {
-    sheets.forEach(sheet => sheet.classList.remove("active"));
+    function openTab(tab) {
+      navItems.forEach(item => {
+        item.classList.toggle("active", item.dataset.tab === tab);
+      });
 
-    const sheet = document.getElementById(id);
+      pages.forEach(page => {
+        page.classList.toggle("active", page.id === tab);
+      });
 
-    if (sheet) {
-      sheet.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
       lucide.createIcons();
     }
-  }
 
-  function closeSheets() {
-    sheets.forEach(sheet => sheet.classList.remove("active"));
-  }
+    function openSheet(id) {
+      sheets.forEach(sheet => sheet.classList.remove("active"));
 
-  navItems.forEach(item => {
-    item.addEventListener("click", event => {
-      event.preventDefault();
-      openTab(item.dataset.tab);
-    });
-  });
+      updateSheetTitles();
 
-  sheetButtons.forEach(button => {
-    button.addEventListener("click", event => {
-      event.preventDefault();
-      event.stopPropagation();
-      openSheet(button.dataset.sheet);
-    });
-  });
+      const sheet = document.getElementById(id);
 
-  closeButtons.forEach(button => {
-    button.addEventListener("click", closeSheets);
-  });
-
-  sheets.forEach(sheet => {
-    sheet.addEventListener("click", event => {
-      if (event.target === sheet) {
-        closeSheets();
+      if (sheet) {
+        sheet.classList.add("active");
+        lucide.createIcons();
       }
+    }
+
+    function closeSheets() {
+      sheets.forEach(sheet => sheet.classList.remove("active"));
+    }
+
+    navItems.forEach(item => {
+      item.addEventListener("click", event => {
+        event.preventDefault();
+        openTab(item.dataset.tab);
+      });
     });
-  });
 
-  const noteSaveButton =
-    document.querySelector("#noteSheet .publish-btn");
+    sheetButtons.forEach(button => {
+      if (button.classList.contains("dog-action")) return;
 
-  if (noteSaveButton) {
-    noteSaveButton.addEventListener("click", saveParentUpdate);
-  }
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        selectedDogName = "Luna";
+        openSheet(button.dataset.sheet);
+      });
+    });
 
-  const homeworkSaveButton =
-    document.querySelector("#homeworkSheet .publish-btn");
+    dogActions.forEach(button => {
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
 
-  if (homeworkSaveButton) {
-    homeworkSaveButton.addEventListener("click", saveHomework);
-  }
+        setSelectedDogFromCard(button);
+        openSheet(button.dataset.sheet);
+      });
+    });
 
-  const badgeAwardButton =
-    document.querySelector("#badgeSheet .publish-btn");
+    badgeChoiceButtons.forEach(button => {
+      button.addEventListener("click", event => {
+        event.preventDefault();
 
-  if (badgeAwardButton) {
-    badgeAwardButton.addEventListener("click", awardBadge);
-  }
+        badgeChoiceButtons.forEach(chip => {
+          chip.classList.remove("selected");
+        });
 
-  lucide.createIcons();
-</script>
-  
+        button.classList.add("selected");
+        selectedBadgeName = button.dataset.badgeName;
+      });
+    });
+
+    closeButtons.forEach(button => {
+      button.addEventListener("click", closeSheets);
+    });
+
+    sheets.forEach(sheet => {
+      sheet.addEventListener("click", event => {
+        if (event.target === sheet) {
+          closeSheets();
+        }
+      });
+    });
+
+    const noteSaveButton = document.querySelector("#noteSheet .publish-btn");
+    if (noteSaveButton) {
+      noteSaveButton.addEventListener("click", saveParentUpdate);
+    }
+
+    const homeworkSaveButton = document.querySelector("#homeworkSheet .publish-btn");
+    if (homeworkSaveButton) {
+      homeworkSaveButton.addEventListener("click", saveHomework);
+    }
+
+    const badgeAwardButton = document.querySelector("#badgeSheet .publish-btn");
+    if (badgeAwardButton) {
+      badgeAwardButton.addEventListener("click", awardBadge);
+    }
+
+    lucide.createIcons();
+  </script>
+
 </body>
 </html>
