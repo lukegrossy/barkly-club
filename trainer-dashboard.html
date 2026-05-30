@@ -740,164 +740,375 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 
-  <script>
-    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+<script>
+  const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
-    const pages = document.querySelectorAll(".page");
-    const sheets = document.querySelectorAll(".sheet-overlay");
-    const closeButtons = document.querySelectorAll("[data-close-sheet]");
-    const badgeChoiceButtons = document.querySelectorAll("#badgeChoices .chip");
+  const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
+  const pages = document.querySelectorAll(".page");
+  const sheets = document.querySelectorAll(".sheet-overlay");
+  const closeButtons = document.querySelectorAll("[data-close-sheet]");
+  const badgeChoiceButtons = document.querySelectorAll("#badgeChoices .chip");
 
-    let selectedDogName = "Luna";
-    let selectedBadgeName = "Graduate";
+  let selectedDogName = "Luna";
+  let selectedBadgeName = "Graduate";
+  let currentSessionId = null;
+  let currentSchoolId = null;
 
-    function updateAttendanceSummary() {
-      const buttons = document.querySelectorAll(".check-btn");
-      const total = buttons.length;
-      const checkedIn = [...buttons].filter(button => button.dataset.present === "true").length;
-      const notCheckedIn = total - checkedIn;
+  async function loadCurrentSession() {
+    const { data, error } = await db
+      .from("trainer_session_view")
+      .select("*")
+      .limit(1)
+      .single();
 
-      const hero = document.getElementById("heroCheckin");
-      const sheet = document.getElementById("sheetCheckin");
-      const complete = document.getElementById("completeAttendance");
-
-      if (hero) hero.textContent = `${checkedIn}/${total} checked in`;
-      if (sheet) sheet.textContent = `${checkedIn}/${total}`;
-      if (complete) complete.textContent = `${checkedIn} checked in · ${notCheckedIn} not checked in`;
+    if (error) {
+      console.error("Session load failed:", error);
+      return;
     }
 
-    function openTab(tab) {
-      navItems.forEach(item => item.classList.toggle("active", item.dataset.tab === tab));
-      pages.forEach(page => page.classList.toggle("active", page.id === tab));
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      lucide.createIcons();
+    currentSessionId = data.session_id;
+
+    const sessionTitle =
+      data.class_name || "Current session";
+
+    const location =
+      data.location || "Training studio";
+
+    const program =
+      data.program_name || "Training program";
+
+    const checked =
+      data.checked_in_count || 0;
+
+    const enrolled =
+      data.enrolled_count || 0;
+
+    const start =
+      data.starts_at ? new Date(data.starts_at) : null;
+
+    const dateLabel =
+      start
+        ? start.toLocaleDateString("en-AU", { weekday: "short" })
+        : "Today";
+
+    const timeLabel =
+      start
+        ? start.toLocaleTimeString("en-AU", {
+            hour: "numeric",
+            minute: "2-digit"
+          })
+        : "Time TBC";
+
+    document.querySelector(".session-card h2").textContent =
+      sessionTitle;
+
+    document.querySelector("#heroCheckin").textContent =
+      `${checked}/${enrolled} checked in`;
+
+    document.querySelector("#sheetCheckin").textContent =
+      `${checked}/${enrolled}`;
+
+    const sessionSheetTitle =
+      document.querySelector("#sessionSheet .sheet-head h3");
+
+    if (sessionSheetTitle) {
+      sessionSheetTitle.textContent = sessionTitle;
     }
 
-    function openSheet(id) {
-      sheets.forEach(sheet => sheet.classList.remove("active"));
+    const sessionMeta =
+      document.querySelector("#sessionSheet .trainer-card h4");
 
-      const titleMap = {
-        noteSheet: `Trainer note for ${selectedDogName}`,
-        homeworkSheet: `Assign homework to ${selectedDogName}`,
-        badgeSheet: `Award badge to ${selectedDogName}`
-      };
-
-      const title = document.querySelector(`#${id} .sheet-head h3`);
-      if (title && titleMap[id]) title.textContent = titleMap[id];
-
-      const sheet = document.getElementById(id);
-      if (sheet) sheet.classList.add("active");
-
-      updateAttendanceSummary();
-      lucide.createIcons();
+    if (sessionMeta) {
+      sessionMeta.textContent = `${dateLabel} · ${timeLabel}`;
     }
 
-    function closeSheets() {
-      sheets.forEach(sheet => sheet.classList.remove("active"));
+    const sessionSub =
+      document.querySelector("#sessionSheet .trainer-card p");
+
+    if (sessionSub) {
+      sessionSub.textContent = `${location} · ${program}`;
     }
 
-    async function getSelectedDog() {
-      const { data, error } = await db
-        .from("dogs")
-        .select("id, school_id, name")
-        .eq("name", selectedDogName)
-        .single();
+    const heroMeta =
+      document.querySelectorAll(".session-meta .meta-pill");
 
-      if (error) {
-        alert(`Could not find ${selectedDogName}.`);
-        return null;
-      }
-
-      return data;
+    if (heroMeta.length >= 3) {
+      heroMeta[0].innerHTML = `<i data-lucide="calendar"></i>${dateLabel}`;
+      heroMeta[1].innerHTML = `<i data-lucide="clock-3"></i>${timeLabel}`;
+      heroMeta[2].innerHTML = `<i data-lucide="map-pin"></i>${location}`;
     }
 
-    async function saveParentUpdate() {
-      const dog = await getSelectedDog();
-      if (!dog) return;
+    lucide.createIcons();
 
-      const text = document.querySelector("#noteSheet .note-box")?.value?.trim();
-      if (!text) return;
+    await loadSessionRoster();
+  }
 
-      const { error } = await db.from("parent_updates").insert({
-        school_id: dog.school_id,
-        dog_id: dog.id,
-        title: `${dog.name} is progressing beautifully`,
-        update_text: text
-      });
+  async function loadSessionRoster() {
+    if (!currentSessionId) return;
 
-      if (error) return alert("Could not save update.");
+    const { data, error } = await db
+      .from("trainer_session_roster_view")
+      .select("*")
+      .eq("session_id", currentSessionId)
+      .order("dog_name", { ascending: true });
 
-      alert("Parent update saved.");
-      closeSheets();
+    if (error) {
+      console.error("Roster load failed:", error);
+      return;
     }
 
-    async function saveHomework() {
-      const dog = await getSelectedDog();
-      if (!dog) return;
+    const rosterList =
+      document.querySelector("#sessionSheet .card-list");
 
-      const text = document.querySelector("#homeworkSheet .note-box")?.value?.trim();
-      if (!text) return;
+    if (!rosterList) return;
 
-      const { error } = await db.from("homework_assignments").insert({
-        school_id: dog.school_id,
-        dog_id: dog.id,
-        title: "Calm greeting practice",
-        instructions: text
-      });
+    rosterList.innerHTML = "";
 
-      if (error) return alert("Could not assign homework.");
+    data.forEach(row => {
+      const isPresent =
+        row.attendance_status === "present";
 
-      alert("Homework assigned.");
-      closeSheets();
-    }
+      const statusText =
+        isPresent
+          ? `${row.breed || "Dog"} · checked in`
+          : "Not checked in";
 
-    async function awardBadge() {
-      const dog = await getSelectedDog();
-      if (!dog) return;
+      const buttonText =
+        isPresent ? "Undo" : "Check in";
 
-      const { data: badge, error: badgeError } = await db
-        .from("badge_templates")
-        .select("id, name")
-        .eq("school_id", dog.school_id)
-        .eq("name", selectedBadgeName)
-        .single();
+      const buttonClass =
+        isPresent ? "check-btn present" : "check-btn";
 
-      if (badgeError || !badge) return alert(`Could not find ${selectedBadgeName}.`);
+      rosterList.innerHTML += `
+        <div class="row-card glass-card lift-card roster-dog"
+          data-dog-id="${row.dog_id}"
+          data-dog-name="${row.dog_name}"
+          data-school-id="${row.school_id || ""}"
+        >
+          <div class="row-left">
+            <div class="card-icon"><i data-lucide="dog"></i></div>
+            <div>
+              <h4>${row.dog_name}</h4>
+              <p>${statusText}</p>
+            </div>
+          </div>
 
-      const { error } = await db.from("dog_badges").insert({
-        school_id: dog.school_id,
-        dog_id: dog.id,
-        badge_template_id: badge.id,
-        trainer_comment: `${badge.name} awarded to ${dog.name}.`
-      });
-
-      if (error) return alert("Could not award badge. It may already be awarded.");
-
-      alert(`${badge.name} awarded to ${dog.name}.`);
-      closeSheets();
-    }
-
-    navItems.forEach(item => {
-      item.addEventListener("click", event => {
-        event.preventDefault();
-        openTab(item.dataset.tab);
-      });
+          <button
+            class="${buttonClass}"
+            data-present="${isPresent}"
+            data-dog-id="${row.dog_id}"
+            data-school-id="${row.school_id || ""}"
+          >
+            ${buttonText}
+          </button>
+        </div>
+      `;
     });
 
-    document.querySelectorAll("[data-sheet]").forEach(button => {
-      button.addEventListener("click", event => {
-        event.preventDefault();
-        event.stopPropagation();
-        openSheet(button.dataset.sheet);
-      });
+    attachRosterHandlers();
+    updateAttendanceSummary();
+    lucide.createIcons();
+  }
+
+  function updateAttendanceSummary() {
+    const buttons = document.querySelectorAll(".check-btn");
+    const total = buttons.length;
+    const checkedIn = [...buttons].filter(button => button.dataset.present === "true").length;
+    const notCheckedIn = total - checkedIn;
+
+    const hero = document.getElementById("heroCheckin");
+    const sheet = document.getElementById("sheetCheckin");
+    const complete = document.getElementById("completeAttendance");
+
+    if (hero) hero.textContent = `${checkedIn}/${total} checked in`;
+    if (sheet) sheet.textContent = `${checkedIn}/${total}`;
+    if (complete) complete.textContent = `${checkedIn} checked in · ${notCheckedIn} not checked in`;
+  }
+
+  function openTab(tab) {
+    navItems.forEach(item => item.classList.toggle("active", item.dataset.tab === tab));
+    pages.forEach(page => page.classList.toggle("active", page.id === tab));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    lucide.createIcons();
+  }
+
+  function openSheet(id) {
+    sheets.forEach(sheet => sheet.classList.remove("active"));
+
+    const titleMap = {
+      noteSheet: `Trainer note for ${selectedDogName}`,
+      homeworkSheet: `Assign homework to ${selectedDogName}`,
+      badgeSheet: `Award badge to ${selectedDogName}`
+    };
+
+    const title = document.querySelector(`#${id} .sheet-head h3`);
+    if (title && titleMap[id]) title.textContent = titleMap[id];
+
+    const sheet = document.getElementById(id);
+    if (sheet) sheet.classList.add("active");
+
+    updateAttendanceSummary();
+    lucide.createIcons();
+  }
+
+  function closeSheets() {
+    sheets.forEach(sheet => sheet.classList.remove("active"));
+  }
+
+  async function getSelectedDog() {
+    const { data, error } = await db
+      .from("dogs")
+      .select("id, school_id, name")
+      .eq("name", selectedDogName)
+      .single();
+
+    if (error) {
+      alert(`Could not find ${selectedDogName}.`);
+      return null;
+    }
+
+    return data;
+  }
+
+  async function saveParentUpdate() {
+    const dog = await getSelectedDog();
+    if (!dog) return;
+
+    const text = document.querySelector("#noteSheet .note-box")?.value?.trim();
+    if (!text) return;
+
+    const { error } = await db.from("parent_updates").insert({
+      school_id: dog.school_id,
+      dog_id: dog.id,
+      session_id: currentSessionId,
+      title: `${dog.name} is progressing beautifully`,
+      update_text: text
     });
 
+    if (error) return alert("Could not save update.");
+
+    alert("Parent update saved.");
+    closeSheets();
+  }
+
+  async function saveHomework() {
+    const dog = await getSelectedDog();
+    if (!dog) return;
+
+    const text = document.querySelector("#homeworkSheet .note-box")?.value?.trim();
+    if (!text) return;
+
+    const { error } = await db.from("homework_assignments").insert({
+      school_id: dog.school_id,
+      dog_id: dog.id,
+      session_id: currentSessionId,
+      title: "Calm greeting practice",
+      instructions: text
+    });
+
+    if (error) return alert("Could not assign homework.");
+
+    alert("Homework assigned.");
+    closeSheets();
+  }
+
+  async function awardBadge() {
+    const dog = await getSelectedDog();
+    if (!dog) return;
+
+    const { data: badge, error: badgeError } = await db
+      .from("badge_templates")
+      .select("id, name")
+      .eq("school_id", dog.school_id)
+      .eq("name", selectedBadgeName)
+      .single();
+
+    if (badgeError || !badge) return alert(`Could not find ${selectedBadgeName}.`);
+
+    const { error } = await db.from("dog_badges").insert({
+      school_id: dog.school_id,
+      dog_id: dog.id,
+      badge_template_id: badge.id,
+      trainer_comment: `${badge.name} awarded to ${dog.name}.`
+    });
+
+    if (error) return alert("Could not award badge. It may already be awarded.");
+
+    alert(`${badge.name} awarded to ${dog.name}.`);
+    closeSheets();
+  }
+
+  async function toggleAttendance(button) {
+    if (!currentSessionId) {
+      alert("No active session found.");
+      return;
+    }
+
+    const dogId =
+      button.dataset.dogId;
+
+    const isPresent =
+      button.dataset.present === "true";
+
+    const row =
+      button.closest(".roster-dog");
+
+    const dogName =
+      row?.dataset.dogName || "Dog";
+
+    const dog =
+      await getDogById(dogId);
+
+    if (!dog) return;
+
+    const nextStatus =
+      isPresent ? "not_checked_in" : "present";
+
+    const payload = {
+      school_id: dog.school_id,
+      session_id: currentSessionId,
+      dog_id: dog.id,
+      status: nextStatus,
+      checked_in_at: nextStatus === "present" ? new Date().toISOString() : null
+    };
+
+    const { error } = await db
+      .from("session_attendance")
+      .upsert(payload, {
+        onConflict: "session_id,dog_id"
+      });
+
+    if (error) {
+      console.error("Attendance update failed:", error);
+      alert("Could not update attendance.");
+      return;
+    }
+
+    await loadSessionRoster();
+  }
+
+  async function getDogById(dogId) {
+    const { data, error } = await db
+      .from("dogs")
+      .select("id, school_id, name")
+      .eq("id", dogId)
+      .single();
+
+    if (error) {
+      console.error("Dog lookup by ID failed:", error);
+      alert("Could not find dog.");
+      return null;
+    }
+
+    return data;
+  }
+
+  function attachRosterHandlers() {
     document.querySelectorAll(".roster-dog").forEach(card => {
       card.addEventListener("click", event => {
         if (event.target.classList.contains("check-btn")) return;
@@ -909,78 +1120,79 @@
       });
     });
 
-    document.querySelectorAll(".dog-action").forEach(button => {
-      button.addEventListener("click", event => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const card = button.closest(".dog-card");
-        selectedDogName = card?.querySelector("h4")?.textContent?.trim() || "Luna";
-        openSheet(button.dataset.sheet);
-      });
-    });
-
     document.querySelectorAll(".check-btn").forEach(button => {
       button.addEventListener("click", event => {
         event.preventDefault();
         event.stopPropagation();
-
-        const isPresent = button.dataset.present === "true";
-        button.dataset.present = isPresent ? "false" : "true";
-        button.textContent = isPresent ? "Check in" : "Undo";
-        button.classList.toggle("present", !isPresent);
-
-        const row = button.closest(".roster-dog");
-        const status = row.querySelector("p");
-
-        const dogName = row.dataset.dogName || "Dog";
-
-        status.textContent = isPresent
-          ? "Not arrived yet"
-          : `${dogName} · checked in`;
-
-        updateAttendanceSummary();
+        toggleAttendance(button);
       });
     });
+  }
 
-    badgeChoiceButtons.forEach(button => {
-      button.addEventListener("click", event => {
-        event.preventDefault();
-
-        badgeChoiceButtons.forEach(chip => chip.classList.remove("selected"));
-        button.classList.add("selected");
-        selectedBadgeName = button.dataset.badgeName;
-      });
-    });
-
-    closeButtons.forEach(button => button.addEventListener("click", closeSheets));
-
-    sheets.forEach(sheet => {
-      sheet.addEventListener("click", event => {
-        if (event.target === sheet) closeSheets();
-      });
-    });
-
-    document.getElementById("backToClass").addEventListener("click", event => {
+  navItems.forEach(item => {
+    item.addEventListener("click", event => {
       event.preventDefault();
-      openSheet("sessionSheet");
+      openTab(item.dataset.tab);
     });
+  });
 
-    document.querySelector("#noteSheet .publish-btn").addEventListener("click", saveParentUpdate);
-    document.querySelector("#homeworkSheet .publish-btn").addEventListener("click", saveHomework);
-    document.querySelector("#badgeSheet .publish-btn").addEventListener("click", awardBadge);
+  document.querySelectorAll("[data-sheet]").forEach(button => {
+    button.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      openSheet(button.dataset.sheet);
+    });
+  });
 
-    const publishSessionButton = document.getElementById("publishSessionSummary");
+  document.querySelectorAll(".dog-action").forEach(button => {
+    button.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
 
-    if (publishSessionButton) {
-      publishSessionButton.addEventListener("click", () => {
-        alert("Session summary published.");
-        closeSheets();
-      });
-    }
+      const card = button.closest(".dog-card");
+      selectedDogName = card?.querySelector("h4")?.textContent?.trim() || "Luna";
+      openSheet(button.dataset.sheet);
+    });
+  });
 
-    updateAttendanceSummary();
-    lucide.createIcons();
-  </script>
+  badgeChoiceButtons.forEach(button => {
+    button.addEventListener("click", event => {
+      event.preventDefault();
+
+      badgeChoiceButtons.forEach(chip => chip.classList.remove("selected"));
+      button.classList.add("selected");
+      selectedBadgeName = button.dataset.badgeName;
+    });
+  });
+
+  closeButtons.forEach(button => button.addEventListener("click", closeSheets));
+
+  sheets.forEach(sheet => {
+    sheet.addEventListener("click", event => {
+      if (event.target === sheet) closeSheets();
+    });
+  });
+
+  document.getElementById("backToClass").addEventListener("click", event => {
+    event.preventDefault();
+    openSheet("sessionSheet");
+  });
+
+  document.querySelector("#noteSheet .publish-btn").addEventListener("click", saveParentUpdate);
+  document.querySelector("#homeworkSheet .publish-btn").addEventListener("click", saveHomework);
+  document.querySelector("#badgeSheet .publish-btn").addEventListener("click", awardBadge);
+
+  const publishSessionButton = document.getElementById("publishSessionSummary");
+
+  if (publishSessionButton) {
+    publishSessionButton.addEventListener("click", () => {
+      alert("Session completed.");
+      closeSheets();
+    });
+  }
+
+  loadCurrentSession();
+  lucide.createIcons();
+</script>
 </body>
 </html>
