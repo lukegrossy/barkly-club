@@ -2,36 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Trainer Portal | Barkly Schools</title>
-
   <link rel="stylesheet" href="design-system.css" />
 
   <style>
-    body {
-      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
-    }
-
-    .dashboard {
-      max-width: var(--content-width);
-      margin: 0 auto;
-    }
+    body { padding: max(26px, env(safe-area-inset-top)) 20px 110px; }
+    .dashboard { max-width: var(--content-width); margin: 0 auto; }
 
     .topbar {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       margin-bottom: var(--space-lg);
-    }
-
-    .topbar-left {
-      display: flex;
-      flex-direction: column;
     }
 
     .brand-row {
@@ -41,33 +24,10 @@
       margin-bottom: 10px;
     }
 
-    .header-icon {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-      opacity: 0.96;
-      flex-shrink: 0;
-    }
-
-    .eyebrow {
-      font-size: var(--text-sm);
-      font-weight: var(--font-heavy);
-      color: var(--sage);
-      margin: 0;
-    }
-
-    .topbar h1 {
-      font-size: var(--display-md);
-      line-height: 1.02;
-      letter-spacing: var(--tracking-display);
-      margin-bottom: var(--space-sm);
-    }
-
-    .topbar-copy {
-      font-size: var(--text-md);
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
+    .header-icon { width: 42px; height: 42px; object-fit: contain; }
+    .eyebrow { font-size: var(--text-sm); font-weight: var(--font-heavy); color: var(--sage); }
+    .topbar h1 { font-size: var(--display-md); line-height: 1.02; letter-spacing: var(--tracking-display); margin-bottom: var(--space-sm); }
+    .topbar-copy { font-size: var(--text-md); color: var(--text-secondary); line-height: 1.5; }
 
     .avatar {
       width: 48px;
@@ -82,60 +42,57 @@
       flex-shrink: 0;
     }
 
-    .page {
-      display: none;
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-sm);
     }
 
-    .page.active {
-      display: block;
-    }
+    .section-head h3 { font-size: var(--text-xl); letter-spacing: var(--tracking-tight); }
 
-    .session-hero {
+    .session-card {
       display: block;
+      padding: 24px;
       text-decoration: none;
       color: inherit;
-      padding: 24px;
       margin-bottom: var(--space-xl);
+    }
+
+    .session-card h2 {
+      color: white;
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-md);
     }
 
     .session-top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: var(--space-md);
     }
 
     .session-pill {
       background: rgba(255,255,255,0.14);
-      color: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
+      color: white;
     }
 
     .session-status {
-      color: rgba(255,255,255,0.72);
       font-size: var(--text-sm);
+      color: rgba(255,255,255,0.72);
       font-weight: var(--font-bold);
-    }
-
-    .session-hero h2 {
-      color: white;
-      font-size: var(--display-md);
-      line-height: 1.02;
-      letter-spacing: var(--tracking-display);
-      margin-bottom: var(--space-sm);
-    }
-
-    .session-hero p {
-      color: rgba(255,255,255,0.76);
-      font-size: var(--text-md);
-      line-height: 1.6;
     }
 
     .session-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: var(--space-md);
+      margin-bottom: var(--space-md);
     }
 
     .meta-pill {
@@ -145,34 +102,21 @@
       padding: 10px 14px;
       border-radius: var(--radius-pill);
       background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.76);
+      color: rgba(255,255,255,0.82);
       font-size: var(--text-sm);
       font-weight: var(--font-bold);
     }
 
-    .meta-pill svg {
-      width: 16px;
-      height: 16px;
-      stroke-width: 2.2;
-    }
+    .meta-pill svg { width: 16px; height: 16px; stroke-width: 2.2; }
 
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: var(--space-sm);
-    }
-
-    .section-head h3 {
-      font-size: var(--text-xl);
-      letter-spacing: var(--tracking-tight);
-    }
-
-    .section-head button {
+    .open-session-btn {
+      width: 100%;
+      height: 52px;
       border: none;
-      background: transparent;
-      color: var(--sage);
-      font-size: var(--text-sm);
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.92);
+      color: var(--navy);
+      font-size: var(--text-md);
       font-weight: var(--font-heavy);
     }
 
@@ -187,14 +131,11 @@
     .trainer-card {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 14px;
       padding: 16px;
       text-decoration: none;
       color: inherit;
-    }
-
-    .row-card {
-      justify-content: space-between;
     }
 
     .row-left {
@@ -215,21 +156,17 @@
       flex-shrink: 0;
     }
 
-    .card-icon svg {
-      width: 22px;
-      height: 22px;
-      stroke-width: 2.2;
-    }
+    .card-icon svg { width: 22px; height: 22px; stroke-width: 2.2; }
 
-    .trainer-card h4,
     .row-card h4,
+    .trainer-card h4,
     .dog-card h4 {
       font-size: 16px;
       margin-bottom: 4px;
     }
 
-    .trainer-card p,
     .row-card p,
+    .trainer-card p,
     .dog-card p {
       font-size: var(--text-sm);
       color: var(--text-secondary);
@@ -238,40 +175,9 @@
 
     .row-status {
       font-size: var(--text-sm);
+      color: var(--sage);
       font-weight: var(--font-heavy);
-      color: var(--sage);
       white-space: nowrap;
-    }
-
-    .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-sm);
-      margin-bottom: var(--space-xl);
-    }
-
-    .quick-action {
-      border: none;
-      padding: 18px;
-      text-align: left;
-      color: inherit;
-      min-height: 104px;
-    }
-
-    .quick-action i {
-      color: var(--sage);
-      margin-bottom: var(--space-sm);
-    }
-
-    .quick-action h4 {
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
-
-    .quick-action p {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
-      line-height: 1.35;
     }
 
     .dog-search {
@@ -295,7 +201,6 @@
 
     .dog-card-top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
       gap: 14px;
       margin-bottom: var(--space-sm);
@@ -305,23 +210,6 @@
       display: flex;
       align-items: center;
       gap: 14px;
-    }
-
-    .dog-avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: var(--radius-md);
-      background: rgba(138,166,143,0.12);
-      color: var(--sage);
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-    }
-
-    .dog-avatar svg {
-      width: 25px;
-      height: 25px;
-      stroke-width: 2.1;
     }
 
     .dog-pill {
@@ -361,9 +249,7 @@
       backdrop-filter: blur(8px);
     }
 
-    .sheet-overlay.active {
-      display: flex;
-    }
+    .sheet-overlay.active { display: flex; }
 
     .sheet {
       width: 100%;
@@ -384,10 +270,7 @@
       margin-bottom: var(--space-lg);
     }
 
-    .sheet-head h3 {
-      font-size: var(--text-xl);
-      letter-spacing: var(--tracking-tight);
-    }
+    .sheet-head h3 { font-size: var(--text-xl); letter-spacing: var(--tracking-tight); }
 
     .close-sheet {
       width: 40px;
@@ -454,123 +337,49 @@
       font-weight: var(--font-heavy);
     }
 
-    .bottom-nav {
-      max-width: 340px;
-    }
-
-    .bottom-nav-item {
-      min-width: 96px;
-    }
+    .bottom-nav { max-width: 340px; }
+    .bottom-nav-item { min-width: 96px; }
   </style>
 </head>
 
 <body>
-
   <main class="dashboard fade-in">
-
     <header class="topbar">
-      <div class="topbar-left">
+      <div>
         <div class="brand-row">
           <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
           <p class="eyebrow">Barkly Schools</p>
         </div>
 
         <h1>Good afternoon,<br />Luke</h1>
-
-        <p class="topbar-copy">
-          Your sessions are ready for today.
-        </p>
+        <p class="topbar-copy">Your sessions are ready for today.</p>
       </div>
 
       <div class="avatar">LG</div>
     </header>
 
     <section class="page active" id="sessions">
-
-      <a href="#" class="session-hero hero-card lift-card" data-sheet="dogSheet">
-        <div class="session-top">
-          <span class="pill session-pill">Live session</span>
-          <span class="session-status">9 checked in · 3 arriving</span>
-        </div>
-
-        <h2>Puppy confidence class</h2>
-
-        <p>
-          Puppies are settling calmly today with strong engagement during recall and socialisation exercises.
-        </p>
-
-        <div class="session-meta">
-          <div class="meta-pill"><i data-lucide="users"></i>12 puppies</div>
-          <div class="meta-pill"><i data-lucide="clock-3"></i>4:30 PM</div>
-          <div class="meta-pill"><i data-lucide="sparkles"></i>Calm energy</div>
-        </div>
-      </a>
-
       <section>
         <div class="section-head">
-          <h3>Quick actions</h3>
+          <h3>Today’s sessions</h3>
         </div>
 
-        <div class="quick-actions">
-          <button class="quick-action glass-card lift-card" data-sheet="noteSheet">
-            <i data-lucide="message-circle"></i>
-            <h4>Add note</h4>
-            <p>Record a parent update or private trainer note.</p>
+        <div class="session-card hero-card lift-card">
+          <div class="session-top">
+            <span class="pill session-pill">Current session</span>
+            <span class="session-status">9 checked in · 3 arriving</span>
+          </div>
+
+          <h2>Puppy confidence class</h2>
+
+          <div class="session-meta">
+            <div class="meta-pill"><i data-lucide="clock-3"></i>4:30 PM</div>
+            <div class="meta-pill"><i data-lucide="users"></i>12 enrolled</div>
+          </div>
+
+          <button class="open-session-btn" data-sheet="sessionSheet">
+            Open session
           </button>
-
-          <button class="quick-action glass-card lift-card" data-sheet="homeworkSheet">
-            <i data-lucide="clipboard-check"></i>
-            <h4>Homework</h4>
-            <p>Assign homework to Luna or the current dog.</p>
-          </button>
-
-          <button class="quick-action glass-card lift-card" data-sheet="completeSheet">
-            <i data-lucide="check-circle-2"></i>
-            <h4>Complete</h4>
-            <p>Finish session and publish updates.</p>
-          </button>
-        </div>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <h3>Session roster</h3>
-          <button data-sheet="completeSheet">Complete session</button>
-        </div>
-
-        <div class="card-list">
-          <a href="#" class="row-card glass-card lift-card" data-sheet="dogSheet">
-            <div class="row-left">
-              <div class="card-icon"><i data-lucide="dog"></i></div>
-              <div>
-                <h4>Luna</h4>
-                <p>Settled faster today · parent update drafted</p>
-              </div>
-            </div>
-            <div class="row-status">Checked in</div>
-          </a>
-
-          <a href="#" class="row-card glass-card lift-card" data-sheet="dogSheet">
-            <div class="row-left">
-              <div class="card-icon"><i data-lucide="dog"></i></div>
-              <div>
-                <h4>Bella</h4>
-                <p>Calm greeting improvement</p>
-              </div>
-            </div>
-            <div class="row-status">Checked in</div>
-          </a>
-
-          <a href="#" class="row-card glass-card lift-card" data-sheet="dogSheet">
-            <div class="row-left">
-              <div class="card-icon"><i data-lucide="dog"></i></div>
-              <div>
-                <h4>Archie</h4>
-                <p>Not arrived yet</p>
-              </div>
-            </div>
-            <div class="row-status">Arriving</div>
-          </a>
         </div>
       </section>
 
@@ -580,7 +389,7 @@
         </div>
 
         <div class="card-list">
-          <a href="#" class="row-card glass-card lift-card">
+          <a href="#" class="row-card glass-card lift-card" data-sheet="sessionSheet">
             <div class="row-left">
               <div class="card-icon"><i data-lucide="calendar-check"></i></div>
               <div>
@@ -591,7 +400,7 @@
             <div class="row-status">6:00 PM</div>
           </a>
 
-          <a href="#" class="row-card glass-card lift-card">
+          <a href="#" class="row-card glass-card lift-card" data-sheet="sessionSheet">
             <div class="row-left">
               <div class="card-icon"><i data-lucide="target"></i></div>
               <div>
@@ -603,88 +412,59 @@
           </a>
         </div>
       </section>
-
     </section>
 
     <section class="page" id="dogs">
-
       <input class="dog-search" type="search" placeholder="Search dogs" />
 
-      <section>
-        <div class="section-head">
-          <h3>Dogs</h3>
-        </div>
+      <div class="section-head">
+        <h3>Dogs</h3>
+      </div>
 
-        <div class="card-list">
-
-          <a href="#" class="dog-card glass-card lift-card">
-            <div class="dog-card-top">
-              <div class="dog-left">
-                <div class="dog-avatar"><i data-lucide="dog"></i></div>
-                <div>
-                  <h4>Luna</h4>
-                  <p>Groodle · Puppy Foundations</p>
-                </div>
+      <div class="card-list">
+        <a href="#" class="dog-card glass-card lift-card">
+          <div class="dog-card-top">
+            <div class="dog-left">
+              <div class="card-icon"><i data-lucide="dog"></i></div>
+              <div>
+                <h4>Luna</h4>
+                <p>Groodle · Puppy Foundations</p>
               </div>
-              <div class="dog-pill">Active</div>
             </div>
+            <div class="dog-pill">Active</div>
+          </div>
 
-            <p>Last update: settling faster around other dogs. Homework assigned.</p>
+          <p>Last update: settling faster around other dogs. Homework assigned.</p>
 
-            <div class="dog-actions">
-              <button class="dog-action" data-sheet="noteSheet">Note</button>
-              <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
-              <button class="dog-action" data-sheet="badgeSheet">Badge</button>
-            </div>
-          </a>
+          <div class="dog-actions">
+            <button class="dog-action" data-sheet="noteSheet">Note</button>
+            <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
+            <button class="dog-action" data-sheet="badgeSheet">Badge</button>
+          </div>
+        </a>
 
-          <a href="#" class="dog-card glass-card lift-card">
-            <div class="dog-card-top">
-              <div class="dog-left">
-                <div class="dog-avatar"><i data-lucide="dog"></i></div>
-                <div>
-                  <h4>Bella</h4>
-                  <p>Cavoodle · Puppy Foundations</p>
-                </div>
+        <a href="#" class="dog-card glass-card lift-card">
+          <div class="dog-card-top">
+            <div class="dog-left">
+              <div class="card-icon"><i data-lucide="dog"></i></div>
+              <div>
+                <h4>Bella</h4>
+                <p>Cavoodle · Puppy Foundations</p>
               </div>
-              <div class="dog-pill">Active</div>
             </div>
+            <div class="dog-pill">Active</div>
+          </div>
 
-            <p>Last update: calm greeting improvement during arrivals.</p>
+          <p>Last update: calm greeting improvement during arrivals.</p>
 
-            <div class="dog-actions">
-              <button class="dog-action" data-sheet="noteSheet">Note</button>
-              <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
-              <button class="dog-action" data-sheet="badgeSheet">Badge</button>
-            </div>
-          </a>
-
-          <a href="#" class="dog-card glass-card lift-card">
-            <div class="dog-card-top">
-              <div class="dog-left">
-                <div class="dog-avatar"><i data-lucide="dog"></i></div>
-                <div>
-                  <h4>Charlie</h4>
-                  <p>Labrador · Recall Workshop</p>
-                </div>
-              </div>
-              <div class="dog-pill">Active</div>
-            </div>
-
-            <p>Last update: strong focus with gentle reward prompts.</p>
-
-            <div class="dog-actions">
-              <button class="dog-action" data-sheet="noteSheet">Note</button>
-              <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
-              <button class="dog-action" data-sheet="badgeSheet">Badge</button>
-            </div>
-          </a>
-
-        </div>
-      </section>
-
+          <div class="dog-actions">
+            <button class="dog-action" data-sheet="noteSheet">Note</button>
+            <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
+            <button class="dog-action" data-sheet="badgeSheet">Badge</button>
+          </div>
+        </a>
+      </div>
     </section>
-
   </main>
 
   <nav class="bottom-nav">
@@ -699,37 +479,78 @@
     </a>
   </nav>
 
+  <div class="sheet-overlay" id="sessionSheet">
+    <div class="sheet">
+      <div class="sheet-head">
+        <h3>Puppy confidence class</h3>
+        <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
+      </div>
+
+      <div class="section-head">
+        <h3>Attendance</h3>
+      </div>
+
+      <div class="card-list">
+        <button class="row-card glass-card lift-card roster-dog" data-dog-name="Luna">
+          <div class="row-left">
+            <div class="card-icon"><i data-lucide="dog"></i></div>
+            <div>
+              <h4>Luna</h4>
+              <p>Groodle · checked in</p>
+            </div>
+          </div>
+          <div class="row-status">Present</div>
+        </button>
+
+        <button class="row-card glass-card lift-card roster-dog" data-dog-name="Bella">
+          <div class="row-left">
+            <div class="card-icon"><i data-lucide="dog"></i></div>
+            <div>
+              <h4>Bella</h4>
+              <p>Cavoodle · checked in</p>
+            </div>
+          </div>
+          <div class="row-status">Present</div>
+        </button>
+
+        <button class="row-card glass-card lift-card roster-dog" data-dog-name="Archie">
+          <div class="row-left">
+            <div class="card-icon"><i data-lucide="dog"></i></div>
+            <div>
+              <h4>Archie</h4>
+              <p>Not arrived yet</p>
+            </div>
+          </div>
+          <div class="row-status">Arriving</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="sheet-overlay" id="dogSheet">
     <div class="sheet">
       <div class="sheet-head">
-        <h3>Luna quick card</h3>
-        <button class="close-sheet" data-close-sheet>
-          <i data-lucide="x"></i>
-        </button>
+        <h3 id="dogSheetTitle">Dog quick card</h3>
+        <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
       <div class="trainer-card glass-card">
-        <div class="card-icon"><i data-lucide="dog"></i></div>
-        <div>
-          <h4>Luna</h4>
-          <p>Groodle · Puppy Foundations · parent updates visible</p>
+        <div class="row-left">
+          <div class="card-icon"><i data-lucide="dog"></i></div>
+          <div>
+            <h4 id="dogSheetName">Luna</h4>
+            <p>Parent updates visible</p>
+          </div>
         </div>
       </div>
 
-      <div class="sheet-section-title">Quick observations</div>
+      <div class="sheet-section-title">Actions</div>
 
       <div class="chip-grid">
-        <button class="chip">Settled faster</button>
-        <button class="chip">Recall improved</button>
-        <button class="chip">Great focus</button>
-        <button class="chip">Needs lead work</button>
-        <button class="chip">Nervous on arrival</button>
-        <button class="chip">Calm greeting</button>
+        <button class="chip" data-sheet="noteSheet">Add note</button>
+        <button class="chip" data-sheet="homeworkSheet">Assign homework</button>
+        <button class="chip" data-sheet="badgeSheet">Award badge</button>
       </div>
-
-      <button class="publish-btn" data-sheet="noteSheet">
-        Add note for Luna
-      </button>
     </div>
   </div>
 
@@ -737,16 +558,11 @@
     <div class="sheet">
       <div class="sheet-head">
         <h3>Trainer note</h3>
-        <button class="close-sheet" data-close-sheet>
-          <i data-lucide="x"></i>
-        </button>
+        <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
       <div class="sheet-section-title">Parent update</div>
       <textarea class="note-box">Luna is progressing beautifully and settling faster around other dogs.</textarea>
-
-      <div class="sheet-section-title">Private trainer note</div>
-      <textarea class="note-box" placeholder="Internal note only. Not shown to parents."></textarea>
 
       <button class="publish-btn">Save note</button>
     </div>
@@ -756,19 +572,7 @@
     <div class="sheet">
       <div class="sheet-head">
         <h3>Assign homework</h3>
-        <button class="close-sheet" data-close-sheet>
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-
-      <div class="sheet-section-title">Homework templates</div>
-
-      <div class="chip-grid">
-        <button class="chip selected">Calm greetings</button>
-        <button class="chip">Recall practice</button>
-        <button class="chip">Loose lead walking</button>
-        <button class="chip">Settle on mat</button>
-        <button class="chip">Focus around distractions</button>
+        <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
       <div class="sheet-section-title">Homework note</div>
@@ -782,9 +586,7 @@
     <div class="sheet">
       <div class="sheet-head">
         <h3>Award badge</h3>
-        <button class="close-sheet" data-close-sheet>
-          <i data-lucide="x"></i>
-        </button>
+        <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
       <div class="sheet-section-title">Available badges</div>
@@ -792,50 +594,10 @@
       <div class="chip-grid" id="badgeChoices">
         <button class="chip selected" data-badge-name="Graduate">Graduate</button>
         <button class="chip" data-badge-name="Off Leash Ready">Off Leash Ready</button>
-        <button class="chip" data-badge-name="Calm Café Dog">Calm Café Dog</button>
-        <button class="chip" data-badge-name="Adventure Dog">Adventure Dog</button>
+        <button class="chip" data-badge-name="Recall Rookie">Recall Rookie</button>
       </div>
 
       <button class="publish-btn">Award badge</button>
-    </div>
-  </div>
-
-  <div class="sheet-overlay" id="completeSheet">
-    <div class="sheet">
-      <div class="sheet-head">
-        <h3>Complete session</h3>
-        <button class="close-sheet" data-close-sheet>
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-
-      <div class="card-list">
-        <div class="trainer-card glass-card">
-          <div class="card-icon"><i data-lucide="users"></i></div>
-          <div>
-            <h4>Attendance</h4>
-            <p>9 checked in · 3 arriving · 0 absent</p>
-          </div>
-        </div>
-
-        <div class="trainer-card glass-card">
-          <div class="card-icon"><i data-lucide="message-circle"></i></div>
-          <div>
-            <h4>Parent updates</h4>
-            <p>3 updates drafted for today’s session.</p>
-          </div>
-        </div>
-
-        <div class="trainer-card glass-card">
-          <div class="card-icon"><i data-lucide="badge-check"></i></div>
-          <div>
-            <h4>Badges</h4>
-            <p>2 badges ready to publish.</p>
-          </div>
-        </div>
-      </div>
-
-      <button class="publish-btn">Publish session updates</button>
     </div>
   </div>
 
@@ -844,18 +606,14 @@
 
   <script>
     const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
-
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
     const pages = document.querySelectorAll(".page");
-    const sheetButtons = document.querySelectorAll("[data-sheet]");
-    const closeButtons = document.querySelectorAll("[data-close-sheet]");
     const sheets = document.querySelectorAll(".sheet-overlay");
-    const dogActions = document.querySelectorAll(".dog-action");
+    const closeButtons = document.querySelectorAll("[data-close-sheet]");
     const badgeChoiceButtons = document.querySelectorAll("#badgeChoices .chip");
 
     let selectedDogName = "Luna";
@@ -869,7 +627,6 @@
         .single();
 
       if (error) {
-        console.error("Dog lookup failed:", error);
         alert(`Could not find ${selectedDogName}.`);
         return null;
       }
@@ -881,15 +638,8 @@
       const dog = await getSelectedDog();
       if (!dog) return;
 
-      const text = document
-        .querySelector("#noteSheet .note-box")
-        ?.value
-        ?.trim();
-
-      if (!text) {
-        alert("Add a note first.");
-        return;
-      }
+      const text = document.querySelector("#noteSheet .note-box")?.value?.trim();
+      if (!text) return;
 
       const { error } = await db.from("parent_updates").insert({
         school_id: dog.school_id,
@@ -899,7 +649,6 @@
       });
 
       if (error) {
-        console.error("Parent update failed:", error);
         alert("Could not save update.");
         return;
       }
@@ -912,15 +661,8 @@
       const dog = await getSelectedDog();
       if (!dog) return;
 
-      const text = document
-        .querySelector("#homeworkSheet .note-box")
-        ?.value
-        ?.trim();
-
-      if (!text) {
-        alert("Add homework first.");
-        return;
-      }
+      const text = document.querySelector("#homeworkSheet .note-box")?.value?.trim();
+      if (!text) return;
 
       const { error } = await db.from("homework_assignments").insert({
         school_id: dog.school_id,
@@ -930,7 +672,6 @@
       });
 
       if (error) {
-        console.error("Homework save failed:", error);
         alert("Could not assign homework.");
         return;
       }
@@ -951,7 +692,6 @@
         .single();
 
       if (badgeError || !badge) {
-        console.error("Badge lookup failed:", badgeError);
         alert(`Could not find ${selectedBadgeName}.`);
         return;
       }
@@ -964,7 +704,6 @@
       });
 
       if (error) {
-        console.error("Badge award failed:", error);
         alert("Could not award badge. It may already be awarded.");
         return;
       }
@@ -973,33 +712,9 @@
       closeSheets();
     }
 
-    function setSelectedDogFromCard(button) {
-      const dogCard = button.closest(".dog-card");
-      const dogName =
-        dogCard?.querySelector("h4")?.textContent?.trim() || "Luna";
-
-      selectedDogName = dogName;
-    }
-
-    function updateSheetTitles() {
-      const noteTitle = document.querySelector("#noteSheet .sheet-head h3");
-      const homeworkTitle = document.querySelector("#homeworkSheet .sheet-head h3");
-      const badgeTitle = document.querySelector("#badgeSheet .sheet-head h3");
-
-      if (noteTitle) noteTitle.textContent = `Trainer note for ${selectedDogName}`;
-      if (homeworkTitle) homeworkTitle.textContent = `Assign homework to ${selectedDogName}`;
-      if (badgeTitle) badgeTitle.textContent = `Award badge to ${selectedDogName}`;
-    }
-
     function openTab(tab) {
-      navItems.forEach(item => {
-        item.classList.toggle("active", item.dataset.tab === tab);
-      });
-
-      pages.forEach(page => {
-        page.classList.toggle("active", page.id === tab);
-      });
-
+      navItems.forEach(item => item.classList.toggle("active", item.dataset.tab === tab));
+      pages.forEach(page => page.classList.toggle("active", page.id === tab));
       window.scrollTo({ top: 0, behavior: "smooth" });
       lucide.createIcons();
     }
@@ -1007,14 +722,19 @@
     function openSheet(id) {
       sheets.forEach(sheet => sheet.classList.remove("active"));
 
-      updateSheetTitles();
+      const titleMap = {
+        noteSheet: `Trainer note for ${selectedDogName}`,
+        homeworkSheet: `Assign homework to ${selectedDogName}`,
+        badgeSheet: `Award badge to ${selectedDogName}`
+      };
+
+      const title = document.querySelector(`#${id} .sheet-head h3`);
+      if (title && titleMap[id]) title.textContent = titleMap[id];
 
       const sheet = document.getElementById(id);
+      if (sheet) sheet.classList.add("active");
 
-      if (sheet) {
-        sheet.classList.add("active");
-        lucide.createIcons();
-      }
+      lucide.createIcons();
     }
 
     function closeSheets() {
@@ -1028,23 +748,30 @@
       });
     });
 
-    sheetButtons.forEach(button => {
-      if (button.classList.contains("dog-action")) return;
-
+    document.querySelectorAll("[data-sheet]").forEach(button => {
       button.addEventListener("click", event => {
         event.preventDefault();
         event.stopPropagation();
-        selectedDogName = "Luna";
         openSheet(button.dataset.sheet);
       });
     });
 
-    dogActions.forEach(button => {
+    document.querySelectorAll(".roster-dog").forEach(button => {
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        selectedDogName = button.dataset.dogName || "Luna";
+        document.getElementById("dogSheetName").textContent = selectedDogName;
+        document.getElementById("dogSheetTitle").textContent = `${selectedDogName} quick card`;
+        openSheet("dogSheet");
+      });
+    });
+
+    document.querySelectorAll(".dog-action").forEach(button => {
       button.addEventListener("click", event => {
         event.preventDefault();
         event.stopPropagation();
-
-        setSelectedDogFromCard(button);
+        const card = button.closest(".dog-card");
+        selectedDogName = card?.querySelector("h4")?.textContent?.trim() || "Luna";
         openSheet(button.dataset.sheet);
       });
     });
@@ -1052,45 +779,25 @@
     badgeChoiceButtons.forEach(button => {
       button.addEventListener("click", event => {
         event.preventDefault();
-
-        badgeChoiceButtons.forEach(chip => {
-          chip.classList.remove("selected");
-        });
-
+        badgeChoiceButtons.forEach(chip => chip.classList.remove("selected"));
         button.classList.add("selected");
         selectedBadgeName = button.dataset.badgeName;
       });
     });
 
-    closeButtons.forEach(button => {
-      button.addEventListener("click", closeSheets);
-    });
+    closeButtons.forEach(button => button.addEventListener("click", closeSheets));
 
     sheets.forEach(sheet => {
       sheet.addEventListener("click", event => {
-        if (event.target === sheet) {
-          closeSheets();
-        }
+        if (event.target === sheet) closeSheets();
       });
     });
 
-    const noteSaveButton = document.querySelector("#noteSheet .publish-btn");
-    if (noteSaveButton) {
-      noteSaveButton.addEventListener("click", saveParentUpdate);
-    }
-
-    const homeworkSaveButton = document.querySelector("#homeworkSheet .publish-btn");
-    if (homeworkSaveButton) {
-      homeworkSaveButton.addEventListener("click", saveHomework);
-    }
-
-    const badgeAwardButton = document.querySelector("#badgeSheet .publish-btn");
-    if (badgeAwardButton) {
-      badgeAwardButton.addEventListener("click", awardBadge);
-    }
+    document.querySelector("#noteSheet .publish-btn").addEventListener("click", saveParentUpdate);
+    document.querySelector("#homeworkSheet .publish-btn").addEventListener("click", saveHomework);
+    document.querySelector("#badgeSheet .publish-btn").addEventListener("click", awardBadge);
 
     lucide.createIcons();
   </script>
-
 </body>
 </html>
