@@ -757,7 +757,6 @@
   let selectedDogName = "Luna";
   let selectedBadgeName = "Graduate";
   let currentSessionId = null;
-  let currentSchoolId = null;
 
   async function loadCurrentSession() {
     const { data, error } = await db
@@ -773,79 +772,28 @@
 
     currentSessionId = data.session_id;
 
-    const sessionTitle =
-      data.class_name || "Current session";
+    const start = data.starts_at ? new Date(data.starts_at) : null;
+    const dateLabel = start ? start.toLocaleDateString("en-AU", { weekday: "short" }) : "Today";
+    const timeLabel = start ? start.toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit" }) : "Time TBC";
 
-    const location =
-      data.location || "Training studio";
+    document.querySelector(".session-card h2").textContent = data.class_name || "Current session";
+    document.querySelector("#heroCheckin").textContent = `${data.checked_in_count || 0}/${data.enrolled_count || 0} checked in`;
+    document.querySelector("#sheetCheckin").textContent = `${data.checked_in_count || 0}/${data.enrolled_count || 0}`;
 
-    const program =
-      data.program_name || "Training program";
+    document.querySelector("#sessionSheet .sheet-head h3").textContent = data.class_name || "Current session";
+    document.querySelector("#sessionSheet .trainer-card h4").textContent = `${dateLabel} · ${timeLabel}`;
+    document.querySelector("#sessionSheet .trainer-card p").textContent = `${data.location || "Training studio"} · ${data.program_name || "Training program"}`;
 
-    const checked =
-      data.checked_in_count || 0;
-
-    const enrolled =
-      data.enrolled_count || 0;
-
-    const start =
-      data.starts_at ? new Date(data.starts_at) : null;
-
-    const dateLabel =
-      start
-        ? start.toLocaleDateString("en-AU", { weekday: "short" })
-        : "Today";
-
-    const timeLabel =
-      start
-        ? start.toLocaleTimeString("en-AU", {
-            hour: "numeric",
-            minute: "2-digit"
-          })
-        : "Time TBC";
-
-    document.querySelector(".session-card h2").textContent =
-      sessionTitle;
-
-    document.querySelector("#heroCheckin").textContent =
-      `${checked}/${enrolled} checked in`;
-
-    document.querySelector("#sheetCheckin").textContent =
-      `${checked}/${enrolled}`;
-
-    const sessionSheetTitle =
-      document.querySelector("#sessionSheet .sheet-head h3");
-
-    if (sessionSheetTitle) {
-      sessionSheetTitle.textContent = sessionTitle;
-    }
-
-    const sessionMeta =
-      document.querySelector("#sessionSheet .trainer-card h4");
-
-    if (sessionMeta) {
-      sessionMeta.textContent = `${dateLabel} · ${timeLabel}`;
-    }
-
-    const sessionSub =
-      document.querySelector("#sessionSheet .trainer-card p");
-
-    if (sessionSub) {
-      sessionSub.textContent = `${location} · ${program}`;
-    }
-
-    const heroMeta =
-      document.querySelectorAll(".session-meta .meta-pill");
+    const heroMeta = document.querySelectorAll(".session-meta .meta-pill");
 
     if (heroMeta.length >= 3) {
       heroMeta[0].innerHTML = `<i data-lucide="calendar"></i>${dateLabel}`;
       heroMeta[1].innerHTML = `<i data-lucide="clock-3"></i>${timeLabel}`;
-      heroMeta[2].innerHTML = `<i data-lucide="map-pin"></i>${location}`;
+      heroMeta[2].innerHTML = `<i data-lucide="map-pin"></i>${data.location || "Training studio"}`;
     }
 
-    lucide.createIcons();
-
     await loadSessionRoster();
+    lucide.createIcons();
   }
 
   async function loadSessionRoster() {
@@ -862,49 +810,31 @@
       return;
     }
 
-    const rosterList =
-      document.querySelector("#sessionSheet .card-list");
-
+    const rosterList = document.querySelector("#sessionSheet .card-list");
     if (!rosterList) return;
 
     rosterList.innerHTML = "";
 
     data.forEach(row => {
-      const isPresent =
-        row.attendance_status === "present";
-
-      const statusText =
-        isPresent
-          ? `${row.breed || "Dog"} · checked in`
-          : "Not checked in";
-
-      const buttonText =
-        isPresent ? "Undo" : "Check in";
-
-      const buttonClass =
-        isPresent ? "check-btn present" : "check-btn";
+      const isPresent = row.attendance_status === "present";
 
       rosterList.innerHTML += `
         <div class="row-card glass-card lift-card roster-dog"
           data-dog-id="${row.dog_id}"
-          data-dog-name="${row.dog_name}"
-          data-school-id="${row.school_id || ""}"
-        >
+          data-dog-name="${row.dog_name}">
           <div class="row-left">
             <div class="card-icon"><i data-lucide="dog"></i></div>
             <div>
               <h4>${row.dog_name}</h4>
-              <p>${statusText}</p>
+              <p>${isPresent ? `${row.breed || "Dog"} · checked in` : "Not checked in"}</p>
             </div>
           </div>
 
           <button
-            class="${buttonClass}"
+            class="${isPresent ? "check-btn present" : "check-btn"}"
             data-present="${isPresent}"
-            data-dog-id="${row.dog_id}"
-            data-school-id="${row.school_id || ""}"
-          >
-            ${buttonText}
+            data-dog-id="${row.dog_id}">
+            ${isPresent ? "Undo" : "Check in"}
           </button>
         </div>
       `;
@@ -921,13 +851,9 @@
     const checkedIn = [...buttons].filter(button => button.dataset.present === "true").length;
     const notCheckedIn = total - checkedIn;
 
-    const hero = document.getElementById("heroCheckin");
-    const sheet = document.getElementById("sheetCheckin");
-    const complete = document.getElementById("completeAttendance");
-
-    if (hero) hero.textContent = `${checkedIn}/${total} checked in`;
-    if (sheet) sheet.textContent = `${checkedIn}/${total}`;
-    if (complete) complete.textContent = `${checkedIn} checked in · ${notCheckedIn} not checked in`;
+    document.getElementById("heroCheckin").textContent = `${checkedIn}/${total} checked in`;
+    document.getElementById("sheetCheckin").textContent = `${checkedIn}/${total}`;
+    document.getElementById("completeAttendance").textContent = `${checkedIn} checked in · ${notCheckedIn} not checked in`;
   }
 
   function openTab(tab) {
@@ -973,6 +899,74 @@
     }
 
     return data;
+  }
+
+  async function getDogById(dogId) {
+    const { data, error } = await db
+      .from("dogs")
+      .select("id, school_id, name")
+      .eq("id", dogId)
+      .single();
+
+    if (error) {
+      alert("Could not find dog.");
+      return null;
+    }
+
+    return data;
+  }
+
+  async function toggleAttendance(button) {
+    if (!currentSessionId) {
+      alert("No active session found.");
+      return;
+    }
+
+    const dogId = button.dataset.dogId;
+    const isPresent = button.dataset.present === "true";
+
+    if (isPresent) {
+      const { error } = await db
+        .from("session_attendance")
+        .delete()
+        .eq("session_id", currentSessionId)
+        .eq("dog_id", dogId);
+
+      if (error) {
+        console.error("Attendance undo failed:", error);
+        alert("Could not undo check-in.");
+        return;
+      }
+
+      await loadSessionRoster();
+      return;
+    }
+
+    const dog = await getDogById(dogId);
+    if (!dog) return;
+
+    const { error } = await db
+      .from("session_attendance")
+      .upsert(
+        {
+          school_id: dog.school_id,
+          session_id: currentSessionId,
+          dog_id: dog.id,
+          status: "present",
+          checked_in_at: new Date().toISOString()
+        },
+        {
+          onConflict: "session_id,dog_id"
+        }
+      );
+
+    if (error) {
+      console.error("Attendance check-in failed:", error);
+      alert("Could not check dog in.");
+      return;
+    }
+
+    await loadSessionRoster();
   }
 
   async function saveParentUpdate() {
@@ -1043,71 +1037,6 @@
     closeSheets();
   }
 
-  async function toggleAttendance(button) {
-    if (!currentSessionId) {
-      alert("No active session found.");
-      return;
-    }
-
-    const dogId =
-      button.dataset.dogId;
-
-    const isPresent =
-      button.dataset.present === "true";
-
-    const row =
-      button.closest(".roster-dog");
-
-    const dogName =
-      row?.dataset.dogName || "Dog";
-
-    const dog =
-      await getDogById(dogId);
-
-    if (!dog) return;
-
-    const nextStatus =
-      isPresent ? "not_checked_in" : "present";
-
-    const payload = {
-      school_id: dog.school_id,
-      session_id: currentSessionId,
-      dog_id: dog.id,
-      status: nextStatus,
-      checked_in_at: nextStatus === "present" ? new Date().toISOString() : null
-    };
-
-    const { error } = await db
-      .from("session_attendance")
-      .upsert(payload, {
-        onConflict: "session_id,dog_id"
-      });
-
-    if (error) {
-      console.error("Attendance update failed:", error);
-      alert("Could not update attendance.");
-      return;
-    }
-
-    await loadSessionRoster();
-  }
-
-  async function getDogById(dogId) {
-    const { data, error } = await db
-      .from("dogs")
-      .select("id, school_id, name")
-      .eq("id", dogId)
-      .single();
-
-    if (error) {
-      console.error("Dog lookup by ID failed:", error);
-      alert("Could not find dog.");
-      return null;
-    }
-
-    return data;
-  }
-
   function attachRosterHandlers() {
     document.querySelectorAll(".roster-dog").forEach(card => {
       card.addEventListener("click", event => {
@@ -1158,7 +1087,6 @@
   badgeChoiceButtons.forEach(button => {
     button.addEventListener("click", event => {
       event.preventDefault();
-
       badgeChoiceButtons.forEach(chip => chip.classList.remove("selected"));
       button.classList.add("selected");
       selectedBadgeName = button.dataset.badgeName;
