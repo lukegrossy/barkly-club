@@ -589,7 +589,9 @@
         </div>
       </div>
 
-      <button class="publish-btn">Complete session</button>
+      <button class="publish-btn" data-sheet="completeSheet">
+        Complete session
+      </button>
     </div>
   </div>
 
@@ -679,6 +681,64 @@
     </div>
   </div>
 
+  <div class="sheet-overlay" id="completeSheet">
+    <div class="sheet">
+      <div class="sheet-head">
+        <div class="sheet-actions">
+          <button class="back-sheet" data-sheet="sessionSheet"><i data-lucide="arrow-left"></i></button>
+          <h3>Complete session</h3>
+        </div>
+        <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
+      </div>
+
+      <div class="card-list">
+        <div class="trainer-card glass-card">
+          <div class="row-left">
+            <div class="card-icon"><i data-lucide="users"></i></div>
+            <div>
+              <h4>Attendance</h4>
+              <p id="completeAttendance">7 checked in · 3 not checked in</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="trainer-card glass-card">
+          <div class="row-left">
+            <div class="card-icon"><i data-lucide="message-circle"></i></div>
+            <div>
+              <h4>Parent updates</h4>
+              <p>Saved during this session</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="trainer-card glass-card">
+          <div class="row-left">
+            <div class="card-icon"><i data-lucide="clipboard-check"></i></div>
+            <div>
+              <h4>Homework</h4>
+              <p>Assigned where needed</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="trainer-card glass-card">
+          <div class="row-left">
+            <div class="card-icon"><i data-lucide="badge-check"></i></div>
+            <div>
+              <h4>Badges</h4>
+              <p>Awarded achievements are visible to parents</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="publish-btn" id="publishSessionSummary">
+        Publish session summary
+      </button>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -696,6 +756,21 @@
 
     let selectedDogName = "Luna";
     let selectedBadgeName = "Graduate";
+
+    function updateAttendanceSummary() {
+      const buttons = document.querySelectorAll(".check-btn");
+      const total = buttons.length;
+      const checkedIn = [...buttons].filter(button => button.dataset.present === "true").length;
+      const notCheckedIn = total - checkedIn;
+
+      const hero = document.getElementById("heroCheckin");
+      const sheet = document.getElementById("sheetCheckin");
+      const complete = document.getElementById("completeAttendance");
+
+      if (hero) hero.textContent = `${checkedIn}/${total} checked in`;
+      if (sheet) sheet.textContent = `${checkedIn}/${total}`;
+      if (complete) complete.textContent = `${checkedIn} checked in · ${notCheckedIn} not checked in`;
+    }
 
     function openTab(tab) {
       navItems.forEach(item => item.classList.toggle("active", item.dataset.tab === tab));
@@ -719,6 +794,7 @@
       const sheet = document.getElementById(id);
       if (sheet) sheet.classList.add("active");
 
+      updateAttendanceSummary();
       lucide.createIcons();
     }
 
@@ -856,7 +932,14 @@
 
         const row = button.closest(".roster-dog");
         const status = row.querySelector("p");
-        status.textContent = isPresent ? "Not arrived yet" : "Checked in";
+
+        const dogName = row.dataset.dogName || "Dog";
+
+        status.textContent = isPresent
+          ? "Not arrived yet"
+          : `${dogName} · checked in`;
+
+        updateAttendanceSummary();
       });
     });
 
@@ -887,6 +970,16 @@
     document.querySelector("#homeworkSheet .publish-btn").addEventListener("click", saveHomework);
     document.querySelector("#badgeSheet .publish-btn").addEventListener("click", awardBadge);
 
+    const publishSessionButton = document.getElementById("publishSessionSummary");
+
+    if (publishSessionButton) {
+      publishSessionButton.addEventListener("click", () => {
+        alert("Session summary published.");
+        closeSheets();
+      });
+    }
+
+    updateAttendanceSummary();
     lucide.createIcons();
   </script>
 </body>
