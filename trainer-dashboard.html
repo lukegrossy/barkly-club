@@ -4,11 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Trainer Portal | Barkly Schools</title>
+
   <link rel="stylesheet" href="design-system.css" />
 
   <style>
-    body { padding: max(26px, env(safe-area-inset-top)) 20px 110px; }
-    .dashboard { max-width: var(--content-width); margin: 0 auto; }
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
 
     .topbar {
       display: flex;
@@ -24,10 +31,31 @@
       margin-bottom: 10px;
     }
 
-    .header-icon { width: 42px; height: 42px; object-fit: contain; }
-    .eyebrow { font-size: var(--text-sm); font-weight: var(--font-heavy); color: var(--sage); }
-    .topbar h1 { font-size: var(--display-md); line-height: 1.02; letter-spacing: var(--tracking-display); margin-bottom: var(--space-sm); }
-    .topbar-copy { font-size: var(--text-md); color: var(--text-secondary); line-height: 1.5; }
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      opacity: 0.96;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+    }
+
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
+
+    .topbar-copy {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
 
     .avatar {
       width: 48px;
@@ -42,8 +70,13 @@
       flex-shrink: 0;
     }
 
-    .page { display: none; }
-    .page.active { display: block; }
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
 
     .section-head {
       display: flex;
@@ -52,28 +85,21 @@
       margin-bottom: var(--space-sm);
     }
 
-    .section-head h3 { font-size: var(--text-xl); letter-spacing: var(--tracking-tight); }
-
-    .session-card {
-      display: block;
-      padding: 24px;
-      text-decoration: none;
-      color: inherit;
-      margin-bottom: var(--space-xl);
+    .section-head h3 {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
     }
 
-    .session-card h2 {
+    .session-card {
+      padding: 24px;
+      margin-bottom: var(--space-xl);
       color: white;
-      font-size: var(--display-md);
-      line-height: 1.02;
-      letter-spacing: var(--tracking-display);
-      margin-bottom: var(--space-md);
     }
 
     .session-top {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       margin-bottom: var(--space-md);
     }
 
@@ -83,9 +109,16 @@
     }
 
     .session-status {
+      color: rgba(255,255,255,0.75);
       font-size: var(--text-sm);
-      color: rgba(255,255,255,0.72);
-      font-weight: var(--font-bold);
+      font-weight: var(--font-heavy);
+    }
+
+    .session-card h2 {
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-md);
     }
 
     .session-meta {
@@ -107,17 +140,31 @@
       font-weight: var(--font-bold);
     }
 
-    .meta-pill svg { width: 16px; height: 16px; stroke-width: 2.2; }
+    .meta-pill svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.2;
+    }
 
-    .open-session-btn {
+    .open-session-btn,
+    .publish-btn {
       width: 100%;
-      height: 52px;
+      height: 54px;
       border: none;
       border-radius: var(--radius-pill);
-      background: rgba(255,255,255,0.92);
-      color: var(--navy);
       font-size: var(--text-md);
       font-weight: var(--font-heavy);
+    }
+
+    .open-session-btn {
+      background: rgba(255,255,255,0.92);
+      color: var(--navy);
+    }
+
+    .publish-btn {
+      margin-top: var(--space-lg);
+      background: var(--navy);
+      color: white;
     }
 
     .card-list {
@@ -129,6 +176,7 @@
 
     .row-card,
     .trainer-card {
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -136,6 +184,8 @@
       padding: 16px;
       text-decoration: none;
       color: inherit;
+      border: none;
+      text-align: left;
     }
 
     .row-left {
@@ -156,7 +206,11 @@
       flex-shrink: 0;
     }
 
-    .card-icon svg { width: 22px; height: 22px; stroke-width: 2.2; }
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
 
     .row-card h4,
     .trainer-card h4,
@@ -175,9 +229,25 @@
 
     .row-status {
       font-size: var(--text-sm);
-      color: var(--sage);
       font-weight: var(--font-heavy);
+      color: var(--sage);
       white-space: nowrap;
+    }
+
+    .check-btn {
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 9px 12px;
+      font-size: var(--text-xs);
+      font-weight: var(--font-heavy);
+      background: rgba(138,166,143,0.14);
+      color: var(--sage);
+      white-space: nowrap;
+    }
+
+    .check-btn.present {
+      background: rgba(15,31,46,0.08);
+      color: var(--navy);
     }
 
     .dog-search {
@@ -249,7 +319,9 @@
       backdrop-filter: blur(8px);
     }
 
-    .sheet-overlay.active { display: flex; }
+    .sheet-overlay.active {
+      display: flex;
+    }
 
     .sheet {
       width: 100%;
@@ -270,9 +342,13 @@
       margin-bottom: var(--space-lg);
     }
 
-    .sheet-head h3 { font-size: var(--text-xl); letter-spacing: var(--tracking-tight); }
+    .sheet-head h3 {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+    }
 
-    .close-sheet {
+    .close-sheet,
+    .back-sheet {
       width: 40px;
       height: 40px;
       border: none;
@@ -281,6 +357,12 @@
       color: var(--navy);
       display: grid;
       place-items: center;
+    }
+
+    .sheet-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .sheet-section-title {
@@ -325,20 +407,13 @@
       outline: none;
     }
 
-    .publish-btn {
-      width: 100%;
-      margin-top: var(--space-lg);
-      height: 54px;
-      border: none;
-      border-radius: var(--radius-pill);
-      background: var(--navy);
-      color: white;
-      font-size: var(--text-md);
-      font-weight: var(--font-heavy);
+    .bottom-nav {
+      max-width: 340px;
     }
 
-    .bottom-nav { max-width: 340px; }
-    .bottom-nav-item { min-width: 96px; }
+    .bottom-nav-item {
+      min-width: 96px;
+    }
   </style>
 </head>
 
@@ -367,14 +442,15 @@
         <div class="session-card hero-card lift-card">
           <div class="session-top">
             <span class="pill session-pill">Current session</span>
-            <span class="session-status">9 checked in · 3 arriving</span>
+            <span class="session-status" id="heroCheckin">7/10 checked in</span>
           </div>
 
           <h2>Puppy confidence class</h2>
 
           <div class="session-meta">
+            <div class="meta-pill"><i data-lucide="calendar"></i>Today</div>
             <div class="meta-pill"><i data-lucide="clock-3"></i>4:30 PM</div>
-            <div class="meta-pill"><i data-lucide="users"></i>12 enrolled</div>
+            <div class="meta-pill"><i data-lucide="map-pin"></i>Indoor studio</div>
           </div>
 
           <button class="open-session-btn" data-sheet="sessionSheet">
@@ -389,27 +465,27 @@
         </div>
 
         <div class="card-list">
-          <a href="#" class="row-card glass-card lift-card" data-sheet="sessionSheet">
+          <button class="row-card glass-card lift-card" data-sheet="sessionSheet">
             <div class="row-left">
               <div class="card-icon"><i data-lucide="calendar-check"></i></div>
               <div>
                 <h4>Teen manners</h4>
-                <p>Outdoor yard · Confidence group</p>
+                <p>Today · 6:00 PM · Outdoor yard</p>
               </div>
             </div>
-            <div class="row-status">6:00 PM</div>
-          </a>
+            <div class="row-status">8/10</div>
+          </button>
 
-          <a href="#" class="row-card glass-card lift-card" data-sheet="sessionSheet">
+          <button class="row-card glass-card lift-card" data-sheet="sessionSheet">
             <div class="row-left">
               <div class="card-icon"><i data-lucide="target"></i></div>
               <div>
                 <h4>Recall workshop</h4>
-                <p>Saturday morning · Open field</p>
+                <p>Saturday · 9:00 AM · Open field</p>
               </div>
             </div>
-            <div class="row-status">Sat</div>
-          </a>
+            <div class="row-status">6/8</div>
+          </button>
         </div>
       </section>
     </section>
@@ -442,27 +518,6 @@
             <button class="dog-action" data-sheet="badgeSheet">Badge</button>
           </div>
         </a>
-
-        <a href="#" class="dog-card glass-card lift-card">
-          <div class="dog-card-top">
-            <div class="dog-left">
-              <div class="card-icon"><i data-lucide="dog"></i></div>
-              <div>
-                <h4>Bella</h4>
-                <p>Cavoodle · Puppy Foundations</p>
-              </div>
-            </div>
-            <div class="dog-pill">Active</div>
-          </div>
-
-          <p>Last update: calm greeting improvement during arrivals.</p>
-
-          <div class="dog-actions">
-            <button class="dog-action" data-sheet="noteSheet">Note</button>
-            <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
-            <button class="dog-action" data-sheet="badgeSheet">Badge</button>
-          </div>
-        </a>
       </div>
     </section>
   </main>
@@ -486,12 +541,21 @@
         <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
-      <div class="section-head">
-        <h3>Attendance</h3>
+      <div class="trainer-card glass-card">
+        <div class="row-left">
+          <div class="card-icon"><i data-lucide="calendar"></i></div>
+          <div>
+            <h4>Today · 4:30 PM</h4>
+            <p>Indoor studio · Puppy Foundations</p>
+          </div>
+        </div>
+        <div class="row-status" id="sheetCheckin">7/10</div>
       </div>
 
+      <div class="sheet-section-title">Attendance</div>
+
       <div class="card-list">
-        <button class="row-card glass-card lift-card roster-dog" data-dog-name="Luna">
+        <div class="row-card glass-card lift-card roster-dog" data-dog-name="Luna">
           <div class="row-left">
             <div class="card-icon"><i data-lucide="dog"></i></div>
             <div>
@@ -499,10 +563,10 @@
               <p>Groodle · checked in</p>
             </div>
           </div>
-          <div class="row-status">Present</div>
-        </button>
+          <button class="check-btn present" data-present="true">Undo</button>
+        </div>
 
-        <button class="row-card glass-card lift-card roster-dog" data-dog-name="Bella">
+        <div class="row-card glass-card lift-card roster-dog" data-dog-name="Bella">
           <div class="row-left">
             <div class="card-icon"><i data-lucide="dog"></i></div>
             <div>
@@ -510,10 +574,10 @@
               <p>Cavoodle · checked in</p>
             </div>
           </div>
-          <div class="row-status">Present</div>
-        </button>
+          <button class="check-btn present" data-present="true">Undo</button>
+        </div>
 
-        <button class="row-card glass-card lift-card roster-dog" data-dog-name="Archie">
+        <div class="row-card glass-card lift-card roster-dog" data-dog-name="Archie">
           <div class="row-left">
             <div class="card-icon"><i data-lucide="dog"></i></div>
             <div>
@@ -521,16 +585,21 @@
               <p>Not arrived yet</p>
             </div>
           </div>
-          <div class="row-status">Arriving</div>
-        </button>
+          <button class="check-btn" data-present="false">Check in</button>
+        </div>
       </div>
+
+      <button class="publish-btn">Complete session</button>
     </div>
   </div>
 
   <div class="sheet-overlay" id="dogSheet">
     <div class="sheet">
       <div class="sheet-head">
-        <h3 id="dogSheetTitle">Dog quick card</h3>
+        <div class="sheet-actions">
+          <button class="back-sheet" id="backToClass"><i data-lucide="arrow-left"></i></button>
+          <h3 id="dogSheetTitle">Luna</h3>
+        </div>
         <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
@@ -557,7 +626,10 @@
   <div class="sheet-overlay" id="noteSheet">
     <div class="sheet">
       <div class="sheet-head">
-        <h3>Trainer note</h3>
+        <div class="sheet-actions">
+          <button class="back-sheet" data-sheet="dogSheet"><i data-lucide="arrow-left"></i></button>
+          <h3>Trainer note</h3>
+        </div>
         <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
@@ -571,7 +643,10 @@
   <div class="sheet-overlay" id="homeworkSheet">
     <div class="sheet">
       <div class="sheet-head">
-        <h3>Assign homework</h3>
+        <div class="sheet-actions">
+          <button class="back-sheet" data-sheet="dogSheet"><i data-lucide="arrow-left"></i></button>
+          <h3>Assign homework</h3>
+        </div>
         <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
@@ -585,7 +660,10 @@
   <div class="sheet-overlay" id="badgeSheet">
     <div class="sheet">
       <div class="sheet-head">
-        <h3>Award badge</h3>
+        <div class="sheet-actions">
+          <button class="back-sheet" data-sheet="dogSheet"><i data-lucide="arrow-left"></i></button>
+          <h3>Award badge</h3>
+        </div>
         <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
@@ -619,99 +697,6 @@
     let selectedDogName = "Luna";
     let selectedBadgeName = "Graduate";
 
-    async function getSelectedDog() {
-      const { data, error } = await db
-        .from("dogs")
-        .select("id, school_id, name")
-        .eq("name", selectedDogName)
-        .single();
-
-      if (error) {
-        alert(`Could not find ${selectedDogName}.`);
-        return null;
-      }
-
-      return data;
-    }
-
-    async function saveParentUpdate() {
-      const dog = await getSelectedDog();
-      if (!dog) return;
-
-      const text = document.querySelector("#noteSheet .note-box")?.value?.trim();
-      if (!text) return;
-
-      const { error } = await db.from("parent_updates").insert({
-        school_id: dog.school_id,
-        dog_id: dog.id,
-        title: `${dog.name} is progressing beautifully`,
-        update_text: text
-      });
-
-      if (error) {
-        alert("Could not save update.");
-        return;
-      }
-
-      alert("Parent update saved.");
-      closeSheets();
-    }
-
-    async function saveHomework() {
-      const dog = await getSelectedDog();
-      if (!dog) return;
-
-      const text = document.querySelector("#homeworkSheet .note-box")?.value?.trim();
-      if (!text) return;
-
-      const { error } = await db.from("homework_assignments").insert({
-        school_id: dog.school_id,
-        dog_id: dog.id,
-        title: "Calm greeting practice",
-        instructions: text
-      });
-
-      if (error) {
-        alert("Could not assign homework.");
-        return;
-      }
-
-      alert("Homework assigned.");
-      closeSheets();
-    }
-
-    async function awardBadge() {
-      const dog = await getSelectedDog();
-      if (!dog) return;
-
-      const { data: badge, error: badgeError } = await db
-        .from("badge_templates")
-        .select("id, name")
-        .eq("school_id", dog.school_id)
-        .eq("name", selectedBadgeName)
-        .single();
-
-      if (badgeError || !badge) {
-        alert(`Could not find ${selectedBadgeName}.`);
-        return;
-      }
-
-      const { error } = await db.from("dog_badges").insert({
-        school_id: dog.school_id,
-        dog_id: dog.id,
-        badge_template_id: badge.id,
-        trainer_comment: `${badge.name} awarded to ${dog.name}.`
-      });
-
-      if (error) {
-        alert("Could not award badge. It may already be awarded.");
-        return;
-      }
-
-      alert(`${badge.name} awarded to ${dog.name}.`);
-      closeSheets();
-    }
-
     function openTab(tab) {
       navItems.forEach(item => item.classList.toggle("active", item.dataset.tab === tab));
       pages.forEach(page => page.classList.toggle("active", page.id === tab));
@@ -741,6 +726,87 @@
       sheets.forEach(sheet => sheet.classList.remove("active"));
     }
 
+    async function getSelectedDog() {
+      const { data, error } = await db
+        .from("dogs")
+        .select("id, school_id, name")
+        .eq("name", selectedDogName)
+        .single();
+
+      if (error) {
+        alert(`Could not find ${selectedDogName}.`);
+        return null;
+      }
+
+      return data;
+    }
+
+    async function saveParentUpdate() {
+      const dog = await getSelectedDog();
+      if (!dog) return;
+
+      const text = document.querySelector("#noteSheet .note-box")?.value?.trim();
+      if (!text) return;
+
+      const { error } = await db.from("parent_updates").insert({
+        school_id: dog.school_id,
+        dog_id: dog.id,
+        title: `${dog.name} is progressing beautifully`,
+        update_text: text
+      });
+
+      if (error) return alert("Could not save update.");
+
+      alert("Parent update saved.");
+      closeSheets();
+    }
+
+    async function saveHomework() {
+      const dog = await getSelectedDog();
+      if (!dog) return;
+
+      const text = document.querySelector("#homeworkSheet .note-box")?.value?.trim();
+      if (!text) return;
+
+      const { error } = await db.from("homework_assignments").insert({
+        school_id: dog.school_id,
+        dog_id: dog.id,
+        title: "Calm greeting practice",
+        instructions: text
+      });
+
+      if (error) return alert("Could not assign homework.");
+
+      alert("Homework assigned.");
+      closeSheets();
+    }
+
+    async function awardBadge() {
+      const dog = await getSelectedDog();
+      if (!dog) return;
+
+      const { data: badge, error: badgeError } = await db
+        .from("badge_templates")
+        .select("id, name")
+        .eq("school_id", dog.school_id)
+        .eq("name", selectedBadgeName)
+        .single();
+
+      if (badgeError || !badge) return alert(`Could not find ${selectedBadgeName}.`);
+
+      const { error } = await db.from("dog_badges").insert({
+        school_id: dog.school_id,
+        dog_id: dog.id,
+        badge_template_id: badge.id,
+        trainer_comment: `${badge.name} awarded to ${dog.name}.`
+      });
+
+      if (error) return alert("Could not award badge. It may already be awarded.");
+
+      alert(`${badge.name} awarded to ${dog.name}.`);
+      closeSheets();
+    }
+
     navItems.forEach(item => {
       item.addEventListener("click", event => {
         event.preventDefault();
@@ -756,12 +822,13 @@
       });
     });
 
-    document.querySelectorAll(".roster-dog").forEach(button => {
-      button.addEventListener("click", event => {
-        event.preventDefault();
-        selectedDogName = button.dataset.dogName || "Luna";
+    document.querySelectorAll(".roster-dog").forEach(card => {
+      card.addEventListener("click", event => {
+        if (event.target.classList.contains("check-btn")) return;
+
+        selectedDogName = card.dataset.dogName || "Luna";
         document.getElementById("dogSheetName").textContent = selectedDogName;
-        document.getElementById("dogSheetTitle").textContent = `${selectedDogName} quick card`;
+        document.getElementById("dogSheetTitle").textContent = selectedDogName;
         openSheet("dogSheet");
       });
     });
@@ -770,15 +837,33 @@
       button.addEventListener("click", event => {
         event.preventDefault();
         event.stopPropagation();
+
         const card = button.closest(".dog-card");
         selectedDogName = card?.querySelector("h4")?.textContent?.trim() || "Luna";
         openSheet(button.dataset.sheet);
       });
     });
 
+    document.querySelectorAll(".check-btn").forEach(button => {
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isPresent = button.dataset.present === "true";
+        button.dataset.present = isPresent ? "false" : "true";
+        button.textContent = isPresent ? "Check in" : "Undo";
+        button.classList.toggle("present", !isPresent);
+
+        const row = button.closest(".roster-dog");
+        const status = row.querySelector("p");
+        status.textContent = isPresent ? "Not arrived yet" : "Checked in";
+      });
+    });
+
     badgeChoiceButtons.forEach(button => {
       button.addEventListener("click", event => {
         event.preventDefault();
+
         badgeChoiceButtons.forEach(chip => chip.classList.remove("selected"));
         button.classList.add("selected");
         selectedBadgeName = button.dataset.badgeName;
@@ -791,6 +876,11 @@
       sheet.addEventListener("click", event => {
         if (event.target === sheet) closeSheets();
       });
+    });
+
+    document.getElementById("backToClass").addEventListener("click", event => {
+      event.preventDefault();
+      openSheet("sessionSheet");
     });
 
     document.querySelector("#noteSheet .publish-btn").addEventListener("click", saveParentUpdate);
