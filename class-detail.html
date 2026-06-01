@@ -18,9 +18,6 @@
     }
 
     .topbar {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
       margin-bottom: var(--space-xl);
     }
 
@@ -58,8 +55,8 @@
     }
 
     .back-btn {
-      width: 48px;
-      height: 48px;
+      width: 42px;
+      height: 42px;
       border: none;
       border-radius: var(--radius-pill);
       background: rgba(255,255,255,0.72);
@@ -73,8 +70,8 @@
     }
 
     .back-btn svg {
-      width: 22px;
-      height: 22px;
+      width: 21px;
+      height: 21px;
       stroke-width: 2.4;
     }
 
@@ -108,6 +105,13 @@
       line-height: 1.02;
       letter-spacing: var(--tracking-display);
       margin-bottom: var(--space-sm);
+    }
+
+    .hero-program {
+      font-size: var(--text-lg);
+      font-weight: var(--font-heavy);
+      color: white;
+      margin-bottom: 6px;
     }
 
     .hero p {
@@ -231,22 +235,20 @@
   <main class="dashboard fade-in">
 
     <header class="topbar">
-      <div>
-        <div class="brand-row">
-          <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
-          <p class="eyebrow">Barkly Schools</p>
-        </div>
+      <div class="brand-row">
+        <button class="back-btn" onclick="window.location='owner-dashboard.html'">
+          <i data-lucide="arrow-left"></i>
+        </button>
 
-        <h1>Class<br />details</h1>
-
-        <p class="topbar-copy">
-          Manage capacity, enrolments and class configuration.
-        </p>
+        <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+        <p class="eyebrow">Barkly Schools</p>
       </div>
 
-      <button class="back-btn" onclick="window.location='owner-dashboard.html'">
-        <i data-lucide="arrow-left"></i>
-      </button>
+      <h1>Class<br />details</h1>
+
+      <p class="topbar-copy">
+        Manage capacity, enrolments and class configuration.
+      </p>
     </header>
 
     <section class="hero hero-card lift-card">
@@ -255,20 +257,26 @@
         <span class="hero-status" id="heroCapacity">— enrolled</span>
       </div>
 
-      <h2 id="className">Loading class</h2>
+      <h2 id="classTime">Loading class</h2>
 
-      <p id="classSub">Loading program and location.</p>
+      <div class="hero-program" id="className">
+        Loading program
+      </div>
+
+      <p id="classSub">
+        Loading location
+      </p>
     </section>
 
     <div class="stats-grid">
       <div class="stat-card glass-card lift-card">
-        <p>Enrolled</p>
-        <strong id="enrolledCount">—</strong>
+        <p>Capacity</p>
+        <strong id="heroCapacityCard">—</strong>
       </div>
 
       <div class="stat-card glass-card lift-card">
-        <p>Capacity</p>
-        <strong id="capacityCount">—</strong>
+        <p>Remaining</p>
+        <strong id="remainingCount">—</strong>
       </div>
     </div>
 
@@ -313,17 +321,27 @@
 
     <section>
       <div class="section-head">
-        <h3>Next steps</h3>
+        <h3>Class Management</h3>
       </div>
 
       <div class="card-list">
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="user-round"></i>
+          </div>
+          <div>
+            <h4>Trainer</h4>
+            <p>Sarah Thompson · 3 active classes</p>
+          </div>
+        </div>
+
         <div class="detail-card glass-card lift-card">
           <div class="card-icon">
             <i data-lucide="dog"></i>
           </div>
           <div>
             <h4>Enrolled dogs</h4>
-            <p>View and manage dogs currently enrolled in this class.</p>
+            <p id="enrolledPreview">Loading enrolled dogs...</p>
           </div>
         </div>
 
@@ -354,7 +372,7 @@
     const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
 
     const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -377,12 +395,16 @@
       const capacity = Number(data.capacity || 0);
       const enrolled = Number(data.enrolled_count || 0);
       const remaining = Math.max(capacity - enrolled, 0);
+      const className = safe(data.class_name, "Class");
+
+      document.getElementById("classTime").textContent =
+        className;
 
       document.getElementById("className").textContent =
-        safe(data.class_name, "Class");
+        safe(data.program_name, "Program");
 
       document.getElementById("classSub").textContent =
-        `${safe(data.program_name, "Program")} · ${safe(data.location, "Location")}`;
+        safe(data.location, "Location");
 
       document.getElementById("classStatus").textContent =
         safe(data.status, "active");
@@ -390,11 +412,11 @@
       document.getElementById("heroCapacity").textContent =
         `${enrolled}/${capacity} enrolled`;
 
-      document.getElementById("enrolledCount").textContent =
-        enrolled;
+      document.getElementById("heroCapacityCard").textContent =
+        `${enrolled}/${capacity}`;
 
-      document.getElementById("capacityCount").textContent =
-        capacity;
+      document.getElementById("remainingCount").textContent =
+        remaining;
 
       document.getElementById("programName").textContent =
         safe(data.program_name, "Program");
@@ -407,6 +429,11 @@
 
       document.getElementById("capacityStatus").textContent =
         `${enrolled}/${capacity}`;
+
+      document.getElementById("enrolledPreview").textContent =
+        enrolled === 1
+          ? "1 dog currently enrolled."
+          : `${enrolled} dogs currently enrolled.`;
     }
 
     loadClass();
