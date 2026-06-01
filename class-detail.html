@@ -365,13 +365,13 @@
       const remaining = Math.max(capacity - enrolled, 0);
 
       document.getElementById("classTime").textContent =
-        safe(data.class_name, "Class");
+  safe(data.class_name, "Class");
 
-      document.getElementById("className").textContent =
-        safe(data.program_name, "Program");
+document.getElementById("className").textContent =
+  safe(data.location, "Location");
 
-      document.getElementById("classSub").textContent =
-        safe(data.location, "Location");
+document.getElementById("classSub").textContent =
+  `${enrolled}/${capacity} enrolled`;
 
       document.getElementById("classStatus").textContent =
         safe(data.status, "active");
