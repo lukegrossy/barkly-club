@@ -9,7 +9,7 @@
 
   <style>
     body {
-      padding: max(26px, env(safe-area-inset-top)) 20px 140px;
+      padding: max(26px, env(safe-area-inset-top)) 20px 120px;
     }
 
     .dashboard {
@@ -18,14 +18,14 @@
     }
 
     .topbar {
-      margin-bottom: var(--space-xl);
+      margin-bottom: var(--space-lg);
     }
 
     .brand-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     .header-icon {
@@ -39,19 +39,6 @@
       font-weight: var(--font-heavy);
       color: var(--sage);
       margin: 0;
-    }
-
-    .topbar h1 {
-      font-size: var(--display-md);
-      line-height: 1.02;
-      letter-spacing: var(--tracking-display);
-      margin-bottom: var(--space-sm);
-    }
-
-    .topbar-copy {
-      font-size: var(--text-md);
-      color: var(--text-secondary);
-      line-height: 1.5;
     }
 
     .back-btn {
@@ -75,6 +62,20 @@
       stroke-width: 2.4;
     }
 
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+      white-space: nowrap;
+    }
+
+    .topbar-copy {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
     .hero {
       padding: 24px;
       margin-bottom: var(--space-xl);
@@ -82,7 +83,7 @@
 
     .hero-top {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       margin-bottom: var(--space-md);
     }
@@ -93,16 +94,10 @@
       text-transform: capitalize;
     }
 
-    .hero-status {
-      color: rgba(255,255,255,0.72);
-      font-size: var(--text-sm);
-      font-weight: var(--font-bold);
-    }
-
     .hero h2 {
       color: white;
-      font-size: var(--display-md);
-      line-height: 1.02;
+      font-size: var(--display-sm);
+      line-height: 1.04;
       letter-spacing: var(--tracking-display);
       margin-bottom: var(--space-sm);
     }
@@ -118,31 +113,6 @@
       color: rgba(255,255,255,0.76);
       font-size: var(--text-md);
       line-height: 1.55;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-sm);
-      margin-bottom: var(--space-xl);
-    }
-
-    .stat-card {
-      padding: 18px;
-      min-height: 104px;
-    }
-
-    .stat-card p {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
-      font-weight: var(--font-bold);
-      margin-bottom: var(--space-sm);
-    }
-
-    .stat-card strong {
-      display: block;
-      font-size: var(--display-sm);
-      letter-spacing: var(--tracking-display);
     }
 
     .section-head {
@@ -168,6 +138,7 @@
       padding: 16px;
       color: inherit;
       text-decoration: none;
+      overflow: visible;
     }
 
     .card-icon {
@@ -187,6 +158,11 @@
       stroke-width: 2.2;
     }
 
+    .detail-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
     .detail-card h4 {
       font-size: 16px;
       margin-bottom: 4px;
@@ -196,6 +172,9 @@
       color: var(--text-secondary);
       font-size: var(--text-sm);
       line-height: 1.4;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
     }
 
     .row-status {
@@ -204,16 +183,18 @@
       font-weight: var(--font-heavy);
       color: var(--sage);
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .cta-wrap {
       position: fixed;
       left: 50%;
-      bottom: calc(20px + env(safe-area-inset-bottom));
+      bottom: calc(22px + env(safe-area-inset-bottom));
       transform: translateX(-50%);
       width: calc(100% - 40px);
       max-width: 520px;
       z-index: 30;
+      pointer-events: none;
     }
 
     .cta {
@@ -226,6 +207,7 @@
       font-size: var(--text-md);
       font-weight: var(--font-heavy);
       box-shadow: var(--shadow-card);
+      pointer-events: auto;
     }
   </style>
 </head>
@@ -244,17 +226,16 @@
         <p class="eyebrow">Barkly Schools</p>
       </div>
 
-      <h1>Class<br />details</h1>
+      <h1>Class details</h1>
 
       <p class="topbar-copy">
-        Manage capacity, enrolments and class configuration.
+        Manage enrolments, trainer assignment and class configuration.
       </p>
     </header>
 
     <section class="hero hero-card lift-card">
       <div class="hero-top">
         <span class="pill hero-pill" id="classStatus">Active</span>
-        <span class="hero-status" id="heroCapacity">— enrolled</span>
       </div>
 
       <h2 id="classTime">Loading class</h2>
@@ -268,18 +249,6 @@
       </p>
     </section>
 
-    <div class="stats-grid">
-      <div class="stat-card glass-card lift-card">
-        <p>Capacity</p>
-        <strong id="heroCapacityCard">—</strong>
-      </div>
-
-      <div class="stat-card glass-card lift-card">
-        <p>Remaining</p>
-        <strong id="remainingCount">—</strong>
-      </div>
-    </div>
-
     <section>
       <div class="section-head">
         <h3>Class setup</h3>
@@ -290,7 +259,7 @@
           <div class="card-icon">
             <i data-lucide="layers-3"></i>
           </div>
-          <div>
+          <div class="detail-copy">
             <h4>Program</h4>
             <p id="programName">Loading...</p>
           </div>
@@ -300,7 +269,7 @@
           <div class="card-icon">
             <i data-lucide="map-pin"></i>
           </div>
-          <div>
+          <div class="detail-copy">
             <h4>Location</h4>
             <p id="locationName">Loading...</p>
           </div>
@@ -310,18 +279,17 @@
           <div class="card-icon">
             <i data-lucide="users"></i>
           </div>
-          <div>
-            <h4>Capacity remaining</h4>
+          <div class="detail-copy">
+            <h4>Capacity</h4>
             <p id="capacityRemaining">Loading...</p>
           </div>
-          <div class="row-status" id="capacityStatus">—</div>
         </div>
       </div>
     </section>
 
     <section>
       <div class="section-head">
-        <h3>Class Management</h3>
+        <h3>Class management</h3>
       </div>
 
       <div class="card-list">
@@ -329,7 +297,7 @@
           <div class="card-icon">
             <i data-lucide="user-round"></i>
           </div>
-          <div>
+          <div class="detail-copy">
             <h4>Trainer</h4>
             <p>Sarah Thompson · 3 active classes</p>
           </div>
@@ -339,7 +307,7 @@
           <div class="card-icon">
             <i data-lucide="dog"></i>
           </div>
-          <div>
+          <div class="detail-copy">
             <h4>Enrolled dogs</h4>
             <p id="enrolledPreview">Loading enrolled dogs...</p>
           </div>
@@ -349,7 +317,7 @@
           <div class="card-icon">
             <i data-lucide="calendar-check"></i>
           </div>
-          <div>
+          <div class="detail-copy">
             <h4>Sessions</h4>
             <p>Upcoming and completed sessions will appear here.</p>
           </div>
@@ -395,10 +363,9 @@
       const capacity = Number(data.capacity || 0);
       const enrolled = Number(data.enrolled_count || 0);
       const remaining = Math.max(capacity - enrolled, 0);
-      const className = safe(data.class_name, "Class");
 
       document.getElementById("classTime").textContent =
-        className;
+        safe(data.class_name, "Class");
 
       document.getElementById("className").textContent =
         safe(data.program_name, "Program");
@@ -409,15 +376,6 @@
       document.getElementById("classStatus").textContent =
         safe(data.status, "active");
 
-      document.getElementById("heroCapacity").textContent =
-        `${enrolled}/${capacity} enrolled`;
-
-      document.getElementById("heroCapacityCard").textContent =
-        `${enrolled}/${capacity}`;
-
-      document.getElementById("remainingCount").textContent =
-        remaining;
-
       document.getElementById("programName").textContent =
         safe(data.program_name, "Program");
 
@@ -425,10 +383,7 @@
         safe(data.location, "Location");
 
       document.getElementById("capacityRemaining").textContent =
-        `${remaining} places available`;
-
-      document.getElementById("capacityStatus").textContent =
-        `${enrolled}/${capacity}`;
+        `${enrolled}/${capacity} enrolled · ${remaining} places available`;
 
       document.getElementById("enrolledPreview").textContent =
         enrolled === 1
