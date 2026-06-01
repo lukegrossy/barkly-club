@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Dog Detail | Barkly Schools</title>
+  <title>Dog Profile | Barkly Schools</title>
 
   <link rel="stylesheet" href="design-system.css" />
 
@@ -119,6 +119,31 @@
       line-height: 1.55;
     }
 
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .stat-card {
+      padding: 16px 12px;
+      min-height: 92px;
+    }
+
+    .stat-card p {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      font-weight: var(--font-bold);
+      margin-bottom: 8px;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+    }
+
     .section-head {
       margin-bottom: var(--space-sm);
     }
@@ -202,7 +227,7 @@
         <p class="eyebrow">Barkly Schools</p>
       </div>
 
-      <h1>Dog detail</h1>
+      <h1>Dog profile</h1>
 
       <p class="topbar-copy">
         View enrolment, class and progress information.
@@ -223,9 +248,26 @@
       <h2 id="dogName">Loading dog</h2>
 
       <p id="dogSub">
-        Loading profile
+        Currently enrolled
       </p>
     </section>
+
+    <div class="stats-grid">
+      <div class="stat-card glass-card lift-card">
+        <p>Attendance</p>
+        <strong id="attendanceCount">—</strong>
+      </div>
+
+      <div class="stat-card glass-card lift-card">
+        <p>Badges</p>
+        <strong id="badgeCount">—</strong>
+      </div>
+
+      <div class="stat-card glass-card lift-card">
+        <p>Homework</p>
+        <strong id="homeworkCount">—</strong>
+      </div>
+    </div>
 
     <section>
       <div class="section-head">
@@ -284,10 +326,8 @@
 
           <div class="detail-copy">
             <h4>Attendance</h4>
-            <p>Attendance history coming soon.</p>
+            <p id="attendanceText">Loading attendance history.</p>
           </div>
-
-          <div class="row-status">Soon</div>
         </div>
 
         <div class="detail-card glass-card lift-card">
@@ -297,10 +337,8 @@
 
           <div class="detail-copy">
             <h4>Badges</h4>
-            <p>Earned badges will appear here.</p>
+            <p id="badgeText">Loading badges.</p>
           </div>
-
-          <div class="row-status">Soon</div>
         </div>
 
         <div class="detail-card glass-card lift-card">
@@ -310,10 +348,8 @@
 
           <div class="detail-copy">
             <h4>Homework</h4>
-            <p>Active homework will appear here.</p>
+            <p id="homeworkText">Loading homework.</p>
           </div>
-
-          <div class="row-status">Soon</div>
         </div>
 
       </div>
@@ -352,7 +388,7 @@
         safe(data.dog_name, "Dog");
 
       document.getElementById("dogSub").textContent =
-        `${safe(data.breed, "Dog")} · ${safe(data.status, "active")}`;
+        "Currently enrolled";
 
       document.getElementById("dogStatus").textContent =
         safe(data.status, "active");
@@ -366,7 +402,57 @@
       document.getElementById("className").textContent =
         safe(data.class_name, "No class assigned");
 
+      await loadDogProgress(data.dog_id);
+
       lucide.createIcons();
+    }
+
+    async function loadDogProgress(dogId) {
+      if (!dogId) return;
+
+      const { count: attendanceCount } = await db
+        .from("session_attendance")
+        .select("*", { count: "exact", head: true })
+        .eq("dog_id", dogId)
+        .eq("status", "present");
+
+      const { count: badgeCount } = await db
+        .from("dog_badges")
+        .select("*", { count: "exact", head: true })
+        .eq("dog_id", dogId);
+
+      const { count: homeworkCount } = await db
+        .from("homework_assignments")
+        .select("*", { count: "exact", head: true })
+        .eq("dog_id", dogId);
+
+      const attendance = attendanceCount || 0;
+      const badges = badgeCount || 0;
+      const homework = homeworkCount || 0;
+
+      document.getElementById("attendanceCount").textContent =
+        attendance;
+
+      document.getElementById("badgeCount").textContent =
+        badges;
+
+      document.getElementById("homeworkCount").textContent =
+        homework;
+
+      document.getElementById("attendanceText").textContent =
+        attendance === 1
+          ? "1 session attended."
+          : `${attendance} sessions attended.`;
+
+      document.getElementById("badgeText").textContent =
+        badges === 1
+          ? "1 badge earned."
+          : `${badges} badges earned.`;
+
+      document.getElementById("homeworkText").textContent =
+        homework === 1
+          ? "1 homework assignment recorded."
+          : `${homework} homework assignments recorded.`;
     }
 
     loadDog();
