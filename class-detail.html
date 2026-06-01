@@ -1,292 +1,417 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Class Detail | Barkly Schools</title>
 
-<title>Class Detail | Barkly Schools</title>
+  <link rel="stylesheet" href="design-system.css" />
 
-<link rel="stylesheet" href="design-system.css" />
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 140px;
+    }
 
-<style>
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
 
-body{
-  padding:max(26px, env(safe-area-inset-top)) 20px 110px;
-}
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: var(--space-xl);
+    }
 
-.dashboard{
-  max-width:var(--content-width);
-  margin:0 auto;
-}
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
 
-.topbar{
-  display:flex;
-  align-items:flex-start;
-  gap:16px;
-  margin-bottom:var(--space-xl);
-}
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
 
-.back-btn{
-  width:44px;
-  height:44px;
-  border:none;
-  border-radius:999px;
-  background:rgba(15,31,46,.08);
-  display:grid;
-  place-items:center;
-  color:var(--navy);
-  flex-shrink:0;
-}
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
 
-.hero{
-  padding:24px;
-  margin-bottom:var(--space-xl);
-}
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
 
-.hero-pill{
-  background:rgba(255,255,255,.14);
-  color:white;
-}
+    .topbar-copy {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
 
-.hero h1{
-  color:white;
-  margin-top:14px;
-  margin-bottom:10px;
-  font-size:var(--display-md);
-  line-height:1.02;
-}
+    .back-btn {
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: var(--blur-md);
+      flex-shrink: 0;
+    }
 
-.hero p{
-  color:rgba(255,255,255,.76);
-}
+    .back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.4;
+    }
 
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-bottom:var(--space-xl);
-}
+    .hero {
+      padding: 24px;
+      margin-bottom: var(--space-xl);
+    }
 
-.stat-card{
-  padding:18px;
-}
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
 
-.stat-card p{
-  color:var(--text-secondary);
-  font-size:var(--text-sm);
-  margin-bottom:8px;
-}
+    .hero-pill {
+      background: rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.92);
+      text-transform: capitalize;
+    }
 
-.stat-card strong{
-  font-size:var(--display-sm);
-}
+    .hero-status {
+      color: rgba(255,255,255,0.72);
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
+    }
 
-.card-list{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
+    .hero h2 {
+      color: white;
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
 
-.detail-card{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:16px;
-}
+    .hero p {
+      color: rgba(255,255,255,0.76);
+      font-size: var(--text-md);
+      line-height: 1.55;
+    }
 
-.card-icon{
-  width:48px;
-  height:48px;
-  border-radius:var(--radius-md);
-  background:rgba(138,166,143,.12);
-  color:var(--sage);
-  display:grid;
-  place-items:center;
-}
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
 
-.card-icon svg{
-  width:22px;
-  height:22px;
-}
+    .stat-card {
+      padding: 18px;
+      min-height: 104px;
+    }
 
-.detail-card h4{
-  margin-bottom:4px;
-}
+    .stat-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-sm);
+    }
 
-.detail-card p{
-  color:var(--text-secondary);
-  font-size:var(--text-sm);
-}
+    .stat-card strong {
+      display: block;
+      font-size: var(--display-sm);
+      letter-spacing: var(--tracking-display);
+    }
 
-.cta{
-  width:100%;
-  height:56px;
-  border:none;
-  border-radius:999px;
-  background:var(--navy);
-  color:white;
-  font-weight:700;
-  margin-top:20px;
-}
+    .section-head {
+      margin-bottom: var(--space-sm);
+    }
 
-</style>
+    .section-head h3 {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .detail-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .detail-card h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .detail-card p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.4;
+    }
+
+    .row-status {
+      margin-left: auto;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      white-space: nowrap;
+    }
+
+    .cta-wrap {
+      position: fixed;
+      left: 50%;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 520px;
+      z-index: 30;
+    }
+
+    .cta {
+      width: 100%;
+      height: 56px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      font-size: var(--text-md);
+      font-weight: var(--font-heavy);
+      box-shadow: var(--shadow-card);
+    }
+  </style>
 </head>
 
 <body>
 
-<main class="dashboard fade-in">
+  <main class="dashboard fade-in">
 
-  <div class="topbar">
+    <header class="topbar">
+      <div>
+        <div class="brand-row">
+          <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+          <p class="eyebrow">Barkly Schools</p>
+        </div>
 
-    <button
-      class="back-btn"
-      onclick="window.location='owner-dashboard.html'"
-    >
-      <i data-lucide="arrow-left"></i>
+        <h1>Class<br />details</h1>
+
+        <p class="topbar-copy">
+          Manage capacity, enrolments and class configuration.
+        </p>
+      </div>
+
+      <button class="back-btn" onclick="window.location='owner-dashboard.html'">
+        <i data-lucide="arrow-left"></i>
+      </button>
+    </header>
+
+    <section class="hero hero-card lift-card">
+      <div class="hero-top">
+        <span class="pill hero-pill" id="classStatus">Active</span>
+        <span class="hero-status" id="heroCapacity">— enrolled</span>
+      </div>
+
+      <h2 id="className">Loading class</h2>
+
+      <p id="classSub">Loading program and location.</p>
+    </section>
+
+    <div class="stats-grid">
+      <div class="stat-card glass-card lift-card">
+        <p>Enrolled</p>
+        <strong id="enrolledCount">—</strong>
+      </div>
+
+      <div class="stat-card glass-card lift-card">
+        <p>Capacity</p>
+        <strong id="capacityCount">—</strong>
+      </div>
+    </div>
+
+    <section>
+      <div class="section-head">
+        <h3>Class setup</h3>
+      </div>
+
+      <div class="card-list">
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="layers-3"></i>
+          </div>
+          <div>
+            <h4>Program</h4>
+            <p id="programName">Loading...</p>
+          </div>
+        </div>
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="map-pin"></i>
+          </div>
+          <div>
+            <h4>Location</h4>
+            <p id="locationName">Loading...</p>
+          </div>
+        </div>
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="users"></i>
+          </div>
+          <div>
+            <h4>Capacity remaining</h4>
+            <p id="capacityRemaining">Loading...</p>
+          </div>
+          <div class="row-status" id="capacityStatus">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h3>Next steps</h3>
+      </div>
+
+      <div class="card-list">
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="dog"></i>
+          </div>
+          <div>
+            <h4>Enrolled dogs</h4>
+            <p>View and manage dogs currently enrolled in this class.</p>
+          </div>
+        </div>
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="calendar-check"></i>
+          </div>
+          <div>
+            <h4>Sessions</h4>
+            <p>Upcoming and completed sessions will appear here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="cta-wrap">
+    <button class="cta">
+      Manage enrolments
     </button>
-
-    <div>
-      <p class="eyebrow">Barkly Schools</p>
-    </div>
-
   </div>
 
-  <section class="hero hero-card lift-card">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-    <span class="pill hero-pill" id="classStatus">
-      Active
-    </span>
+  <script>
+    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
 
-    <h1 id="className">
-      Loading...
-    </h1>
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhc2UiLCJyZWYiOiJ3b29sYWFpdW5hcHNhb3doZWlmaiIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzgwMDIwMjQxLCJleHAiOjIwOTU1OTYyNDF9.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-    <p id="classSub">
-      Loading...
-    </p>
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  </section>
+    function safe(value, fallback = "") {
+      return value ?? fallback;
+    }
 
-  <div class="stats-grid">
+    async function loadClass() {
+      const { data, error } = await db
+        .from("owner_class_detail_view")
+        .select("*")
+        .limit(1)
+        .single();
 
-    <div class="stat-card glass-card lift-card">
-      <p>Enrolled</p>
-      <strong id="enrolledCount">0</strong>
-    </div>
+      if (error) {
+        console.error("Class detail failed:", error);
+        return;
+      }
 
-    <div class="stat-card glass-card lift-card">
-      <p>Capacity</p>
-      <strong id="capacityCount">0</strong>
-    </div>
+      const capacity = Number(data.capacity || 0);
+      const enrolled = Number(data.enrolled_count || 0);
+      const remaining = Math.max(capacity - enrolled, 0);
 
-  </div>
+      document.getElementById("className").textContent =
+        safe(data.class_name, "Class");
 
-  <div class="card-list">
+      document.getElementById("classSub").textContent =
+        `${safe(data.program_name, "Program")} · ${safe(data.location, "Location")}`;
 
-    <div class="detail-card glass-card lift-card">
-      <div class="card-icon">
-        <i data-lucide="layers-3"></i>
-      </div>
+      document.getElementById("classStatus").textContent =
+        safe(data.status, "active");
 
-      <div>
-        <h4>Program</h4>
-        <p id="programName">Loading...</p>
-      </div>
-    </div>
+      document.getElementById("heroCapacity").textContent =
+        `${enrolled}/${capacity} enrolled`;
 
-    <div class="detail-card glass-card lift-card">
-      <div class="card-icon">
-        <i data-lucide="map-pin"></i>
-      </div>
+      document.getElementById("enrolledCount").textContent =
+        enrolled;
 
-      <div>
-        <h4>Location</h4>
-        <p id="locationName">Loading...</p>
-      </div>
-    </div>
+      document.getElementById("capacityCount").textContent =
+        capacity;
 
-    <div class="detail-card glass-card lift-card">
-      <div class="card-icon">
-        <i data-lucide="users"></i>
-      </div>
+      document.getElementById("programName").textContent =
+        safe(data.program_name, "Program");
 
-      <div>
-        <h4>Capacity Remaining</h4>
-        <p id="capacityRemaining">Loading...</p>
-      </div>
-    </div>
+      document.getElementById("locationName").textContent =
+        safe(data.location, "Location");
 
-  </div>
+      document.getElementById("capacityRemaining").textContent =
+        `${remaining} places available`;
 
-  <button class="cta">
-    Manage Enrolments
-  </button>
+      document.getElementById("capacityStatus").textContent =
+        `${enrolled}/${capacity}`;
+    }
 
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-
-<script>
-
-const SUPABASE_URL =
-"https://woolaaiunapsaowheifj.supabase.co";
-
-const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
-
-const db =
-supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
-
-async function loadClass() {
-
-  const { data, error } = await db
-    .from("owner_class_detail_view")
-    .select("*")
-    .limit(1)
-    .single();
-
-  if(error){
-    console.error(error);
-    return;
-  }
-
-  document.getElementById("className").textContent =
-    data.class_name;
-
-  document.getElementById("classSub").textContent =
-    `${data.program_name} · ${data.location}`;
-
-  document.getElementById("classStatus").textContent =
-    data.status;
-
-  document.getElementById("programName").textContent =
-    data.program_name;
-
-  document.getElementById("locationName").textContent =
-    data.location;
-
-  document.getElementById("enrolledCount").textContent =
-    data.enrolled_count;
-
-  document.getElementById("capacityCount").textContent =
-    data.capacity;
-
-  document.getElementById("capacityRemaining").textContent =
-    `${data.capacity - data.enrolled_count} places available`;
-}
-
-loadClass();
-
-lucide.createIcons();
-
-</script>
+    loadClass();
+    lucide.createIcons();
+  </script>
 
 </body>
 </html>
