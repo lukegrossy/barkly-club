@@ -1,3 +1,443 @@
-<a href="class-enrolments.html" class="cta">
-  Manage enrolments
-</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Class Enrolments | Barkly Schools</title>
+
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 90px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      margin-bottom: var(--space-lg);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: var(--blur-md);
+      flex-shrink: 0;
+    }
+
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+      white-space: nowrap;
+    }
+
+    .topbar-copy {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .section-head {
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-head h3 {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .dog-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .dog-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .dog-copy h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .dog-copy p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.4;
+    }
+
+    .small-btn {
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 10px 14px;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      white-space: nowrap;
+    }
+
+    .add-btn {
+      background: var(--navy);
+      color: white;
+    }
+
+    .remove-btn {
+      background: rgba(15,31,46,0.08);
+      color: var(--navy);
+    }
+
+    .search {
+      width: 100%;
+      height: 56px;
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.72);
+      padding: 0 16px;
+      font-size: var(--text-md);
+      outline: none;
+      margin-bottom: var(--space-md);
+    }
+
+    .empty-card {
+      padding: 18px;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="dashboard fade-in">
+
+    <header class="topbar">
+      <div class="brand-row">
+        <button class="back-btn" onclick="window.location='class-detail.html'">
+          <i data-lucide="arrow-left"></i>
+        </button>
+
+        <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+        <p class="eyebrow">Barkly Schools</p>
+      </div>
+
+      <h1>Manage enrolments</h1>
+
+      <p class="topbar-copy" id="classSubtitle">
+        Add or remove dogs from this class.
+      </p>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <h3>Enrolled dogs</h3>
+      </div>
+
+      <div class="card-list" id="enrolledList">
+        <div class="empty-card glass-card">
+          Loading enrolled dogs...
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h3>Add dog</h3>
+      </div>
+
+      <input
+        class="search"
+        id="dogSearch"
+        type="search"
+        placeholder="Search dogs..."
+      />
+
+      <div class="card-list" id="availableList">
+        <div class="empty-card glass-card">
+          Loading available dogs...
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentClass = null;
+    let enrolledDogs = [];
+    let allDogs = [];
+
+    function safe(value, fallback = "") {
+      return value ?? fallback;
+    }
+
+    async function loadClass() {
+      const { data, error } = await db
+        .from("owner_class_detail_view")
+        .select("*")
+        .limit(1)
+        .single();
+
+      if (error) {
+        console.error("Class load failed:", error);
+        return;
+      }
+
+      currentClass = data;
+
+      document.getElementById("classSubtitle").textContent =
+        `${safe(data.class_name, "Class")} · ${safe(data.program_name, "Program")}`;
+
+      await loadDogs();
+    }
+
+    async function loadDogs() {
+      if (!currentClass) return;
+
+      const { data: enrolments, error: enrolmentError } = await db
+        .from("class_enrolments")
+        .select("id, dog_id, status, dogs(id, name, breed)")
+        .eq("class_id", currentClass.class_id)
+        .eq("status", "active");
+
+      if (enrolmentError) {
+        console.error("Enrolments failed:", enrolmentError);
+        return;
+      }
+
+      enrolledDogs = (enrolments || []).map(row => ({
+        enrolment_id: row.id,
+        dog_id: row.dog_id,
+        name: row.dogs?.name || "Dog",
+        breed: row.dogs?.breed || "Dog"
+      }));
+
+      const { data: dogs, error: dogsError } = await db
+        .from("dogs")
+        .select("id, name, breed")
+        .eq("status", "active")
+        .order("name", { ascending: true });
+
+      if (dogsError) {
+        console.error("Dogs failed:", dogsError);
+        return;
+      }
+
+      allDogs = dogs || [];
+
+      renderEnrolled();
+      renderAvailable();
+      lucide.createIcons();
+    }
+
+    function renderEnrolled() {
+      const list = document.getElementById("enrolledList");
+
+      if (enrolledDogs.length === 0) {
+        list.innerHTML = `
+          <div class="empty-card glass-card">
+            No dogs enrolled yet.
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = enrolledDogs.map(dog => `
+        <div class="dog-row glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="dog"></i>
+          </div>
+
+          <div class="dog-copy">
+            <h4>${dog.name}</h4>
+            <p>${dog.breed}</p>
+          </div>
+
+          <button
+            class="small-btn remove-btn"
+            data-enrolment-id="${dog.enrolment_id}"
+          >
+            Remove
+          </button>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".remove-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          removeDog(button.dataset.enrolmentId);
+        });
+      });
+
+      lucide.createIcons();
+    }
+
+    function renderAvailable() {
+      const list = document.getElementById("availableList");
+      const search = document.getElementById("dogSearch").value.toLowerCase();
+
+      const enrolledIds = new Set(
+        enrolledDogs.map(dog => dog.dog_id)
+      );
+
+      const available = allDogs
+        .filter(dog => !enrolledIds.has(dog.id))
+        .filter(dog => {
+          const text = `${dog.name || ""} ${dog.breed || ""}`.toLowerCase();
+          return text.includes(search);
+        });
+
+      if (available.length === 0) {
+        list.innerHTML = `
+          <div class="empty-card glass-card">
+            No available dogs found.
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = available.map(dog => `
+        <div class="dog-row glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="dog"></i>
+          </div>
+
+          <div class="dog-copy">
+            <h4>${dog.name}</h4>
+            <p>${dog.breed || "Dog"}</p>
+          </div>
+
+          <button
+            class="small-btn add-btn"
+            data-dog-id="${dog.id}"
+          >
+            Add
+          </button>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".add-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          addDog(button.dataset.dogId);
+        });
+      });
+
+      lucide.createIcons();
+    }
+
+    async function addDog(dogId) {
+      if (!currentClass) return;
+
+      const { error } = await db
+        .from("class_enrolments")
+        .insert({
+          school_id: currentClass.school_id,
+          class_id: currentClass.class_id,
+          dog_id: dogId,
+          status: "active",
+          enrolled_at: new Date().toISOString()
+        });
+
+      if (error) {
+        console.error("Add dog failed:", error);
+        alert("Could not add dog.");
+        return;
+      }
+
+      await loadDogs();
+    }
+
+    async function removeDog(enrolmentId) {
+      const { error } = await db
+        .from("class_enrolments")
+        .update({
+          status: "inactive"
+        })
+        .eq("id", enrolmentId);
+
+      if (error) {
+        console.error("Remove dog failed:", error);
+        alert("Could not remove dog.");
+        return;
+      }
+
+      await loadDogs();
+    }
+
+    document.getElementById("dogSearch").addEventListener("input", renderAvailable);
+
+    loadClass();
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
