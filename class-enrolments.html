@@ -256,7 +256,7 @@
       currentClass = data;
 
       document.getElementById("classSubtitle").textContent =
-        `${safe(data.class_name, "Class")} · ${safe(data.program_name, "Program")}`;
+  safe(data.class_name, "Class");
 
       await loadDogs();
     }
@@ -359,7 +359,7 @@
       if (available.length === 0) {
         list.innerHTML = `
           <div class="empty-card glass-card">
-            No available dogs found.
+            All active dogs are already enrolled.
           </div>
         `;
         return;
