@@ -119,31 +119,6 @@
       line-height: 1.55;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-sm);
-      margin-bottom: var(--space-xl);
-    }
-
-    .stat-card {
-      padding: 16px 12px;
-      min-height: 92px;
-    }
-
-    .stat-card p {
-      font-size: var(--text-xs);
-      color: var(--text-secondary);
-      font-weight: var(--font-bold);
-      margin-bottom: 8px;
-    }
-
-    .stat-card strong {
-      display: block;
-      font-size: var(--text-xl);
-      letter-spacing: var(--tracking-tight);
-    }
-
     .section-head {
       margin-bottom: var(--space-sm);
     }
@@ -251,23 +226,6 @@
         Currently enrolled
       </p>
     </section>
-
-    <div class="stats-grid">
-      <div class="stat-card glass-card lift-card">
-        <p>Attendance</p>
-        <strong id="attendanceCount">—</strong>
-      </div>
-
-      <div class="stat-card glass-card lift-card">
-        <p>Badges</p>
-        <strong id="badgeCount">—</strong>
-      </div>
-
-      <div class="stat-card glass-card lift-card">
-        <p>Homework</p>
-        <strong id="homeworkCount">—</strong>
-      </div>
-    </div>
 
     <section>
       <div class="section-head">
@@ -388,7 +346,7 @@
         safe(data.dog_name, "Dog");
 
       document.getElementById("dogSub").textContent =
-  "Currently enrolled";
+        "Currently enrolled";
 
       document.getElementById("dogStatus").textContent =
         safe(data.status, "active");
@@ -429,15 +387,6 @@
       const attendance = attendanceCount || 0;
       const badges = badgeCount || 0;
       const homework = homeworkCount || 0;
-
-      document.getElementById("attendanceCount").textContent =
-        attendance;
-
-      document.getElementById("badgeCount").textContent =
-        badges;
-
-      document.getElementById("homeworkCount").textContent =
-        homework;
 
       document.getElementById("attendanceText").textContent =
         attendance === 1
