@@ -742,7 +742,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
-<script>
+  <script>
   const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
@@ -757,6 +757,19 @@
   let selectedDogName = "Luna";
   let selectedBadgeName = "Graduate";
   let currentSessionId = null;
+  let currentSessionStatus = "scheduled";
+
+  function statusLabel(status) {
+    if (status === "in_progress") return "In progress";
+    if (status === "completed") return "Completed";
+    if (status === "cancelled") return "Cancelled";
+    return "Scheduled";
+  }
+
+  function updateSessionStatusUI(status) {
+    const pill = document.querySelector(".session-pill");
+    if (pill) pill.textContent = statusLabel(status);
+  }
 
   async function loadCurrentSession() {
     const { data, error } = await db
@@ -771,6 +784,7 @@
     }
 
     currentSessionId = data.session_id;
+    currentSessionStatus = data.status || "scheduled";
 
     const start = data.starts_at ? new Date(data.starts_at) : null;
     const dateLabel = start ? start.toLocaleDateString("en-AU", { weekday: "short" }) : "Today";
@@ -784,6 +798,8 @@
     document.querySelector("#sessionSheet .trainer-card h4").textContent = `${dateLabel} · ${timeLabel}`;
     document.querySelector("#sessionSheet .trainer-card p").textContent = `${data.location || "Training studio"} · ${data.program_name || "Training program"}`;
 
+    updateSessionStatusUI(currentSessionStatus);
+
     const heroMeta = document.querySelectorAll(".session-meta .meta-pill");
 
     if (heroMeta.length >= 3) {
@@ -794,6 +810,59 @@
 
     await loadSessionRoster();
     lucide.createIcons();
+  }
+
+  async function startSession() {
+    if (!currentSessionId) return;
+
+    if (currentSessionStatus === "in_progress" || currentSessionStatus === "completed") {
+      return;
+    }
+
+    const { error } = await db
+      .from("sessions")
+      .update({
+        status: "in_progress",
+        started_at: new Date().toISOString()
+      })
+      .eq("id", currentSessionId);
+
+    if (error) {
+      console.error("Start session failed:", error);
+      alert("Could not start session.");
+      return;
+    }
+
+    currentSessionStatus = "in_progress";
+    updateSessionStatusUI(currentSessionStatus);
+  }
+
+  async function completeSession() {
+    if (!currentSessionId) {
+      alert("No active session found.");
+      return;
+    }
+
+    const { error } = await db
+      .from("sessions")
+      .update({
+        status: "completed",
+        completed_at: new Date().toISOString()
+      })
+      .eq("id", currentSessionId);
+
+    if (error) {
+      console.error("Complete session failed:", error);
+      alert("Could not complete session.");
+      return;
+    }
+
+    currentSessionStatus = "completed";
+    updateSessionStatusUI(currentSessionStatus);
+
+    alert("Session completed.");
+    closeSheets();
+    await loadCurrentSession();
   }
 
   async function loadSessionRoster() {
@@ -863,8 +932,12 @@
     lucide.createIcons();
   }
 
-  function openSheet(id) {
+  async function openSheet(id) {
     sheets.forEach(sheet => sheet.classList.remove("active"));
+
+    if (id === "sessionSheet") {
+      await startSession();
+    }
 
     const titleMap = {
       noteSheet: `Trainer note for ${selectedDogName}`,
@@ -1113,14 +1186,9 @@
   const publishSessionButton = document.getElementById("publishSessionSummary");
 
   if (publishSessionButton) {
-    publishSessionButton.addEventListener("click", () => {
-      alert("Session completed.");
-      closeSheets();
-    });
+    publishSessionButton.addEventListener("click", completeSession);
   }
 
   loadCurrentSession();
   lucide.createIcons();
 </script>
-</body>
-</html>
