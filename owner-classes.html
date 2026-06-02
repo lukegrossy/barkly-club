@@ -233,11 +233,11 @@
       Dogs
     </a>
 
-    <a href="classes.html" class="bottom-nav-item active">
+    <a href="owner-dashboard.html#school" class="bottom-nav-item active">
       <div class="bottom-nav-icon">
-        <i data-lucide="calendar-check"></i>
+        <i data-lucide="building-2"></i>
       </div>
-      Classes
+      School
     </a>
 
   </nav>
@@ -309,7 +309,7 @@
         const attendance = Number(classItem.attendance_rate || 0);
 
         return `
-          <a href="class-detail.html?class=${classItem.class_id}"
+          <a href="owner-class-detail.html?class=${classItem.class_id}"
              class="class-card glass-card lift-card">
 
             <div class="card-icon">
