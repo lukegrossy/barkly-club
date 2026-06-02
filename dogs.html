@@ -247,97 +247,221 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
-    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
+const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
 
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
-    let allDogs = [];
+function getRole() {
+  const role =
+    new URLSearchParams(window.location.search)
+      .get("role");
 
-    function safe(value, fallback = "") {
-      return value ?? fallback;
-    }
+  return ["owner","trainer","parent"].includes(role)
+    ? role
+    : "owner";
+}
 
-    async function loadDogs() {
-      const { data, error } = await db
-        .from("owner_dogs_view")
-        .select("*")
-        .order("dog_name", { ascending: true });
+const role = getRole();
 
-      if (error) {
-        console.error("Dogs failed:", error);
-        document.getElementById("dogsList").innerHTML = `
-          <div class="empty-card glass-card">
-            Could not load dogs.
-          </div>
-        `;
-        return;
-      }
+let allDogs = [];
 
-      allDogs = data || [];
-      renderDogs();
-    }
+function safe(value, fallback = "") {
+  return value ?? fallback;
+}
 
-    function renderDogs() {
-      const list = document.getElementById("dogsList");
-      const search = document.getElementById("dogSearch").value.toLowerCase();
+function buildNavigation() {
+  const nav = document.querySelector(".bottom-nav");
 
-      const filteredDogs = allDogs.filter(dog => {
-        const text = `
-          ${dog.dog_name || ""}
-          ${dog.breed || ""}
-          ${dog.class_name || ""}
-          ${dog.program_name || ""}
-        `.toLowerCase();
+  if (role === "owner") {
+    nav.innerHTML = `
+      <a href="owner-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="layout-dashboard"></i>
+        </div>
+        Home
+      </a>
 
-        return text.includes(search);
-      });
+      <a href="owner-dashboard.html#programs" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="layers-3"></i>
+        </div>
+        Programs
+      </a>
 
-      if (filteredDogs.length === 0) {
-        list.innerHTML = `
-          <div class="empty-card glass-card">
-            No dogs found.
-          </div>
-        `;
-        return;
-      }
+      <a href="dogs.html?role=owner" class="bottom-nav-item active">
+        <div class="bottom-nav-icon">
+          <i data-lucide="users"></i>
+        </div>
+        People
+      </a>
 
-      list.innerHTML = filteredDogs.map(dog => `
-        <a href="dog-detail.html?dog=${dog.dog_id}"
-           class="dog-card glass-card lift-card">
+      <a href="owner-dashboard.html#school" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="building-2"></i>
+        </div>
+        School
+      </a>
+    `;
+  }
 
-          <div class="card-icon">
-            <i data-lucide="dog"></i>
-          </div>
+  if (role === "trainer") {
+    nav.innerHTML = `
+      <a href="trainer-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="calendar-check"></i>
+        </div>
+        Sessions
+      </a>
 
-          <div class="dog-copy">
-            <h4>${safe(dog.dog_name, "Dog")}</h4>
-            <p>
-              ${safe(dog.breed, "Dog")}
-              ·
-              ${safe(dog.program_name, "No program")}
-              ·
-              ${safe(dog.class_name, "No class")}
-            </p>
-          </div>
+      <a href="dogs.html?role=trainer" class="bottom-nav-item active">
+        <div class="bottom-nav-icon">
+          <i data-lucide="dog"></i>
+        </div>
+        Dogs
+      </a>
 
-          <span class="status-pill">
-            ${safe(dog.status, "active")}
-          </span>
+      <a href="trainer-school.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="building-2"></i>
+        </div>
+        School
+      </a>
+    `;
+  }
 
-        </a>
-      `).join("");
+  if (role === "parent") {
+    nav.innerHTML = `
+      <a href="parent-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="dog"></i>
+        </div>
+        Dog
+      </a>
 
-      lucide.createIcons();
-    }
+      <a href="parent-sessions.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="calendar-check"></i>
+        </div>
+        Sessions
+      </a>
 
-    document.getElementById("dogSearch").addEventListener("input", renderDogs);
+      <a href="parent-school.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="building-2"></i>
+        </div>
+        School
+      </a>
+    `;
+  }
+}
 
-    loadDogs();
-    lucide.createIcons();
-  </script>
+async function loadDogs() {
+  const { data, error } = await db
+    .from("owner_dogs_view")
+    .select("*")
+    .order("dog_name", { ascending: true });
+
+  if (error) {
+    console.error("Dogs failed:", error);
+
+    document.getElementById("dogsList").innerHTML = `
+      <div class="empty-card glass-card">
+        Could not load dogs.
+      </div>
+    `;
+
+    return;
+  }
+
+  allDogs = data || [];
+
+  renderDogs();
+}
+
+function renderDogs() {
+  const list =
+    document.getElementById("dogsList");
+
+  const search =
+    document.getElementById("dogSearch")
+      .value
+      .toLowerCase();
+
+  const filteredDogs = allDogs.filter(dog => {
+
+    const text = `
+      ${dog.dog_name || ""}
+      ${dog.breed || ""}
+      ${dog.class_name || ""}
+      ${dog.program_name || ""}
+    `.toLowerCase();
+
+    return text.includes(search);
+
+  });
+
+  if (filteredDogs.length === 0) {
+    list.innerHTML = `
+      <div class="empty-card glass-card">
+        No dogs found.
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML = filteredDogs.map(dog => `
+
+    <a
+      href="dog-detail.html?role=${role}&dog=${dog.dog_id}"
+      class="dog-card glass-card lift-card"
+    >
+
+      <div class="card-icon">
+        <i data-lucide="dog"></i>
+      </div>
+
+      <div class="dog-copy">
+
+        <h4>
+          ${safe(dog.dog_name, "Dog")}
+        </h4>
+
+        <p>
+          ${safe(dog.breed, "Dog")}
+          ·
+          ${safe(dog.program_name, "No program")}
+          ·
+          ${safe(dog.class_name, "No class")}
+        </p>
+
+      </div>
+
+      <span class="status-pill">
+        ${safe(dog.status, "active")}
+      </span>
+
+    </a>
+
+  `).join("");
+
+  lucide.createIcons();
+}
+
+document
+  .getElementById("dogSearch")
+  .addEventListener("input", renderDogs);
+
+buildNavigation();
+loadDogs();
+lucide.createIcons();
+</script>
 
 </body>
 </html>
