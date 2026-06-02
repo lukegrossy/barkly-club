@@ -9,7 +9,7 @@
 
   <style>
     body {
-      padding: max(26px, env(safe-area-inset-top)) 20px 120px;
+      padding: max(26px, env(safe-area-inset-top)) 20px 140px;
     }
 
     .dashboard {
@@ -54,12 +54,6 @@
       box-shadow: var(--shadow-soft);
       backdrop-filter: var(--blur-md);
       flex-shrink: 0;
-    }
-
-    .back-btn svg {
-      width: 21px;
-      height: 21px;
-      stroke-width: 2.4;
     }
 
     .topbar h1 {
@@ -113,6 +107,31 @@
       color: rgba(255,255,255,0.76);
       font-size: var(--text-md);
       line-height: 1.55;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .stat-card {
+      padding: 18px;
+      min-height: 104px;
+    }
+
+    .stat-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-sm);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: var(--display-sm);
+      letter-spacing: var(--tracking-display);
     }
 
     .section-head {
@@ -229,7 +248,7 @@
       <h1>Class details</h1>
 
       <p class="topbar-copy">
-        Manage enrolments, trainer assignment and class configuration.
+        Manage enrolments, trainer assignment and class performance.
       </p>
     </header>
 
@@ -238,16 +257,38 @@
         <span class="pill hero-pill" id="classStatus">Active</span>
       </div>
 
-      <h2 id="classTime">Loading class</h2>
+      <h2 id="className">Loading class</h2>
 
-      <div class="hero-program" id="className">
-        Loading program
+      <div class="hero-program" id="classLocation">
+        Loading location
       </div>
 
-      <p id="classSub">
-        Loading location
+      <p id="heroSummary">
+        Loading class summary.
       </p>
     </section>
+
+    <div class="stats-grid">
+      <div class="stat-card glass-card lift-card">
+        <p>Dogs enrolled</p>
+        <strong id="enrolledDogs">—</strong>
+      </div>
+
+      <div class="stat-card glass-card lift-card">
+        <p>Sessions run</p>
+        <strong id="sessionsRun">—</strong>
+      </div>
+
+      <div class="stat-card glass-card lift-card">
+        <p>Attendance</p>
+        <strong id="attendanceRate">—</strong>
+      </div>
+
+      <div class="stat-card glass-card lift-card">
+        <p>Badges awarded</p>
+        <strong id="badgesAwarded">—</strong>
+      </div>
+    </div>
 
     <section>
       <div class="section-head">
@@ -259,6 +300,7 @@
           <div class="card-icon">
             <i data-lucide="layers-3"></i>
           </div>
+
           <div class="detail-copy">
             <h4>Program</h4>
             <p id="programName">Loading...</p>
@@ -269,6 +311,7 @@
           <div class="card-icon">
             <i data-lucide="map-pin"></i>
           </div>
+
           <div class="detail-copy">
             <h4>Location</h4>
             <p id="locationName">Loading...</p>
@@ -279,9 +322,10 @@
           <div class="card-icon">
             <i data-lucide="users"></i>
           </div>
+
           <div class="detail-copy">
             <h4>Capacity</h4>
-            <p id="capacityRemaining">Loading...</p>
+            <p id="capacityText">Loading...</p>
           </div>
         </div>
       </div>
@@ -297,31 +341,38 @@
           <div class="card-icon">
             <i data-lucide="user-round"></i>
           </div>
+
           <div class="detail-copy">
             <h4>Trainer</h4>
             <p>Sarah Thompson · 3 active classes</p>
           </div>
         </div>
 
-        <div class="detail-card glass-card lift-card">
+        <a href="class-enrolments.html" class="detail-card glass-card lift-card">
           <div class="card-icon">
             <i data-lucide="dog"></i>
           </div>
+
           <div class="detail-copy">
             <h4>Enrolled dogs</h4>
             <p id="enrolledPreview">Loading enrolled dogs...</p>
           </div>
-        </div>
 
-        <div class="detail-card glass-card lift-card">
+          <div class="row-status">Manage</div>
+        </a>
+
+        <a href="dog-sessions.html" class="detail-card glass-card lift-card">
           <div class="card-icon">
             <i data-lucide="calendar-check"></i>
           </div>
+
           <div class="detail-copy">
             <h4>Sessions</h4>
-            <p>Upcoming and completed sessions will appear here.</p>
+            <p id="sessionsPreview">Loading sessions...</p>
           </div>
-        </div>
+
+          <div class="row-status">View</div>
+        </a>
       </div>
     </section>
 
@@ -329,11 +380,11 @@
 
   <div class="cta-wrap">
     <button
-  class="cta"
-  onclick="window.location='class-enrolments.html'"
->
-  Manage enrolments
-</button>
+      class="cta"
+      onclick="window.location='class-enrolments.html'"
+    >
+      Manage enrolments
+    </button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -353,7 +404,7 @@
 
     async function loadClass() {
       const { data, error } = await db
-        .from("owner_class_detail_view")
+        .from("owner_class_full_detail_view")
         .select("*")
         .limit(1)
         .single();
@@ -364,20 +415,35 @@
       }
 
       const capacity = Number(data.capacity || 0);
-      const enrolled = Number(data.enrolled_count || 0);
+      const enrolled = Number(data.enrolled_dogs || 0);
       const remaining = Math.max(capacity - enrolled, 0);
+      const sessionsRun = Number(data.sessions_run || 0);
+      const attendanceRate = Number(data.attendance_rate || 0);
+      const badgesAwarded = Number(data.badges_awarded || 0);
 
-      document.getElementById("classTime").textContent =
-  safe(data.class_name, "Class");
+      document.getElementById("className").textContent =
+        safe(data.class_name, "Class");
 
-document.getElementById("className").textContent =
-  safe(data.location, "Location");
+      document.getElementById("classLocation").textContent =
+        safe(data.location, "Location");
 
-document.getElementById("classSub").textContent =
-  `${enrolled}/${capacity} enrolled`;
+      document.getElementById("heroSummary").textContent =
+        `${enrolled}/${capacity} enrolled · ${remaining} places available`;
 
       document.getElementById("classStatus").textContent =
         safe(data.status, "active");
+
+      document.getElementById("enrolledDogs").textContent =
+        enrolled;
+
+      document.getElementById("sessionsRun").textContent =
+        sessionsRun;
+
+      document.getElementById("attendanceRate").textContent =
+        `${attendanceRate}%`;
+
+      document.getElementById("badgesAwarded").textContent =
+        badgesAwarded;
 
       document.getElementById("programName").textContent =
         safe(data.program_name, "Program");
@@ -385,13 +451,20 @@ document.getElementById("classSub").textContent =
       document.getElementById("locationName").textContent =
         safe(data.location, "Location");
 
-      document.getElementById("capacityRemaining").textContent =
-        `${enrolled}/${capacity} enrolled · ${remaining} places available`;
+      document.getElementById("capacityText").textContent =
+        `${remaining} places available`;
 
       document.getElementById("enrolledPreview").textContent =
         enrolled === 1
           ? "1 dog currently enrolled."
           : `${enrolled} dogs currently enrolled.`;
+
+      document.getElementById("sessionsPreview").textContent =
+        sessionsRun === 1
+          ? "1 session recorded for this class."
+          : `${sessionsRun} sessions recorded for this class.`;
+
+      lucide.createIcons();
     }
 
     loadClass();
