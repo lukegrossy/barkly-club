@@ -389,7 +389,7 @@
     const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
 
     const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhc2UiLCJyZWYiOiJ3b29sYWFpdW5hcHNhb3doZWlmaiIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzgwMDIwMjQxLCJleHAiOjIwOTU1OTYyNDF9.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -414,39 +414,39 @@
       lucide.createIcons();
     }
 
-    async function loadOwnerDashboard() {
-      const { data, error } = await db
-        .from("owner_dashboard_view")
-        .select("*")
-        .limit(1)
-        .single();
+      async function loadOwnerDashboard() {
 
-      if (error) {
-        console.error("Owner dashboard failed:", error);
-        return;
-      }
+  const { data, error } = await db
+    .from("owner_dashboard_metrics_view")
+    .select("*")
+    .single();
 
-      document.getElementById("schoolName").textContent =
-        safe(data.school_name, "School");
+  if (error) {
+    console.error("Owner dashboard failed:", error);
+    return;
+  }
 
-      document.getElementById("schoolSubtitle").textContent =
-        `Manage ${safe(data.school_name, "your school")} programs, classes and people.`;
+  document.getElementById("activeDogs").textContent =
+    data.active_dogs ?? 0;
 
-      document.getElementById("activeDogs").textContent =
-        safe(data.active_dogs, 0);
+  document.getElementById("activeClasses").textContent =
+    data.active_classes ?? 0;
 
-      document.getElementById("activeClasses").textContent =
-        safe(data.active_classes, 0);
+  document.getElementById("sessionsThisWeek").textContent =
+    data.sessions_this_week ?? 0;
 
-      document.getElementById("sessionsThisWeek").textContent =
-        safe(data.sessions_this_week, 0);
+  document.getElementById("sessionsThisWeekText").textContent =
+    `${data.sessions_this_week ?? 0} sessions this week`;
 
-      document.getElementById("sessionsThisWeekText").textContent =
-        `${safe(data.sessions_this_week, 0)} sessions this week`;
+  document.getElementById("attendanceRate").textContent =
+    `${data.attendance_rate ?? 0}%`;
 
-      document.getElementById("attendanceRate").textContent =
-        `${safe(data.attendance_rate, 0)}%`;
-    }
+  document.getElementById("schoolName").textContent =
+    "Barkly Schools";
+
+  document.getElementById("schoolSubtitle").textContent =
+    "Manage programs, classes, people and school performance.";
+}
 
     async function loadPrograms() {
       const { data, error } = await db
