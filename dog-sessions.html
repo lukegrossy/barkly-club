@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Session History | Barkly Schools</title>
+
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 100px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .page-title {
+      font-size: var(--display-md);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: var(--space-xl);
+      color: white;
+    }
+
+    .hero h2 {
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: rgba(255,255,255,.75);
+    }
+
+    .section-title {
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .session-card {
+      padding: 18px;
+    }
+
+    .session-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .session-title {
+      font-size: 16px;
+      font-weight: var(--font-heavy);
+    }
+
+    .status-pill {
+      background: rgba(138,166,143,.12);
+      color: var(--sage);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: var(--font-heavy);
+      text-transform: capitalize;
+    }
+
+    .session-meta {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+    }
+
+    .empty-card {
+      padding: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="dashboard fade-in">
+
+  <div class="brand-row">
+    <button class="back-btn" onclick="window.location='dog-detail.html'">
+      ←
+    </button>
+
+    <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+    <p class="eyebrow">Barkly Schools</p>
+  </div>
+
+  <h1 class="page-title">Session History</h1>
+
+  <p class="page-subtitle">
+    Training attendance and progress.
+  </p>
+
+  <section class="hero hero-card lift-card">
+    <h2 id="dogName">Loading...</h2>
+
+    <p id="heroStats">
+      Loading sessions...
+    </p>
+  </section>
+
+  <h3 class="section-title">Sessions</h3>
+
+  <div class="card-list" id="sessionsList">
+    <div class="empty-card glass-card">
+      Loading sessions...
+    </div>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+<script>
+const SUPABASE_URL =
+  "https://woolaaiunapsaowheifj.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+async function loadSessions() {
+
+  const { data, error } = await db
+    .from("owner_dog_sessions_view")
+    .select("*")
+    .order("checked_in_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    document.getElementById("sessionsList").innerHTML = `
+      <div class="empty-card glass-card">
+        No sessions recorded yet.
+      </div>
+    `;
+    return;
+  }
+
+  const dogId = data[0].dog_id;
+
+  const sessions = data.filter(
+    row => row.dog_id === dogId
+  );
+
+  document.getElementById("dogName").textContent =
+    sessions[0].dog_name || "Dog";
+
+  document.getElementById("heroStats").textContent =
+    `${sessions.length} session${sessions.length === 1 ? "" : "s"} attended`;
+
+  document.getElementById("sessionsList").innerHTML =
+    sessions.map(session => `
+
+      <div class="session-card glass-card lift-card">
+
+        <div class="session-header">
+          <div class="session-title">
+            ${session.class_name || "Training Session"}
+          </div>
+
+          <div class="status-pill">
+            ${session.status}
+          </div>
+        </div>
+
+        <div class="session-meta">
+          Program: ${session.program_name || "Program"}<br>
+          Checked in:
+          ${session.checked_in_at
+            ? new Date(session.checked_in_at)
+                .toLocaleDateString("en-AU")
+            : "-"}
+        </div>
+
+      </div>
+
+    `).join("");
+}
+
+loadSessions();
+</script>
+
+</body>
+</html>
