@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Dog Profile | Barkly Schools</title>
+
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 100px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      margin-bottom: var(--space-lg);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: var(--blur-md);
+      flex-shrink: 0;
+    }
+
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+      white-space: nowrap;
+    }
+
+    .topbar-copy {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: var(--space-xl);
+      color: white;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-lg);
+    }
+
+    .dog-avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,0.14);
+      display: grid;
+      place-items: center;
+      color: white;
+    }
+
+    .dog-avatar svg {
+      width: 42px;
+      height: 42px;
+      stroke-width: 1.9;
+    }
+
+    .hero-pill {
+      background: rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.92);
+      text-transform: capitalize;
+    }
+
+    .hero h2 {
+      color: white;
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.76);
+      font-size: var(--text-md);
+      line-height: 1.55;
+    }
+
+    .section-head {
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-head h3 {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .detail-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .detail-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .detail-card h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .detail-card p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.4;
+    }
+
+    .row-status {
+      margin-left: auto;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="dashboard fade-in">
+
+    <header class="topbar">
+      <div class="brand-row">
+        <button class="back-btn" onclick="window.location='dogs.html'">
+          <i data-lucide="arrow-left"></i>
+        </button>
+
+        <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+        <p class="eyebrow">Barkly Schools</p>
+      </div>
+
+      <h1>Dog profile</h1>
+
+      <p class="topbar-copy">
+        View enrolment, class and progress information.
+      </p>
+    </header>
+
+    <section class="hero hero-card lift-card">
+      <div class="hero-top">
+        <div class="dog-avatar">
+          <i data-lucide="dog"></i>
+        </div>
+
+        <span class="pill hero-pill" id="dogStatus">
+          Active
+        </span>
+      </div>
+
+      <h2 id="dogName">Loading dog</h2>
+
+      <p id="dogSub">
+        Currently enrolled
+      </p>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h3>Profile</h3>
+      </div>
+
+      <div class="card-list">
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="dog"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Breed</h4>
+            <p id="dogBreed">Loading...</p>
+          </div>
+        </div>
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="layers-3"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Program</h4>
+            <p id="programName">Loading...</p>
+          </div>
+        </div>
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="calendar-check"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Class</h4>
+            <p id="className">Loading...</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h3>Progress</h3>
+      </div>
+
+      <div class="card-list">
+
+        <a href="#" id="attendanceLink" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="check-circle-2"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Attendance</h4>
+            <p id="attendanceText">Loading attendance history.</p>
+          </div>
+        </a>
+
+        <a href="#" id="badgesLink" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="badge-check"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Badges</h4>
+            <p id="badgeText">Loading badges.</p>
+          </div>
+        </a>
+
+        <a href="#" id="homeworkLink" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="clipboard-check"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Homework</h4>
+            <p id="homeworkText">Loading homework.</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    function safe(value, fallback = "") {
+      return value ?? fallback;
+    }
+
+    function getDogIdFromUrl() {
+      return new URLSearchParams(window.location.search).get("dog");
+    }
+
+    async function loadDog() {
+      const dogId = getDogIdFromUrl();
+
+      if (!dogId) {
+        console.error("No dog id supplied in URL.");
+        document.getElementById("dogName").textContent = "Dog not found";
+        document.getElementById("dogSub").textContent =
+          "Open this page from the Dogs list.";
+        return;
+      }
+
+      const { data, error } = await db
+        .from("owner_dog_detail_view")
+        .select("*")
+        .eq("dog_id", dogId)
+        .single();
+
+      if (error) {
+        console.error("Dog detail failed:", error);
+        document.getElementById("dogName").textContent = "Dog not found";
+        document.getElementById("dogSub").textContent =
+          "Could not load this dog profile.";
+        return;
+      }
+
+      document.getElementById("dogName").textContent =
+        safe(data.dog_name, "Dog");
+
+      document.getElementById("dogSub").textContent =
+        "Currently enrolled";
+
+      document.getElementById("dogStatus").textContent =
+        safe(data.status, "active");
+
+      document.getElementById("dogBreed").textContent =
+        safe(data.breed, "Dog");
+
+      document.getElementById("programName").textContent =
+        safe(data.program_name, "No program assigned");
+
+      document.getElementById("className").textContent =
+        safe(data.class_name, "No class assigned");
+
+      document.getElementById("attendanceLink").href =
+        `dog-sessions.html?dog=${dogId}`;
+
+      document.getElementById("badgesLink").href =
+        `dog-badges.html?dog=${dogId}`;
+
+      document.getElementById("homeworkLink").href =
+        `dog-homework.html?dog=${dogId}`;
+
+      await loadDogProgress(dogId);
+
+      lucide.createIcons();
+    }
+
+    async function loadDogProgress(dogId) {
+      if (!dogId) return;
+
+      const { count: attendanceCount } = await db
+        .from("session_attendance")
+        .select("*", { count: "exact", head: true })
+        .eq("dog_id", dogId)
+        .eq("status", "present");
+
+      const { count: badgeCount } = await db
+        .from("dog_badges")
+        .select("*", { count: "exact", head: true })
+        .eq("dog_id", dogId);
+
+      const { count: homeworkCount } = await db
+        .from("homework_assignments")
+        .select("*", { count: "exact", head: true })
+        .eq("dog_id", dogId);
+
+      const attendance = attendanceCount || 0;
+      const badges = badgeCount || 0;
+      const homework = homeworkCount || 0;
+
+      document.getElementById("attendanceText").textContent =
+        attendance === 1
+          ? "1 session attended."
+          : `${attendance} sessions attended.`;
+
+      document.getElementById("badgeText").textContent =
+        badges === 1
+          ? "1 badge earned."
+          : `${badges} badges earned.`;
+
+      document.getElementById("homeworkText").textContent =
+        homework === 1
+          ? "1 homework assignment recorded."
+          : `${homework} homework assignments recorded.`;
+    }
+
+    loadDog();
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
