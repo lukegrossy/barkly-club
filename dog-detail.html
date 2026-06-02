@@ -9,7 +9,7 @@
 
   <style>
     body {
-      padding: max(26px, env(safe-area-inset-top)) 20px 100px;
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
     }
 
     .dashboard {
@@ -185,16 +185,32 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
+
+    .trainer-actions {
+      display: none;
+    }
+
+    body[data-role="trainer"] .trainer-actions {
+      display: block;
+    }
+
+    .bottom-nav {
+      max-width: 540px;
+    }
+
+    .bottom-nav-item {
+      min-width: 62px;
+    }
   </style>
 </head>
 
-<body>
+<body data-role="owner">
 
   <main class="dashboard fade-in">
 
     <header class="topbar">
       <div class="brand-row">
-        <button class="back-btn" onclick="window.location='dogs.html'">
+        <button class="back-btn" id="backBtn">
           <i data-lucide="arrow-left"></i>
         </button>
 
@@ -202,9 +218,9 @@
         <p class="eyebrow">Barkly Schools</p>
       </div>
 
-      <h1>Dog profile</h1>
+      <h1 id="pageTitle">Dog profile</h1>
 
-      <p class="topbar-copy">
+      <p class="topbar-copy" id="pageSubtitle">
         View enrolment, class and progress information.
       </p>
     </header>
@@ -286,6 +302,8 @@
             <h4>Attendance</h4>
             <p id="attendanceText">Loading attendance history.</p>
           </div>
+
+          <div class="row-status">View</div>
         </a>
 
         <a href="#" id="badgesLink" class="detail-card glass-card lift-card">
@@ -297,6 +315,8 @@
             <h4>Badges</h4>
             <p id="badgeText">Loading badges.</p>
           </div>
+
+          <div class="row-status">View</div>
         </a>
 
         <a href="#" id="homeworkLink" class="detail-card glass-card lift-card">
@@ -308,12 +328,59 @@
             <h4>Homework</h4>
             <p id="homeworkText">Loading homework.</p>
           </div>
+
+          <div class="row-status">View</div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="trainer-actions">
+      <div class="section-head">
+        <h3>Trainer actions</h3>
+      </div>
+
+      <div class="card-list">
+
+        <a href="#" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="badge-plus"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Award badge</h4>
+            <p>Record a new achievement for this dog.</p>
+          </div>
+        </a>
+
+        <a href="#" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="clipboard-plus"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Assign homework</h4>
+            <p>Add practice work for the parent portal.</p>
+          </div>
+        </a>
+
+        <a href="#" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="message-square-text"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Add trainer note</h4>
+            <p>Write a short progress update.</p>
+          </div>
         </a>
 
       </div>
     </section>
 
   </main>
+
+  <nav class="bottom-nav" id="bottomNav"></nav>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -330,18 +397,147 @@
       return value ?? fallback;
     }
 
-    function getDogIdFromUrl() {
-      return new URLSearchParams(window.location.search).get("dog");
+    function getParams() {
+      return new URLSearchParams(window.location.search);
+    }
+
+    function getRole() {
+      const role = getParams().get("role");
+      return ["owner", "trainer", "parent"].includes(role) ? role : "owner";
+    }
+
+    function getDogId() {
+      return getParams().get("dog");
+    }
+
+    function withRoleAndDog(page, dogId) {
+      return `${page}?role=${role}&dog=${dogId}`;
+    }
+
+    const role = getRole();
+
+    document.body.dataset.role = role;
+
+    function renderRoleCopy() {
+      if (role === "owner") {
+        document.getElementById("pageSubtitle").textContent =
+          "View enrolment, class and progress information.";
+      }
+
+      if (role === "trainer") {
+        document.getElementById("pageSubtitle").textContent =
+          "View progress and record training actions.";
+      }
+
+      if (role === "parent") {
+        document.getElementById("pageTitle").textContent =
+          "My dog";
+
+        document.getElementById("pageSubtitle").textContent =
+          "Follow training progress, homework and achievements.";
+      }
+    }
+
+    function renderBottomNav() {
+      const nav = document.getElementById("bottomNav");
+
+      if (role === "owner") {
+        nav.innerHTML = `
+          <a href="owner-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="layout-dashboard"></i></div>
+            Home
+          </a>
+
+          <a href="owner-dashboard.html#programs" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="layers-3"></i></div>
+            Programs
+          </a>
+
+          <a href="dogs.html?role=owner" class="bottom-nav-item active">
+            <div class="bottom-nav-icon"><i data-lucide="users"></i></div>
+            People
+          </a>
+
+          <a href="owner-dashboard.html#school" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+            School
+          </a>
+        `;
+      }
+
+      if (role === "trainer") {
+        nav.innerHTML = `
+          <a href="trainer-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+            Sessions
+          </a>
+
+          <a href="dogs.html?role=trainer" class="bottom-nav-item active">
+            <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+            Dogs
+          </a>
+
+          <a href="trainer-school.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+            School
+          </a>
+        `;
+      }
+
+      if (role === "parent") {
+        nav.innerHTML = `
+          <a href="dog-detail.html?role=parent&dog=${getDogId() || ""}" class="bottom-nav-item active">
+            <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+            Dog
+          </a>
+
+          <a href="dog-sessions.html?role=parent&dog=${getDogId() || ""}" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+            Sessions
+          </a>
+
+          <a href="parent-school.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+            School
+          </a>
+        `;
+      }
+    }
+
+    function setBackButton(dogId) {
+      document.getElementById("backBtn").onclick = () => {
+        if (role === "owner") {
+          window.location = "dogs.html?role=owner";
+          return;
+        }
+
+        if (role === "trainer") {
+          window.location = "dogs.html?role=trainer";
+          return;
+        }
+
+        if (role === "parent") {
+          window.location = "parent-dashboard.html";
+          return;
+        }
+
+        window.location = "dogs.html";
+      };
     }
 
     async function loadDog() {
-      const dogId = getDogIdFromUrl();
+      const dogId = getDogId();
+
+      renderRoleCopy();
+      renderBottomNav();
+      setBackButton(dogId);
 
       if (!dogId) {
         console.error("No dog id supplied in URL.");
         document.getElementById("dogName").textContent = "Dog not found";
         document.getElementById("dogSub").textContent =
           "Open this page from the Dogs list.";
+        lucide.createIcons();
         return;
       }
 
@@ -356,6 +552,7 @@
         document.getElementById("dogName").textContent = "Dog not found";
         document.getElementById("dogSub").textContent =
           "Could not load this dog profile.";
+        lucide.createIcons();
         return;
       }
 
@@ -363,7 +560,7 @@
         safe(data.dog_name, "Dog");
 
       document.getElementById("dogSub").textContent =
-        "Currently enrolled";
+        role === "parent" ? "Training journey" : "Currently enrolled";
 
       document.getElementById("dogStatus").textContent =
         safe(data.status, "active");
@@ -378,13 +575,13 @@
         safe(data.class_name, "No class assigned");
 
       document.getElementById("attendanceLink").href =
-        `dog-sessions.html?dog=${dogId}`;
+        withRoleAndDog("dog-sessions.html", dogId);
 
       document.getElementById("badgesLink").href =
-        `dog-badges.html?dog=${dogId}`;
+        withRoleAndDog("dog-badges.html", dogId);
 
       document.getElementById("homeworkLink").href =
-        `dog-homework.html?dog=${dogId}`;
+        withRoleAndDog("dog-homework.html", dogId);
 
       await loadDogProgress(dogId);
 
