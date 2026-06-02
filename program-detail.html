@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Program Detail | Barkly Schools</title>
+
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 100px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .page-title {
+      font-size: var(--display-md);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+      line-height: 1.5;
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: var(--space-xl);
+      color: white;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-pill {
+      background: rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.92);
+      text-transform: capitalize;
+    }
+
+    .hero h2 {
+      color: white;
+      font-size: var(--display-md);
+      line-height: 1.02;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero p {
+      color: rgba(255,255,255,.75);
+      line-height: 1.55;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .stat-card {
+      padding: 16px 12px;
+      min-height: 92px;
+    }
+
+    .stat-card p {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      font-weight: var(--font-bold);
+      margin-bottom: 8px;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .section-title {
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .program-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .program-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .program-card h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .program-card p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.4;
+    }
+
+    .row-status {
+      margin-left: auto;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="dashboard fade-in">
+
+  <div class="brand-row">
+    <button class="back-btn" onclick="window.location='owner-dashboard.html'">
+      ←
+    </button>
+
+    <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+    <p class="eyebrow">Barkly Schools</p>
+  </div>
+
+  <h1 class="page-title">Program detail</h1>
+
+  <p class="page-subtitle">
+    Configure classes, badges, homework and progression pathways.
+  </p>
+
+  <section class="hero hero-card lift-card">
+    <div class="hero-top">
+      <span class="pill hero-pill" id="programStatus">Active</span>
+    </div>
+
+    <h2 id="programName">Loading program</h2>
+
+    <p id="programDescription">
+      Loading program details...
+    </p>
+  </section>
+
+  <div class="stats-grid">
+    <div class="stat-card glass-card lift-card">
+      <p>Classes</p>
+      <strong id="activeClasses">—</strong>
+    </div>
+
+    <div class="stat-card glass-card lift-card">
+      <p>Dogs</p>
+      <strong id="enrolledDogs">—</strong>
+    </div>
+
+    <div class="stat-card glass-card lift-card">
+      <p>Badges</p>
+      <strong id="badgeTemplates">—</strong>
+    </div>
+  </div>
+
+  <h3 class="section-title">Program setup</h3>
+
+  <div class="card-list">
+
+    <a href="class-detail.html" class="program-card glass-card lift-card">
+      <div class="card-icon">
+        <i data-lucide="calendar-check"></i>
+      </div>
+
+      <div class="program-copy">
+        <h4>Classes</h4>
+        <p id="classesText">Loading active classes...</p>
+      </div>
+
+      <div class="row-status">View</div>
+    </a>
+
+    <a href="dog-badges.html" class="program-card glass-card lift-card">
+      <div class="card-icon">
+        <i data-lucide="badge-check"></i>
+      </div>
+
+      <div class="program-copy">
+        <h4>Badge templates</h4>
+        <p id="badgesText">Loading badge templates...</p>
+      </div>
+
+      <div class="row-status">View</div>
+    </a>
+
+    <a href="dog-homework.html" class="program-card glass-card lift-card">
+      <div class="card-icon">
+        <i data-lucide="clipboard-check"></i>
+      </div>
+
+      <div class="program-copy">
+        <h4>Homework templates</h4>
+        <p>Reusable training tasks and practice prompts.</p>
+      </div>
+
+      <div class="row-status">Soon</div>
+    </a>
+
+    <a href="#" class="program-card glass-card lift-card">
+      <div class="card-icon">
+        <i data-lucide="route"></i>
+      </div>
+
+      <div class="program-copy">
+        <h4>Progression pathway</h4>
+        <p>Define how dogs move through stages and milestones.</p>
+      </div>
+
+      <div class="row-status">Soon</div>
+    </a>
+
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+const SUPABASE_URL =
+  "https://woolaaiunapsaowheifj.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+function safe(value, fallback = "") {
+  return value ?? fallback;
+}
+
+async function loadProgram() {
+  const { data, error } = await db
+    .from("owner_program_detail_view")
+    .select("*")
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.error("Program detail failed:", error);
+    return;
+  }
+
+  document.getElementById("programName").textContent =
+    safe(data.program_name, "Program");
+
+  document.getElementById("programDescription").textContent =
+    safe(data.description, "Program configuration and class pathways.");
+
+  document.getElementById("programStatus").textContent =
+    safe(data.status, "active");
+
+  document.getElementById("activeClasses").textContent =
+    data.active_classes ?? 0;
+
+  document.getElementById("enrolledDogs").textContent =
+    data.enrolled_dogs ?? 0;
+
+  document.getElementById("badgeTemplates").textContent =
+    data.badge_templates ?? 0;
+
+  document.getElementById("classesText").textContent =
+    `${data.active_classes ?? 0} active class${data.active_classes === 1 ? "" : "es"} in this program.`;
+
+  document.getElementById("badgesText").textContent =
+    `${data.badge_templates ?? 0} badge template${data.badge_templates === 1 ? "" : "s"} available.`;
+
+  lucide.createIcons();
+}
+
+loadProgram();
+lucide.createIcons();
+</script>
+
+</body>
+</html>
