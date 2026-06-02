@@ -257,7 +257,8 @@ async function loadBadges() {
 
   if (!data || data.length === 0) return;
 
-  const dogId = data[0].dog_id;
+  const dogId =
+  new URLSearchParams(window.location.search).get("dog") || data[0].dog_id;
 
   const dogRows = data.filter(
     row => row.dog_id === dogId
