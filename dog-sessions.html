@@ -97,11 +97,13 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      gap: 12px;
     }
 
     .session-title {
       font-size: 16px;
       font-weight: var(--font-heavy);
+      line-height: 1.2;
     }
 
     .status-pill {
@@ -112,6 +114,7 @@
       font-size: 12px;
       font-weight: var(--font-heavy);
       text-transform: capitalize;
+      flex-shrink: 0;
     }
 
     .session-meta {
@@ -122,6 +125,9 @@
 
     .empty-card {
       padding: 18px;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -131,7 +137,7 @@
 <main class="dashboard fade-in">
 
   <div class="brand-row">
-    <button class="back-btn" onclick="window.location='dog-detail.html'">
+    <button class="back-btn" id="backBtn">
       ←
     </button>
 
@@ -177,42 +183,77 @@ const db = supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
+function getDogIdFromUrl() {
+  return new URLSearchParams(window.location.search).get("dog");
+}
+
+const dogId = getDogIdFromUrl();
+
+document.getElementById("backBtn").onclick = () => {
+  window.location = dogId
+    ? `dog-detail.html?dog=${dogId}`
+    : "dogs.html";
+};
+
 async function loadSessions() {
+  if (!dogId) {
+    document.getElementById("dogName").textContent =
+      "Dog not found";
+
+    document.getElementById("heroStats").textContent =
+      "Open this page from a dog profile.";
+
+    document.getElementById("sessionsList").innerHTML = `
+      <div class="empty-card glass-card">
+        No dog was selected.
+      </div>
+    `;
+
+    return;
+  }
 
   const { data, error } = await db
     .from("owner_dog_sessions_view")
     .select("*")
+    .eq("dog_id", dogId)
     .order("checked_in_at", { ascending: false });
 
   if (error) {
     console.error(error);
+
+    document.getElementById("dogName").textContent =
+      "Could not load sessions";
+
+    document.getElementById("heroStats").textContent =
+      "Please try again.";
+
     return;
   }
 
   if (!data || data.length === 0) {
+    document.getElementById("dogName").textContent =
+      "Dog";
+
+    document.getElementById("heroStats").textContent =
+      "No sessions recorded yet.";
+
     document.getElementById("sessionsList").innerHTML = `
       <div class="empty-card glass-card">
-        No sessions recorded yet.
+        No sessions recorded for this dog yet.
       </div>
     `;
+
     return;
   }
 
-  const dogId =
-  new URLSearchParams(window.location.search).get("dog") || data[0].dog_id;
-
-  const sessions = data.filter(
-    row => row.dog_id === dogId
-  );
-
   document.getElementById("dogName").textContent =
-    sessions[0].dog_name || "Dog";
+    data[0].dog_name || "Dog";
 
   document.getElementById("heroStats").textContent =
-    `${sessions.length} session${sessions.length === 1 ? "" : "s"} attended`;
+    `${data.length} session${data.length === 1 ? "" : "s"} attended`;
 
   document.getElementById("sessionsList").innerHTML =
-    sessions.map(session => `
+    data.map(session => `
 
       <div class="session-card glass-card lift-card">
 
@@ -222,7 +263,7 @@ async function loadSessions() {
           </div>
 
           <div class="status-pill">
-            ${session.status}
+            ${session.status || "present"}
           </div>
         </div>
 
