@@ -191,8 +191,8 @@ const dogId = getDogIdFromUrl();
 
 document.getElementById("backBtn").onclick = () => {
   window.location = dogId
-    ? `dog-detail.html?dog=${dogId}`
-    : "dogs.html";
+    ? `owner-dog-detail.html?dog=${dogId}`
+    : "owner-dogs.html";
 };
 
 async function loadSessions() {
