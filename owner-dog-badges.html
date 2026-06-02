@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Dog Badges | Barkly Schools</title>
+
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 100px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .page-title {
+      font-size: var(--display-md);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: var(--space-xl);
+      color: white;
+    }
+
+    .hero h2 {
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: rgba(255,255,255,.75);
+    }
+
+    .section-title {
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .badge-card {
+      display: flex;
+      gap: 14px;
+      padding: 18px;
+      align-items: flex-start;
+    }
+
+    .badge-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .badge-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke-width: 2.2;
+    }
+
+    .earned .badge-icon {
+      background: rgba(138,166,143,.15);
+      color: var(--sage);
+    }
+
+    .locked .badge-icon {
+      background: rgba(15,31,46,.08);
+      color: var(--text-secondary);
+    }
+
+    .badge-copy {
+      flex: 1;
+    }
+
+    .badge-copy h4 {
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .badge-description {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    .badge-comment {
+      font-size: var(--text-sm);
+      color: var(--navy);
+      padding-top: 10px;
+      border-top: 1px solid rgba(0,0,0,.06);
+    }
+
+    .badge-date {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .locked {
+      opacity: .72;
+    }
+
+    .empty-card {
+      padding: 18px;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="dashboard fade-in">
+
+  <div class="brand-row">
+    <button class="back-btn" id="backBtn">
+      ←
+    </button>
+
+    <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+    <p class="eyebrow">Barkly Schools</p>
+  </div>
+
+  <h1 class="page-title">Badges</h1>
+
+  <p class="page-subtitle">
+    Achievements and training milestones.
+  </p>
+
+  <section class="hero hero-card lift-card">
+    <h2 id="dogName">Loading...</h2>
+
+    <p id="heroStats">
+      Loading badges...
+    </p>
+  </section>
+
+  <h3 class="section-title">Earned badges</h3>
+
+  <div class="card-list" id="earnedBadges">
+    <div class="empty-card glass-card">
+      Loading earned badges...
+    </div>
+  </div>
+
+  <h3 class="section-title">Next milestones</h3>
+
+  <div class="card-list" id="lockedBadges">
+    <div class="empty-card glass-card">
+      Loading milestones...
+    </div>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+const SUPABASE_URL =
+  "https://woolaaiunapsaowheifj.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+function getDogIdFromUrl() {
+  return new URLSearchParams(window.location.search).get("dog");
+}
+
+const dogId = getDogIdFromUrl();
+
+document.getElementById("backBtn").onclick = () => {
+  window.location = dogId
+    ? `dog-detail.html?dog=${dogId}`
+    : "dogs.html";
+};
+
+function badgeIcon(name) {
+  switch (name) {
+    case "First Session":
+      return "flag";
+
+    case "Recall Rookie":
+      return "radio";
+
+    case "Lead Walker":
+      return "footprints";
+
+    case "Social Star":
+      return "users";
+
+    case "Graduate":
+      return "graduation-cap";
+
+    case "Off Leash Ready":
+      return "mountain";
+
+    default:
+      return "award";
+  }
+}
+
+async function loadBadges() {
+  if (!dogId) {
+    document.getElementById("dogName").textContent =
+      "Dog not found";
+
+    document.getElementById("heroStats").textContent =
+      "Open this page from a dog profile.";
+
+    document.getElementById("earnedBadges").innerHTML = `
+      <div class="empty-card glass-card">
+        No dog was selected.
+      </div>
+    `;
+
+    document.getElementById("lockedBadges").innerHTML = "";
+
+    return;
+  }
+
+  const { data, error } = await db
+    .from("owner_dog_badges_view")
+    .select("*")
+    .eq("dog_id", dogId);
+
+  if (error) {
+    console.error(error);
+
+    document.getElementById("dogName").textContent =
+      "Could not load badges";
+
+    document.getElementById("heroStats").textContent =
+      "Please try again.";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    document.getElementById("dogName").textContent =
+      "Dog";
+
+    document.getElementById("heroStats").textContent =
+      "No badge data found.";
+
+    document.getElementById("earnedBadges").innerHTML = `
+      <div class="empty-card glass-card">
+        No badges recorded yet.
+      </div>
+    `;
+
+    document.getElementById("lockedBadges").innerHTML = `
+      <div class="empty-card glass-card">
+        No upcoming milestones found.
+      </div>
+    `;
+
+    return;
+  }
+
+  const earned = data.filter(
+    row => row.earned === true
+  );
+
+  const locked = data.filter(
+    row => row.earned === false
+  );
+
+  const dogName =
+    data[0].dog_name || "Dog";
+
+  document.getElementById("dogName").textContent =
+    dogName;
+
+  document.getElementById("heroStats").textContent =
+    `${earned.length} badges earned · ${locked.length} remaining`;
+
+  const earnedContainer =
+    document.getElementById("earnedBadges");
+
+  if (earned.length === 0) {
+    earnedContainer.innerHTML = `
+      <div class="empty-card glass-card">
+        No badges earned yet.
+      </div>
+    `;
+  } else {
+    earnedContainer.innerHTML =
+      earned.map(badge => `
+        <div class="badge-card glass-card lift-card earned">
+
+          <div class="badge-icon">
+            <i data-lucide="${badgeIcon(badge.badge_name)}"></i>
+          </div>
+
+          <div class="badge-copy">
+
+            <h4>${badge.badge_name}</h4>
+
+            <div class="badge-date">
+              ${badge.awarded_at
+                ? new Date(badge.awarded_at)
+                    .toLocaleDateString("en-AU")
+                : ""}
+            </div>
+
+            <div class="badge-description">
+              ${badge.description || ""}
+            </div>
+
+            ${
+              badge.trainer_comment
+              ? `
+                <div class="badge-comment">
+                  "${badge.trainer_comment}"
+                </div>
+              `
+              : ""
+            }
+
+          </div>
+
+        </div>
+      `).join("");
+  }
+
+  const lockedContainer =
+    document.getElementById("lockedBadges");
+
+  if (locked.length === 0) {
+    lockedContainer.innerHTML = `
+      <div class="empty-card glass-card">
+        All milestones achieved.
+      </div>
+    `;
+  } else {
+    lockedContainer.innerHTML =
+      locked.map(badge => `
+        <div class="badge-card glass-card locked">
+
+          <div class="badge-icon">
+            <i data-lucide="lock"></i>
+          </div>
+
+          <div class="badge-copy">
+
+            <h4>${badge.badge_name}</h4>
+
+            <div class="badge-description">
+              ${badge.description || ""}
+            </div>
+
+          </div>
+
+        </div>
+      `).join("");
+  }
+
+  lucide.createIcons();
+}
+
+loadBadges();
+lucide.createIcons();
+</script>
+
+</body>
+</html>
