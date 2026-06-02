@@ -194,7 +194,7 @@
 
     <header class="topbar">
       <div class="brand-row">
-        <button class="back-btn" onclick="window.location='class-enrolments.html'">
+        <button class="back-btn" onclick="window.location='dogs.html'">
           <i data-lucide="arrow-left"></i>
         </button>
 
@@ -277,7 +277,7 @@
 
       <div class="card-list">
 
-        <div class="detail-card glass-card lift-card">
+        <a href="#" id="attendanceLink" class="detail-card glass-card lift-card">
           <div class="card-icon">
             <i data-lucide="check-circle-2"></i>
           </div>
@@ -286,23 +286,20 @@
             <h4>Attendance</h4>
             <p id="attendanceText">Loading attendance history.</p>
           </div>
-        </div>
+        </a>
 
-        <a href="dog-badges.html"
-   class="detail-card glass-card lift-card">
+        <a href="#" id="badgesLink" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="badge-check"></i>
+          </div>
 
-  <div class="card-icon">
-    <i data-lucide="badge-check"></i>
-  </div>
+          <div class="detail-copy">
+            <h4>Badges</h4>
+            <p id="badgeText">Loading badges.</p>
+          </div>
+        </a>
 
-  <div class="detail-copy">
-    <h4>Badges</h4>
-    <p id="badgeText">Loading badges.</p>
-  </div>
-
-</a>
-
-        <div class="detail-card glass-card lift-card">
+        <a href="#" id="homeworkLink" class="detail-card glass-card lift-card">
           <div class="card-icon">
             <i data-lucide="clipboard-check"></i>
           </div>
@@ -311,7 +308,7 @@
             <h4>Homework</h4>
             <p id="homeworkText">Loading homework.</p>
           </div>
-        </div>
+        </a>
 
       </div>
     </section>
@@ -333,15 +330,32 @@
       return value ?? fallback;
     }
 
+    function getDogIdFromUrl() {
+      return new URLSearchParams(window.location.search).get("dog");
+    }
+
     async function loadDog() {
+      const dogId = getDogIdFromUrl();
+
+      if (!dogId) {
+        console.error("No dog id supplied in URL.");
+        document.getElementById("dogName").textContent = "Dog not found";
+        document.getElementById("dogSub").textContent =
+          "Open this page from the Dogs list.";
+        return;
+      }
+
       const { data, error } = await db
         .from("owner_dog_detail_view")
         .select("*")
-        .limit(1)
+        .eq("dog_id", dogId)
         .single();
 
       if (error) {
         console.error("Dog detail failed:", error);
+        document.getElementById("dogName").textContent = "Dog not found";
+        document.getElementById("dogSub").textContent =
+          "Could not load this dog profile.";
         return;
       }
 
@@ -363,7 +377,16 @@
       document.getElementById("className").textContent =
         safe(data.class_name, "No class assigned");
 
-      await loadDogProgress(data.dog_id);
+      document.getElementById("attendanceLink").href =
+        `dog-sessions.html?dog=${dogId}`;
+
+      document.getElementById("badgesLink").href =
+        `dog-badges.html?dog=${dogId}`;
+
+      document.getElementById("homeworkLink").href =
+        `dog-homework.html?dog=${dogId}`;
+
+      await loadDogProgress(dogId);
 
       lucide.createIcons();
     }
