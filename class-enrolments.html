@@ -9,7 +9,7 @@
 
   <style>
     body {
-      padding: max(26px, env(safe-area-inset-top)) 20px 90px;
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
     }
 
     .dashboard {
@@ -147,6 +147,13 @@
       color: var(--navy);
     }
 
+    body[data-role="trainer"] .add-section,
+    body[data-role="trainer"] .remove-btn,
+    body[data-role="parent"] .add-section,
+    body[data-role="parent"] .remove-btn {
+      display: none;
+    }
+
     .search {
       width: 100%;
       height: 56px;
@@ -165,16 +172,24 @@
       font-size: var(--text-sm);
       line-height: 1.5;
     }
+
+    .bottom-nav {
+      max-width: 540px;
+    }
+
+    .bottom-nav-item {
+      min-width: 62px;
+    }
   </style>
 </head>
 
-<body>
+<body data-role="owner">
 
   <main class="dashboard fade-in">
 
     <header class="topbar">
       <div class="brand-row">
-        <button class="back-btn" onclick="window.location='class-detail.html'">
+        <button class="back-btn" id="backBtn">
           <i data-lucide="arrow-left"></i>
         </button>
 
@@ -182,7 +197,7 @@
         <p class="eyebrow">Barkly Schools</p>
       </div>
 
-      <h1>Manage enrolments</h1>
+      <h1 id="pageTitle">Manage enrolments</h1>
 
       <p class="topbar-copy" id="classSubtitle">
         Add or remove dogs from this class.
@@ -201,7 +216,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="add-section">
       <div class="section-head">
         <h3>Add dog</h3>
       </div>
@@ -222,6 +237,8 @@
 
   </main>
 
+  <nav class="bottom-nav" id="bottomNav"></nav>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -241,22 +258,156 @@
       return value ?? fallback;
     }
 
+    function getParams() {
+      return new URLSearchParams(window.location.search);
+    }
+
+    function getRole() {
+      const role = getParams().get("role");
+      return ["owner", "trainer", "parent"].includes(role) ? role : "owner";
+    }
+
+    function getClassId() {
+      return getParams().get("class");
+    }
+
+    const role = getRole();
+    const classId = getClassId();
+
+    document.body.dataset.role = role;
+
+    function renderRoleCopy() {
+      if (role === "owner") {
+        document.getElementById("pageTitle").textContent =
+          "Manage enrolments";
+
+        document.getElementById("classSubtitle").textContent =
+          "Add or remove dogs from this class.";
+      }
+
+      if (role === "trainer") {
+        document.getElementById("pageTitle").textContent =
+          "Class dogs";
+
+        document.getElementById("classSubtitle").textContent =
+          "View dogs enrolled in this class.";
+      }
+
+      if (role === "parent") {
+        document.getElementById("pageTitle").textContent =
+          "Class dogs";
+
+        document.getElementById("classSubtitle").textContent =
+          "Dogs currently enrolled in this class.";
+      }
+    }
+
+    function renderBottomNav() {
+      const nav = document.getElementById("bottomNav");
+
+      if (role === "owner") {
+        nav.innerHTML = `
+          <a href="owner-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="layout-dashboard"></i></div>
+            Home
+          </a>
+
+          <a href="owner-dashboard.html#programs" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="layers-3"></i></div>
+            Programs
+          </a>
+
+          <a href="dogs.html?role=owner" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="users"></i></div>
+            People
+          </a>
+
+          <a href="owner-dashboard.html#school" class="bottom-nav-item active">
+            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+            School
+          </a>
+        `;
+      }
+
+      if (role === "trainer") {
+        nav.innerHTML = `
+          <a href="trainer-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+            Sessions
+          </a>
+
+          <a href="dogs.html?role=trainer" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+            Dogs
+          </a>
+
+          <a href="trainer-school.html" class="bottom-nav-item active">
+            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+            School
+          </a>
+        `;
+      }
+
+      if (role === "parent") {
+        nav.innerHTML = `
+          <a href="parent-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+            Dog
+          </a>
+
+          <a href="parent-sessions.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+            Sessions
+          </a>
+
+          <a href="parent-school.html" class="bottom-nav-item active">
+            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+            School
+          </a>
+        `;
+      }
+    }
+
+    function setBackButton() {
+      document.getElementById("backBtn").onclick = () => {
+        if (classId) {
+          window.location = `class-detail.html?role=${role}&class=${classId}`;
+          return;
+        }
+
+        window.location = `classes.html?role=${role}`;
+      };
+    }
+
     async function loadClass() {
-      const { data, error } = await db
+      renderRoleCopy();
+      renderBottomNav();
+      setBackButton();
+
+      let query = db
         .from("owner_class_detail_view")
-        .select("*")
-        .limit(1)
-        .single();
+        .select("*");
+
+      if (classId) {
+        query = query.eq("class_id", classId).single();
+      } else {
+        query = query.limit(1).single();
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         console.error("Class load failed:", error);
+        document.getElementById("classSubtitle").textContent =
+          "Could not load class.";
+        lucide.createIcons();
         return;
       }
 
       currentClass = data;
 
       document.getElementById("classSubtitle").textContent =
-  safe(data.class_name, "Class");
+        safe(data.class_name, "Class");
 
       await loadDogs();
     }
@@ -272,6 +423,12 @@
 
       if (enrolmentError) {
         console.error("Enrolments failed:", enrolmentError);
+        document.getElementById("enrolledList").innerHTML = `
+          <div class="empty-card glass-card">
+            Could not load enrolled dogs.
+          </div>
+        `;
+        lucide.createIcons();
         return;
       }
 
@@ -290,6 +447,12 @@
 
       if (dogsError) {
         console.error("Dogs failed:", dogsError);
+        document.getElementById("availableList").innerHTML = `
+          <div class="empty-card glass-card">
+            Could not load available dogs.
+          </div>
+        `;
+        lucide.createIcons();
         return;
       }
 
@@ -343,6 +506,12 @@
 
     function renderAvailable() {
       const list = document.getElementById("availableList");
+
+      if (role !== "owner") {
+        list.innerHTML = "";
+        return;
+      }
+
       const search = document.getElementById("dogSearch").value.toLowerCase();
 
       const enrolledIds = new Set(
@@ -395,22 +564,23 @@
     }
 
     async function addDog(dogId) {
+      if (role !== "owner") return;
       if (!currentClass) return;
 
-     const { error } = await db
-  .from("class_enrolments")
-  .upsert(
-    {
-      school_id: currentClass.school_id,
-      class_id: currentClass.class_id,
-      dog_id: dogId,
-      status: "active",
-      enrolled_at: new Date().toISOString()
-    },
-    {
-      onConflict: "class_id,dog_id"
-    }
-  );
+      const { error } = await db
+        .from("class_enrolments")
+        .upsert(
+          {
+            school_id: currentClass.school_id,
+            class_id: currentClass.class_id,
+            dog_id: dogId,
+            status: "active",
+            enrolled_at: new Date().toISOString()
+          },
+          {
+            onConflict: "class_id,dog_id"
+          }
+        );
 
       if (error) {
         console.error("Add dog failed:", error);
@@ -422,6 +592,8 @@
     }
 
     async function removeDog(enrolmentId) {
+      if (role !== "owner") return;
+
       const { error } = await db
         .from("class_enrolments")
         .update({
@@ -431,7 +603,7 @@
 
       if (error) {
         console.error("Remove dog failed:", error);
-        alert("Could not remove dog.");
+        alert(error.message);
         return;
       }
 
