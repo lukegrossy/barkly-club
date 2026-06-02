@@ -9,7 +9,7 @@
 
   <style>
     body {
-      padding: max(26px, env(safe-area-inset-top)) 20px 100px;
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
     }
 
     .dashboard {
@@ -159,10 +159,18 @@
       font-size: var(--text-sm);
       line-height: 1.5;
     }
+
+    .bottom-nav {
+      max-width: 540px;
+    }
+
+    .bottom-nav-item {
+      min-width: 62px;
+    }
   </style>
 </head>
 
-<body>
+<body data-role="owner">
 
 <main class="dashboard fade-in">
 
@@ -177,7 +185,7 @@
 
   <h1 class="page-title">Badges</h1>
 
-  <p class="page-subtitle">
+  <p class="page-subtitle" id="pageSubtitle">
     Achievements and training milestones.
   </p>
 
@@ -207,6 +215,8 @@
 
 </main>
 
+<nav class="bottom-nav" id="bottomNav"></nav>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -222,17 +232,136 @@ const db = supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-function getDogIdFromUrl() {
-  return new URLSearchParams(window.location.search).get("dog");
+function getParams() {
+  return new URLSearchParams(window.location.search);
 }
 
-const dogId = getDogIdFromUrl();
+function getRole() {
+  const role = getParams().get("role");
+  return ["owner", "trainer", "parent"].includes(role) ? role : "owner";
+}
 
-document.getElementById("backBtn").onclick = () => {
-  window.location = dogId
-    ? `dog-detail.html?dog=${dogId}`
-    : "dogs.html";
-};
+function getDogId() {
+  return getParams().get("dog");
+}
+
+function withRoleAndDog(page, dogId) {
+  return `${page}?role=${role}&dog=${dogId}`;
+}
+
+const role = getRole();
+const dogId = getDogId();
+
+document.body.dataset.role = role;
+
+function renderRoleCopy() {
+  if (role === "owner") {
+    document.getElementById("pageSubtitle").textContent =
+      "Achievements and training milestones.";
+  }
+
+  if (role === "trainer") {
+    document.getElementById("pageSubtitle").textContent =
+      "Review achievements and training progress.";
+  }
+
+  if (role === "parent") {
+    document.getElementById("pageSubtitle").textContent =
+      "Celebrate your dog's training achievements.";
+  }
+}
+
+function renderBottomNav() {
+  const nav = document.getElementById("bottomNav");
+
+  if (role === "owner") {
+    nav.innerHTML = `
+      <a href="owner-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="layout-dashboard"></i></div>
+        Home
+      </a>
+
+      <a href="owner-dashboard.html#programs" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="layers-3"></i></div>
+        Programs
+      </a>
+
+      <a href="dogs.html?role=owner" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="users"></i></div>
+        People
+      </a>
+
+      <a href="owner-dashboard.html#school" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+        School
+      </a>
+    `;
+  }
+
+  if (role === "trainer") {
+    nav.innerHTML = `
+      <a href="trainer-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+        Sessions
+      </a>
+
+      <a href="dogs.html?role=trainer" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+        Dogs
+      </a>
+
+      <a href="trainer-school.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+        School
+      </a>
+    `;
+  }
+
+  if (role === "parent") {
+    nav.innerHTML = `
+      <a href="dog-detail.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+        Dog
+      </a>
+
+      <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+        Sessions
+      </a>
+
+      <a href="parent-school.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+        School
+      </a>
+    `;
+  }
+}
+
+function setBackButton() {
+  document.getElementById("backBtn").onclick = () => {
+    if (dogId) {
+      window.location = withRoleAndDog("dog-detail.html", dogId);
+      return;
+    }
+
+    if (role === "owner") {
+      window.location = "dogs.html?role=owner";
+      return;
+    }
+
+    if (role === "trainer") {
+      window.location = "dogs.html?role=trainer";
+      return;
+    }
+
+    if (role === "parent") {
+      window.location = "parent-dashboard.html";
+      return;
+    }
+
+    window.location = "dogs.html";
+  };
+}
 
 function badgeIcon(name) {
   switch (name) {
@@ -260,6 +389,10 @@ function badgeIcon(name) {
 }
 
 async function loadBadges() {
+  renderRoleCopy();
+  renderBottomNav();
+  setBackButton();
+
   if (!dogId) {
     document.getElementById("dogName").textContent =
       "Dog not found";
@@ -275,6 +408,7 @@ async function loadBadges() {
 
     document.getElementById("lockedBadges").innerHTML = "";
 
+    lucide.createIcons();
     return;
   }
 
@@ -292,6 +426,7 @@ async function loadBadges() {
     document.getElementById("heroStats").textContent =
       "Please try again.";
 
+    lucide.createIcons();
     return;
   }
 
@@ -314,6 +449,7 @@ async function loadBadges() {
       </div>
     `;
 
+    lucide.createIcons();
     return;
   }
 
