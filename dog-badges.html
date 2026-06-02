@@ -155,6 +155,9 @@
 
     .empty-card {
       padding: 18px;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -164,7 +167,7 @@
 <main class="dashboard fade-in">
 
   <div class="brand-row">
-    <button class="back-btn" onclick="window.location='dog-detail.html'">
+    <button class="back-btn" id="backBtn">
       ←
     </button>
 
@@ -219,6 +222,18 @@ const db = supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
+function getDogIdFromUrl() {
+  return new URLSearchParams(window.location.search).get("dog");
+}
+
+const dogId = getDogIdFromUrl();
+
+document.getElementById("backBtn").onclick = () => {
+  window.location = dogId
+    ? `dog-detail.html?dog=${dogId}`
+    : "dogs.html";
+};
+
 function badgeIcon(name) {
   switch (name) {
     case "First Session":
@@ -245,35 +260,76 @@ function badgeIcon(name) {
 }
 
 async function loadBadges() {
+  if (!dogId) {
+    document.getElementById("dogName").textContent =
+      "Dog not found";
 
-  const { data, error } = await db
-    .from("owner_dog_badges_view")
-    .select("*");
+    document.getElementById("heroStats").textContent =
+      "Open this page from a dog profile.";
 
-  if (error) {
-    console.error(error);
+    document.getElementById("earnedBadges").innerHTML = `
+      <div class="empty-card glass-card">
+        No dog was selected.
+      </div>
+    `;
+
+    document.getElementById("lockedBadges").innerHTML = "";
+
     return;
   }
 
-  if (!data || data.length === 0) return;
+  const { data, error } = await db
+    .from("owner_dog_badges_view")
+    .select("*")
+    .eq("dog_id", dogId);
 
-  const dogId =
-  new URLSearchParams(window.location.search).get("dog") || data[0].dog_id;
+  if (error) {
+    console.error(error);
 
-  const dogRows = data.filter(
-    row => row.dog_id === dogId
-  );
+    document.getElementById("dogName").textContent =
+      "Could not load badges";
 
-  const earned = dogRows.filter(
+    document.getElementById("heroStats").textContent =
+      "Please try again.";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    document.getElementById("dogName").textContent =
+      "Dog";
+
+    document.getElementById("heroStats").textContent =
+      "No badge data found.";
+
+    document.getElementById("earnedBadges").innerHTML = `
+      <div class="empty-card glass-card">
+        No badges recorded yet.
+      </div>
+    `;
+
+    document.getElementById("lockedBadges").innerHTML = `
+      <div class="empty-card glass-card">
+        No upcoming milestones found.
+      </div>
+    `;
+
+    return;
+  }
+
+  const earned = data.filter(
     row => row.earned === true
   );
 
-  const locked = dogRows.filter(
+  const locked = data.filter(
     row => row.earned === false
   );
 
+  const dogName =
+    data[0].dog_name || "Dog";
+
   document.getElementById("dogName").textContent =
-    "Luna";
+    dogName;
 
   document.getElementById("heroStats").textContent =
     `${earned.length} badges earned · ${locked.length} remaining`;
@@ -281,72 +337,89 @@ async function loadBadges() {
   const earnedContainer =
     document.getElementById("earnedBadges");
 
-  earnedContainer.innerHTML =
-    earned.map(badge => `
-      <div class="badge-card glass-card lift-card earned">
-
-        <div class="badge-icon">
-          <i data-lucide="${badgeIcon(badge.badge_name)}"></i>
-        </div>
-
-        <div class="badge-copy">
-
-          <h4>${badge.badge_name}</h4>
-
-          <div class="badge-date">
-            ${badge.awarded_at
-              ? new Date(badge.awarded_at)
-                  .toLocaleDateString("en-AU")
-              : ""}
-          </div>
-
-          <div class="badge-description">
-            ${badge.description || ""}
-          </div>
-
-          ${
-            badge.trainer_comment
-            ? `
-              <div class="badge-comment">
-                "${badge.trainer_comment}"
-              </div>
-            `
-            : ""
-          }
-
-        </div>
-
+  if (earned.length === 0) {
+    earnedContainer.innerHTML = `
+      <div class="empty-card glass-card">
+        No badges earned yet.
       </div>
-    `).join("");
+    `;
+  } else {
+    earnedContainer.innerHTML =
+      earned.map(badge => `
+        <div class="badge-card glass-card lift-card earned">
+
+          <div class="badge-icon">
+            <i data-lucide="${badgeIcon(badge.badge_name)}"></i>
+          </div>
+
+          <div class="badge-copy">
+
+            <h4>${badge.badge_name}</h4>
+
+            <div class="badge-date">
+              ${badge.awarded_at
+                ? new Date(badge.awarded_at)
+                    .toLocaleDateString("en-AU")
+                : ""}
+            </div>
+
+            <div class="badge-description">
+              ${badge.description || ""}
+            </div>
+
+            ${
+              badge.trainer_comment
+              ? `
+                <div class="badge-comment">
+                  "${badge.trainer_comment}"
+                </div>
+              `
+              : ""
+            }
+
+          </div>
+
+        </div>
+      `).join("");
+  }
 
   const lockedContainer =
     document.getElementById("lockedBadges");
 
-  lockedContainer.innerHTML =
-    locked.map(badge => `
-      <div class="badge-card glass-card locked">
+  if (locked.length === 0) {
+    lockedContainer.innerHTML = `
+      <div class="empty-card glass-card">
+        All milestones achieved.
+      </div>
+    `;
+  } else {
+    lockedContainer.innerHTML =
+      locked.map(badge => `
+        <div class="badge-card glass-card locked">
 
-        <div class="badge-icon">
-          <i data-lucide="lock"></i>
-        </div>
+          <div class="badge-icon">
+            <i data-lucide="lock"></i>
+          </div>
 
-        <div class="badge-copy">
+          <div class="badge-copy">
 
-          <h4>${badge.badge_name}</h4>
+            <h4>${badge.badge_name}</h4>
 
-          <div class="badge-description">
-            ${badge.description || ""}
+            <div class="badge-description">
+              ${badge.description || ""}
+            </div>
+
           </div>
 
         </div>
-
-      </div>
-    `).join("");
+      `).join("");
+  }
 
   lucide.createIcons();
 }
 
 loadBadges();
+lucide.createIcons();
 </script>
 
 </body>
