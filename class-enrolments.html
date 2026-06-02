@@ -397,15 +397,20 @@
     async function addDog(dogId) {
       if (!currentClass) return;
 
-      const { error } = await db
-        .from("class_enrolments")
-        .insert({
-          school_id: currentClass.school_id,
-          class_id: currentClass.class_id,
-          dog_id: dogId,
-          status: "active",
-          enrolled_at: new Date().toISOString()
-        });
+     const { error } = await db
+  .from("class_enrolments")
+  .upsert(
+    {
+      school_id: currentClass.school_id,
+      class_id: currentClass.class_id,
+      dog_id: dogId,
+      status: "active",
+      enrolled_at: new Date().toISOString()
+    },
+    {
+      onConflict: "class_id,dog_id"
+    }
+  );
 
       if (error) {
         console.error("Add dog failed:", error);
