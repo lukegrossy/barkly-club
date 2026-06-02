@@ -1,1 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Class Detail | Barkly Schools</title>
 
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 140px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      margin-bottom: var(--space-lg);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: var(--blur-md);
+      flex-shrink: 0;
+    }
+
+    .topbar h1 {
+      font-size: var(--display-md);
+      line-height: 1;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+      white-space: nowrap;
+    }
+
+    .topbar-copy {
+      font-size: var(--text-md);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: var(--space-xl);
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-pill {
+      background: rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.92);
+      text-transform: capitalize;
+    }
+
+    .hero h2 {
+      color: white;
+      font-size: var(--display-sm);
+      line-height: 1.04;
+      letter-spacing: var(--tracking-display);
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero-program {
+      font-size: var(--text-lg);
+      font-weight: var(--font-heavy);
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.76);
+      font-size: var(--text-md);
+      line-height: 1.55;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .stat-card {
+      padding: 18px;
+      min-height: 104px;
+    }
+
+    .stat-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-sm);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: var(--display-sm);
+      letter-spacing: var(--tracking-display);
+    }
+
+    .section-head {
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-head h3 {
+      font-size: var(--text-xl);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .detail-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      color: inherit;
+      text-decoration: none;
+      overflow: visible;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .detail-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .detail-card h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .detail-card p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.4;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+    }
+
+    .row-status {
+      margin-left: auto;
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .cta-wrap {
+      position: fixed;
+      left: 50%;
+      bottom: calc(22px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 520px;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    .cta {
+      width: 100%;
+      height: 56px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      font-size: var(--text-md);
+      font-weight: var(--font-heavy);
+      box-shadow: var(--shadow-card);
+      pointer-events: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="dashboard fade-in">
+
+    <header class="topbar">
+      <div class="brand-row">
+        <button class="back-btn" onclick="window.location='owner-dashboard.html'">
+          <i data-lucide="arrow-left"></i>
+        </button>
+
+        <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+        <p class="eyebrow">Barkly Schools</p>
+      </div>
+
+      <h1>Class details</h1>
+
+      <p class="topbar-copy">
+        Manage enrolments, trainer assignment and class performance.
+      </p>
+    </header>
+
+    <section class="hero hero-card lift-card">
+      <div class="hero-top">
+        <span class="pill hero-pill" id="classStatus">Active</span>
+      </div>
+
+      <h2 id="className">Loading class</h2>
+
+      <div class="hero-program" id="classLocation">
+        Loading location
+      </div>
+
+      <p id="heroSummary">
+        Loading class summary.
+      </p>
+    </section>
+
+    <div class="stats-grid">
+      <div class="stat-card glass-card lift-card">
+        <p>Dogs enrolled</p>
+        <strong id="enrolledDogs">—</strong>
+      </div>
+
+      <div class="stat-card glass-card lift-card">
+        <p>Sessions run</p>
+        <strong id="sessionsRun">—</strong>
+      </div>
+
+      <div class="stat-card glass-card lift-card">
+        <p>Attendance</p>
+        <strong id="attendanceRate">—</strong>
+      </div>
+
+      <div class="stat-card glass-card lift-card">
+        <p>Badges awarded</p>
+        <strong id="badgesAwarded">—</strong>
+      </div>
+    </div>
+
+    <section>
+      <div class="section-head">
+        <h3>Class setup</h3>
+      </div>
+
+      <div class="card-list">
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="layers-3"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Program</h4>
+            <p id="programName">Loading...</p>
+          </div>
+        </div>
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="map-pin"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Location</h4>
+            <p id="locationName">Loading...</p>
+          </div>
+        </div>
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="users"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Capacity</h4>
+            <p id="capacityText">Loading...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h3>Class management</h3>
+      </div>
+
+      <div class="card-list">
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="user-round"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Trainer</h4>
+            <p>Sarah Thompson · 3 active classes</p>
+          </div>
+        </div>
+
+        <a href="class-enrolments.html" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="dog"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Enrolled dogs</h4>
+            <p id="enrolledPreview">Loading enrolled dogs...</p>
+          </div>
+
+          <div class="row-status">Manage</div>
+        </a>
+
+        <a href="dog-sessions.html" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="calendar-check"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Sessions</h4>
+            <p id="sessionsPreview">Loading sessions...</p>
+          </div>
+
+          <div class="row-status">View</div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="cta-wrap">
+    <button
+      class="cta"
+      onclick="window.location='class-enrolments.html'"
+    >
+      Manage enrolments
+    </button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    function safe(value, fallback = "") {
+      return value ?? fallback;
+    }
+
+    async function loadClass() {
+      const { data, error } = await db
+        .from("owner_class_full_detail_view")
+        .select("*")
+        .limit(1)
+        .single();
+
+      if (error) {
+        console.error("Class detail failed:", error);
+        return;
+      }
+
+      const capacity = Number(data.capacity || 0);
+      const enrolled = Number(data.enrolled_dogs || 0);
+      const remaining = Math.max(capacity - enrolled, 0);
+      const sessionsRun = Number(data.sessions_run || 0);
+      const attendanceRate = Number(data.attendance_rate || 0);
+      const badgesAwarded = Number(data.badges_awarded || 0);
+
+      document.getElementById("className").textContent =
+        safe(data.class_name, "Class");
+
+      document.getElementById("classLocation").textContent =
+        safe(data.location, "Location");
+
+      document.getElementById("heroSummary").textContent =
+        `${enrolled}/${capacity} enrolled · ${remaining} places available`;
+
+      document.getElementById("classStatus").textContent =
+        safe(data.status, "active");
+
+      document.getElementById("enrolledDogs").textContent =
+        enrolled;
+
+      document.getElementById("sessionsRun").textContent =
+        sessionsRun;
+
+      document.getElementById("attendanceRate").textContent =
+        `${attendanceRate}%`;
+
+      document.getElementById("badgesAwarded").textContent =
+        badgesAwarded;
+
+      document.getElementById("programName").textContent =
+        safe(data.program_name, "Program");
+
+      document.getElementById("locationName").textContent =
+        safe(data.location, "Location");
+
+      document.getElementById("capacityText").textContent =
+        `${remaining} places available`;
+
+      document.getElementById("enrolledPreview").textContent =
+        enrolled === 1
+          ? "1 dog currently enrolled."
+          : `${enrolled} dogs currently enrolled.`;
+
+      document.getElementById("sessionsPreview").textContent =
+        sessionsRun === 1
+          ? "1 session recorded for this class."
+          : `${sessionsRun} sessions recorded for this class.`;
+
+      lucide.createIcons();
+    }
+
+    loadClass();
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
