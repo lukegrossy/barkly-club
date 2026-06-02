@@ -9,7 +9,7 @@
 
   <style>
     body {
-      padding: max(26px, env(safe-area-inset-top)) 20px 100px;
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
     }
 
     .dashboard {
@@ -181,15 +181,23 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
+
+    .bottom-nav {
+      max-width: 540px;
+    }
+
+    .bottom-nav-item {
+      min-width: 62px;
+    }
   </style>
 </head>
 
-<body>
+<body data-role="owner">
 
 <main class="dashboard fade-in">
 
   <div class="brand-row">
-    <button class="back-btn" onclick="window.location='owner-dashboard.html'">
+    <button class="back-btn" id="backBtn">
       ←
     </button>
 
@@ -199,7 +207,7 @@
 
   <h1 class="page-title">Program detail</h1>
 
-  <p class="page-subtitle">
+  <p class="page-subtitle" id="pageSubtitle">
     Configure classes, badges, homework and progression pathways.
   </p>
 
@@ -236,7 +244,7 @@
 
   <div class="card-list">
 
-    <a href="class-detail.html" class="program-card glass-card lift-card">
+    <a href="#" id="classesLink" class="program-card glass-card lift-card">
       <div class="card-icon">
         <i data-lucide="calendar-check"></i>
       </div>
@@ -249,7 +257,7 @@
       <div class="row-status">View</div>
     </a>
 
-    <a href="dog-badges.html" class="program-card glass-card lift-card">
+    <a href="#" class="program-card glass-card lift-card">
       <div class="card-icon">
         <i data-lucide="badge-check"></i>
       </div>
@@ -259,10 +267,10 @@
         <p id="badgesText">Loading badge templates...</p>
       </div>
 
-      <div class="row-status">View</div>
+      <div class="row-status">Soon</div>
     </a>
 
-    <a href="dog-homework.html" class="program-card glass-card lift-card">
+    <a href="#" class="program-card glass-card lift-card">
       <div class="card-icon">
         <i data-lucide="clipboard-check"></i>
       </div>
@@ -292,6 +300,8 @@
 
 </main>
 
+<nav class="bottom-nav" id="bottomNav"></nav>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -311,15 +321,152 @@ function safe(value, fallback = "") {
   return value ?? fallback;
 }
 
+function getParams() {
+  return new URLSearchParams(window.location.search);
+}
+
+function getRole() {
+  const role = getParams().get("role");
+  return ["owner", "trainer", "parent"].includes(role) ? role : "owner";
+}
+
+function getProgramId() {
+  return getParams().get("program");
+}
+
+const role = getRole();
+const programId = getProgramId();
+
+document.body.dataset.role = role;
+
+function renderRoleCopy() {
+  if (role === "owner") {
+    document.getElementById("pageSubtitle").textContent =
+      "Configure classes, badges, homework and progression pathways.";
+  }
+
+  if (role === "trainer") {
+    document.getElementById("pageSubtitle").textContent =
+      "View program classes, dogs and progression structure.";
+  }
+
+  if (role === "parent") {
+    document.getElementById("pageSubtitle").textContent =
+      "View the training program and class pathway.";
+  }
+}
+
+function renderBottomNav() {
+  const nav = document.getElementById("bottomNav");
+
+  if (role === "owner") {
+    nav.innerHTML = `
+      <a href="owner-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="layout-dashboard"></i></div>
+        Home
+      </a>
+
+      <a href="owner-dashboard.html#programs" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="layers-3"></i></div>
+        Programs
+      </a>
+
+      <a href="dogs.html?role=owner" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="users"></i></div>
+        People
+      </a>
+
+      <a href="owner-dashboard.html#school" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+        School
+      </a>
+    `;
+  }
+
+  if (role === "trainer") {
+    nav.innerHTML = `
+      <a href="trainer-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+        Sessions
+      </a>
+
+      <a href="dogs.html?role=trainer" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+        Dogs
+      </a>
+
+      <a href="trainer-school.html" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+        School
+      </a>
+    `;
+  }
+
+  if (role === "parent") {
+    nav.innerHTML = `
+      <a href="parent-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+        Dog
+      </a>
+
+      <a href="parent-sessions.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+        Sessions
+      </a>
+
+      <a href="parent-school.html" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+        School
+      </a>
+    `;
+  }
+}
+
+function setBackButton() {
+  document.getElementById("backBtn").onclick = () => {
+    if (role === "owner") {
+      window.location = "owner-dashboard.html#programs";
+      return;
+    }
+
+    if (role === "trainer") {
+      window.location = "trainer-school.html";
+      return;
+    }
+
+    if (role === "parent") {
+      window.location = "parent-school.html";
+      return;
+    }
+
+    window.location = "owner-dashboard.html";
+  };
+}
+
 async function loadProgram() {
-  const { data, error } = await db
+  renderRoleCopy();
+  renderBottomNav();
+  setBackButton();
+
+  let query = db
     .from("owner_program_detail_view")
-    .select("*")
-    .limit(1)
-    .single();
+    .select("*");
+
+  if (programId) {
+    query = query.eq("program_id", programId).single();
+  } else {
+    query = query.limit(1).single();
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("Program detail failed:", error);
+    document.getElementById("programName").textContent =
+      "Program not found";
+    document.getElementById("programDescription").textContent =
+      "Could not load this program.";
+    lucide.createIcons();
     return;
   }
 
@@ -346,6 +493,9 @@ async function loadProgram() {
 
   document.getElementById("badgesText").textContent =
     `${data.badge_templates ?? 0} badge template${data.badge_templates === 1 ? "" : "s"} available.`;
+
+  document.getElementById("classesLink").href =
+    `classes.html?role=${role}`;
 
   lucide.createIcons();
 }
