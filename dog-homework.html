@@ -162,7 +162,7 @@
 <main class="dashboard fade-in">
 
   <div class="brand-row">
-    <button class="back-btn" onclick="window.location='dog-detail.html'">
+    <button class="back-btn" id="backBtn">
       ←
     </button>
 
@@ -209,14 +209,47 @@ const db = supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
+function getDogIdFromUrl() {
+  return new URLSearchParams(window.location.search).get("dog");
+}
+
+const dogId = getDogIdFromUrl();
+
+document.getElementById("backBtn").onclick = () => {
+  window.location = dogId
+    ? `dog-detail.html?dog=${dogId}`
+    : "dogs.html";
+};
+
 async function loadHomework() {
+  if (!dogId) {
+    document.getElementById("dogName").textContent =
+      "Dog not found";
+
+    document.getElementById("heroStats").textContent =
+      "Open this page from a dog profile.";
+
+    document.getElementById("homeworkList").innerHTML =
+      `<div class="empty-card glass-card">No dog was selected.</div>`;
+
+    return;
+  }
+
   const { data, error } = await db
     .from("owner_dog_homework_view")
     .select("*")
+    .eq("dog_id", dogId)
     .order("assigned_at", { ascending: false });
 
   if (error) {
     console.error(error);
+
+    document.getElementById("dogName").textContent =
+      "Could not load homework";
+
+    document.getElementById("heroStats").textContent =
+      "Please try again.";
+
     return;
   }
 
@@ -233,27 +266,20 @@ async function loadHomework() {
     return;
   }
 
- const dogId =
-  new URLSearchParams(window.location.search).get("dog") || data[0].dog_id;
-
-  const homeworkRows = data.filter(
-    row => row.dog_id === dogId
-  );
-
   const dogName =
-    homeworkRows[0]?.dog_name || "Dog";
+    data[0]?.dog_name || "Dog";
 
   document.getElementById("dogName").textContent =
     dogName;
 
   document.getElementById("heroStats").textContent =
-    `${homeworkRows.length} homework assignment${homeworkRows.length === 1 ? "" : "s"} recorded`;
+    `${data.length} homework assignment${data.length === 1 ? "" : "s"} recorded`;
 
   const list =
     document.getElementById("homeworkList");
 
   list.innerHTML =
-    homeworkRows.map(item => `
+    data.map(item => `
       <div class="homework-card glass-card lift-card">
 
         <div class="homework-icon">
