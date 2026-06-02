@@ -168,13 +168,13 @@
   </style>
 </head>
 
-<body>
+<body data-role="owner">
 
   <main class="dashboard fade-in">
 
     <header class="topbar">
       <div class="brand-row">
-        <button class="back-btn" onclick="window.location='owner-dashboard.html'">
+        <button class="back-btn" id="backBtn">
           <i data-lucide="arrow-left"></i>
         </button>
 
@@ -184,7 +184,7 @@
 
       <h1>Classes</h1>
 
-      <p class="topbar-copy">
+      <p class="topbar-copy" id="pageSubtitle">
         View active class groups, enrolments and attendance.
       </p>
     </header>
@@ -210,37 +210,7 @@
 
   </main>
 
-  <nav class="bottom-nav">
-
-    <a href="owner-dashboard.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="layout-dashboard"></i>
-      </div>
-      Home
-    </a>
-
-    <a href="owner-dashboard.html#programs" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="layers-3"></i>
-      </div>
-      Programs
-    </a>
-
-    <a href="dogs.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="dog"></i>
-      </div>
-      Dogs
-    </a>
-
-    <a href="classes.html" class="bottom-nav-item active">
-      <div class="bottom-nav-icon">
-        <i data-lucide="calendar-check"></i>
-      </div>
-      Classes
-    </a>
-
-  </nav>
+  <nav class="bottom-nav" id="bottomNav"></nav>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -253,10 +223,147 @@
 
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    function getParams() {
+      return new URLSearchParams(window.location.search);
+    }
+
+    function getRole() {
+      const role = getParams().get("role");
+      return ["owner", "trainer", "parent"].includes(role) ? role : "owner";
+    }
+
+    const role = getRole();
+
+    document.body.dataset.role = role;
+
     let allClasses = [];
 
     function safe(value, fallback = "") {
       return value ?? fallback;
+    }
+
+    function renderRoleCopy() {
+      if (role === "owner") {
+        document.getElementById("pageSubtitle").textContent =
+          "View active class groups, enrolments and attendance.";
+      }
+
+      if (role === "trainer") {
+        document.getElementById("pageSubtitle").textContent =
+          "View class groups, attendance and enrolled dogs.";
+      }
+
+      if (role === "parent") {
+        document.getElementById("pageSubtitle").textContent =
+          "View class information and training schedule.";
+      }
+    }
+
+    function renderBottomNav() {
+      const nav = document.getElementById("bottomNav");
+
+      if (role === "owner") {
+        nav.innerHTML = `
+          <a href="owner-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon">
+              <i data-lucide="layout-dashboard"></i>
+            </div>
+            Home
+          </a>
+
+          <a href="owner-dashboard.html#programs" class="bottom-nav-item">
+            <div class="bottom-nav-icon">
+              <i data-lucide="layers-3"></i>
+            </div>
+            Programs
+          </a>
+
+          <a href="dogs.html?role=owner" class="bottom-nav-item">
+            <div class="bottom-nav-icon">
+              <i data-lucide="users"></i>
+            </div>
+            People
+          </a>
+
+          <a href="owner-dashboard.html#school" class="bottom-nav-item active">
+            <div class="bottom-nav-icon">
+              <i data-lucide="building-2"></i>
+            </div>
+            School
+          </a>
+        `;
+      }
+
+      if (role === "trainer") {
+        nav.innerHTML = `
+          <a href="trainer-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon">
+              <i data-lucide="calendar-check"></i>
+            </div>
+            Sessions
+          </a>
+
+          <a href="dogs.html?role=trainer" class="bottom-nav-item">
+            <div class="bottom-nav-icon">
+              <i data-lucide="dog"></i>
+            </div>
+            Dogs
+          </a>
+
+          <a href="trainer-school.html" class="bottom-nav-item active">
+            <div class="bottom-nav-icon">
+              <i data-lucide="building-2"></i>
+            </div>
+            School
+          </a>
+        `;
+      }
+
+      if (role === "parent") {
+        nav.innerHTML = `
+          <a href="parent-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon">
+              <i data-lucide="dog"></i>
+            </div>
+            Dog
+          </a>
+
+          <a href="parent-sessions.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon">
+              <i data-lucide="calendar-check"></i>
+            </div>
+            Sessions
+          </a>
+
+          <a href="parent-school.html" class="bottom-nav-item active">
+            <div class="bottom-nav-icon">
+              <i data-lucide="building-2"></i>
+            </div>
+            School
+          </a>
+        `;
+      }
+    }
+
+    function setBackButton() {
+      document.getElementById("backBtn").onclick = () => {
+        if (role === "owner") {
+          window.location = "owner-dashboard.html#school";
+          return;
+        }
+
+        if (role === "trainer") {
+          window.location = "trainer-school.html";
+          return;
+        }
+
+        if (role === "parent") {
+          window.location = "parent-school.html";
+          return;
+        }
+
+        window.location = "owner-dashboard.html";
+      };
     }
 
     async function loadClasses() {
@@ -309,7 +416,7 @@
         const attendance = Number(classItem.attendance_rate || 0);
 
         return `
-          <a href="class-detail.html?class=${classItem.class_id}"
+          <a href="class-detail.html?role=${role}&class=${classItem.class_id}"
              class="class-card glass-card lift-card">
 
             <div class="card-icon">
@@ -342,6 +449,9 @@
 
     document.getElementById("classSearch").addEventListener("input", renderClasses);
 
+    renderRoleCopy();
+    renderBottomNav();
+    setBackButton();
     loadClasses();
     lucide.createIcons();
   </script>
