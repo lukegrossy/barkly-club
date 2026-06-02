@@ -228,16 +228,24 @@
       box-shadow: var(--shadow-card);
       pointer-events: auto;
     }
+
+    .bottom-nav {
+      max-width: 540px;
+    }
+
+    .bottom-nav-item {
+      min-width: 62px;
+    }
   </style>
 </head>
 
-<body>
+<body data-role="owner">
 
   <main class="dashboard fade-in">
 
     <header class="topbar">
       <div class="brand-row">
-        <button class="back-btn" onclick="window.location='owner-dashboard.html'">
+        <button class="back-btn" id="backBtn">
           <i data-lucide="arrow-left"></i>
         </button>
 
@@ -247,7 +255,7 @@
 
       <h1>Class details</h1>
 
-      <p class="topbar-copy">
+      <p class="topbar-copy" id="pageSubtitle">
         Manage enrolments, trainer assignment and class performance.
       </p>
     </header>
@@ -348,7 +356,7 @@
           </div>
         </div>
 
-        <a href="class-enrolments.html" class="detail-card glass-card lift-card">
+        <a href="#" id="enrolmentsLink" class="detail-card glass-card lift-card">
           <div class="card-icon">
             <i data-lucide="dog"></i>
           </div>
@@ -358,10 +366,10 @@
             <p id="enrolledPreview">Loading enrolled dogs...</p>
           </div>
 
-          <div class="row-status">Manage</div>
+          <div class="row-status" id="enrolmentsAction">Manage</div>
         </a>
 
-        <a href="dog-sessions.html" class="detail-card glass-card lift-card">
+        <a href="#" id="sessionsLink" class="detail-card glass-card lift-card">
           <div class="card-icon">
             <i data-lucide="calendar-check"></i>
           </div>
@@ -378,14 +386,13 @@
 
   </main>
 
-  <div class="cta-wrap">
-    <button
-      class="cta"
-      onclick="window.location='class-enrolments.html'"
-    >
+  <div class="cta-wrap" id="ctaWrap">
+    <button class="cta" id="manageBtn">
       Manage enrolments
     </button>
   </div>
+
+  <nav class="bottom-nav" id="bottomNav"></nav>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -402,17 +409,198 @@
       return value ?? fallback;
     }
 
+    function getParams() {
+      return new URLSearchParams(window.location.search);
+    }
+
+    function getRole() {
+      const role = getParams().get("role");
+      return ["owner", "trainer", "parent"].includes(role) ? role : "owner";
+    }
+
+    function getClassId() {
+      return getParams().get("class");
+    }
+
+    function withRoleAndClass(page, classId) {
+      return `${page}?role=${role}&class=${classId}`;
+    }
+
+    const role = getRole();
+    const classId = getClassId();
+
+    document.body.dataset.role = role;
+
+    function renderRoleCopy() {
+      if (role === "owner") {
+        document.getElementById("pageSubtitle").textContent =
+          "Manage enrolments, trainer assignment and class performance.";
+      }
+
+      if (role === "trainer") {
+        document.getElementById("pageSubtitle").textContent =
+          "View class attendance, dogs and session activity.";
+      }
+
+      if (role === "parent") {
+        document.getElementById("pageSubtitle").textContent =
+          "View class information and training context.";
+      }
+    }
+
+    function renderBottomNav() {
+      const nav = document.getElementById("bottomNav");
+
+      if (role === "owner") {
+        nav.innerHTML = `
+          <a href="owner-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="layout-dashboard"></i></div>
+            Home
+          </a>
+
+          <a href="owner-dashboard.html#programs" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="layers-3"></i></div>
+            Programs
+          </a>
+
+          <a href="dogs.html?role=owner" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="users"></i></div>
+            People
+          </a>
+
+          <a href="owner-dashboard.html#school" class="bottom-nav-item active">
+            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+            School
+          </a>
+        `;
+      }
+
+      if (role === "trainer") {
+        nav.innerHTML = `
+          <a href="trainer-dashboard.html" class="bottom-nav-item active">
+            <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+            Sessions
+          </a>
+
+          <a href="dogs.html?role=trainer" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+            Dogs
+          </a>
+
+          <a href="trainer-school.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+            School
+          </a>
+        `;
+      }
+
+      if (role === "parent") {
+        nav.innerHTML = `
+          <a href="parent-dashboard.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+            Dog
+          </a>
+
+          <a href="parent-sessions.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+            Sessions
+          </a>
+
+          <a href="parent-school.html" class="bottom-nav-item">
+            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+            School
+          </a>
+        `;
+      }
+    }
+
+    function setBackButton() {
+      document.getElementById("backBtn").onclick = () => {
+        if (role === "owner") {
+          window.location = "classes.html?role=owner";
+          return;
+        }
+
+        if (role === "trainer") {
+          window.location = "trainer-dashboard.html";
+          return;
+        }
+
+        if (role === "parent") {
+          window.location = "parent-school.html";
+          return;
+        }
+
+        window.location = "classes.html";
+      };
+    }
+
+    function setRoleActions(classId) {
+      const enrolmentsLink = document.getElementById("enrolmentsLink");
+      const sessionsLink = document.getElementById("sessionsLink");
+      const ctaWrap = document.getElementById("ctaWrap");
+      const manageBtn = document.getElementById("manageBtn");
+      const enrolmentsAction = document.getElementById("enrolmentsAction");
+
+      enrolmentsLink.href = classId
+        ? withRoleAndClass("class-enrolments.html", classId)
+        : "class-enrolments.html";
+
+      sessionsLink.href = classId
+        ? withRoleAndClass("dog-sessions.html", classId)
+        : "dog-sessions.html";
+
+      if (role === "owner") {
+        ctaWrap.style.display = "block";
+        enrolmentsAction.textContent = "Manage";
+        manageBtn.onclick = () => {
+          window.location = classId
+            ? withRoleAndClass("class-enrolments.html", classId)
+            : "class-enrolments.html";
+        };
+      }
+
+      if (role === "trainer") {
+        ctaWrap.style.display = "none";
+        enrolmentsAction.textContent = "View";
+      }
+
+      if (role === "parent") {
+        ctaWrap.style.display = "none";
+        enrolmentsAction.textContent = "View";
+      }
+    }
+
     async function loadClass() {
-      const { data, error } = await db
+      renderRoleCopy();
+      renderBottomNav();
+      setBackButton();
+      setRoleActions(classId);
+
+      let query = db
         .from("owner_class_full_detail_view")
-        .select("*")
-        .limit(1)
-        .single();
+        .select("*");
+
+      if (classId) {
+        query = query.eq("class_id", classId).single();
+      } else {
+        query = query.limit(1).single();
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         console.error("Class detail failed:", error);
+        document.getElementById("className").textContent =
+          "Class not found";
+        document.getElementById("heroSummary").textContent =
+          "Could not load this class.";
+        lucide.createIcons();
         return;
       }
+
+      const loadedClassId = data.class_id || classId;
+      setRoleActions(loadedClassId);
 
       const capacity = Number(data.capacity || 0);
       const enrolled = Number(data.enrolled_dogs || 0);
