@@ -954,19 +954,29 @@
   }
 
   async function getSelectedDog() {
-    const { data, error } = await db
-      .from("dogs")
-      .select("id, school_id, name")
-      .eq("name", selectedDogName)
-      .single();
+if (!selectedDogId) {
+alert("No dog selected.");
+return null;
+}
 
-    if (error) {
-      alert(`Could not find ${selectedDogName}.`);
-      return null;
-    }
+const { data, error } = await db
+.from("dogs")
+.select("id, school_id, name")
+.eq("id", selectedDogId)
+.single();
 
-    return data;
-  }
+if (error) {
+console.error("Selected dog lookup failed:", error);
+alert("Could not find selected dog.");
+return null;
+}
+
+selectedDogSchoolId = data.school_id;
+selectedDogName = data.name;
+
+return data;
+}
+
 
   async function getDogById(dogId) {
     const { data, error } = await db
