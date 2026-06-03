@@ -136,12 +136,17 @@
     }
 
     .detail-card {
+      width: 100%;
       display: flex;
       align-items: center;
       gap: 14px;
       padding: 16px;
       color: inherit;
       text-decoration: none;
+      border: none;
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
     }
 
     .card-icon {
@@ -195,11 +200,119 @@
     }
 
     .bottom-nav {
-      max-width: 540px;
+      max-width: 420px;
     }
 
     .bottom-nav-item {
-      min-width: 62px;
+      min-width: 82px;
+    }
+
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,31,46,0.34);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.22s ease;
+      z-index: 80;
+    }
+
+    .sheet-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sheet {
+      position: fixed;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.92);
+      border: 1.5px solid var(--glass-border);
+      box-shadow: var(--shadow-strong);
+      backdrop-filter: var(--blur-md);
+      transform: translateY(120%);
+      transition: 0.26s ease;
+      z-index: 90;
+    }
+
+    .sheet.open {
+      transform: translateY(0);
+    }
+
+    .sheet-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .sheet-head h3 {
+      font-size: var(--text-xl);
+      margin-bottom: 4px;
+    }
+
+    .sheet-head p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.4;
+    }
+
+    .sheet-close {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--glass-border);
+      background: rgba(255,255,255,0.8);
+      display: grid;
+      place-items: center;
+      color: var(--navy);
+    }
+
+    .form-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      border: 1.5px solid var(--glass-border);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.72);
+      padding: 14px 16px;
+      font: inherit;
+      color: var(--navy);
+      outline: none;
+    }
+
+    .form-textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .primary-action {
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      padding: 15px 18px;
+      font-weight: var(--font-heavy);
+      margin-top: 4px;
+    }
+
+    .sheet-message {
+      font-size: var(--text-sm);
+      color: var(--sage);
+      font-weight: var(--font-heavy);
+      min-height: 18px;
     }
   </style>
 </head>
@@ -210,7 +323,7 @@
 
     <header class="topbar">
       <div class="brand-row">
-        <button class="back-btn" id="backBtn">
+        <button class="back-btn" id="backBtn" type="button">
           <i data-lucide="arrow-left"></i>
         </button>
 
@@ -231,16 +344,12 @@
           <i data-lucide="dog"></i>
         </div>
 
-        <span class="pill hero-pill" id="dogStatus">
-          Active
-        </span>
+        <span class="pill hero-pill" id="dogStatus">Active</span>
       </div>
 
       <h2 id="dogName">Loading dog</h2>
 
-      <p id="dogSub">
-        Currently enrolled
-      </p>
+      <p id="dogSub">Currently enrolled</p>
     </section>
 
     <section>
@@ -251,10 +360,7 @@
       <div class="card-list">
 
         <div class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="dog"></i>
-          </div>
-
+          <div class="card-icon"><i data-lucide="dog"></i></div>
           <div class="detail-copy">
             <h4>Breed</h4>
             <p id="dogBreed">Loading...</p>
@@ -262,10 +368,7 @@
         </div>
 
         <div class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="layers-3"></i>
-          </div>
-
+          <div class="card-icon"><i data-lucide="layers-3"></i></div>
           <div class="detail-copy">
             <h4>Program</h4>
             <p id="programName">Loading...</p>
@@ -273,13 +376,18 @@
         </div>
 
         <div class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="calendar-check"></i>
-          </div>
-
+          <div class="card-icon"><i data-lucide="calendar-check"></i></div>
           <div class="detail-copy">
             <h4>Class</h4>
             <p id="className">Loading...</p>
+          </div>
+        </div>
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon"><i data-lucide="users"></i></div>
+          <div class="detail-copy">
+            <h4>Family</h4>
+            <p><span id="familyName">Loading...</span><br />Primary Parent</p>
           </div>
         </div>
 
@@ -294,42 +402,30 @@
       <div class="card-list">
 
         <a href="#" id="attendanceLink" class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="check-circle-2"></i>
-          </div>
-
+          <div class="card-icon"><i data-lucide="check-circle-2"></i></div>
           <div class="detail-copy">
             <h4>Attendance</h4>
             <p id="attendanceText">Loading attendance history.</p>
           </div>
-
           <div class="row-status">View</div>
         </a>
 
         <a href="#" id="badgesLink" class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="badge-check"></i>
-          </div>
-
+          <div class="card-icon"><i data-lucide="badge-check"></i></div>
           <div class="detail-copy">
-            <h4>Badges</h4>
+            <h4 id="badgesTitle">Badges</h4>
             <p id="badgeText">Loading badges.</p>
           </div>
-
-          <div class="row-status">View</div>
+          <div class="row-status" id="badgesStatus">View</div>
         </a>
 
         <a href="#" id="homeworkLink" class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="clipboard-check"></i>
-          </div>
-
+          <div class="card-icon"><i data-lucide="clipboard-check"></i></div>
           <div class="detail-copy">
-            <h4>Homework</h4>
+            <h4 id="homeworkTitle">Homework</h4>
             <p id="homeworkText">Loading homework.</p>
           </div>
-
-          <div class="row-status">View</div>
+          <div class="row-status" id="homeworkStatus">View</div>
         </a>
 
       </div>
@@ -342,38 +438,32 @@
 
       <div class="card-list">
 
-        <a href="#" class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="badge-plus"></i>
-          </div>
-
+        <button type="button" class="detail-card glass-card lift-card" data-open-sheet="badge">
+          <div class="card-icon"><i data-lucide="badge-plus"></i></div>
           <div class="detail-copy">
             <h4>Award badge</h4>
             <p>Record a new achievement for this dog.</p>
           </div>
-        </a>
+          <div class="row-status">Open</div>
+        </button>
 
-        <a href="#" class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="clipboard-plus"></i>
-          </div>
-
+        <button type="button" class="detail-card glass-card lift-card" data-open-sheet="homework">
+          <div class="card-icon"><i data-lucide="clipboard-plus"></i></div>
           <div class="detail-copy">
             <h4>Assign homework</h4>
             <p>Add practice work for the parent portal.</p>
           </div>
-        </a>
+          <div class="row-status">Open</div>
+        </button>
 
-        <a href="#" class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="message-square-text"></i>
-          </div>
-
+        <button type="button" class="detail-card glass-card lift-card" data-open-sheet="note">
+          <div class="card-icon"><i data-lucide="message-square-text"></i></div>
           <div class="detail-copy">
             <h4>Add trainer note</h4>
             <p>Write a short progress update.</p>
           </div>
-        </a>
+          <div class="row-status">Open</div>
+        </button>
 
       </div>
     </section>
@@ -381,6 +471,58 @@
   </main>
 
   <nav class="bottom-nav" id="bottomNav"></nav>
+
+  <div class="sheet-backdrop" id="sheetBackdrop"></div>
+
+  <section class="sheet" id="badgeSheet">
+    <div class="sheet-head">
+      <div>
+        <h3>Award badge</h3>
+        <p>Record an achievement for this dog.</p>
+      </div>
+      <button class="sheet-close" type="button" data-close-sheet><i data-lucide="x"></i></button>
+    </div>
+
+    <form class="form-stack" id="badgeForm">
+      <input class="form-input" id="badgeName" placeholder="Badge name" required />
+      <textarea class="form-textarea" id="badgeNote" placeholder="Optional note"></textarea>
+      <button class="primary-action" type="submit">Award badge</button>
+      <div class="sheet-message" id="badgeMessage"></div>
+    </form>
+  </section>
+
+  <section class="sheet" id="homeworkSheet">
+    <div class="sheet-head">
+      <div>
+        <h3>Assign homework</h3>
+        <p>Add practice work for the parent portal.</p>
+      </div>
+      <button class="sheet-close" type="button" data-close-sheet><i data-lucide="x"></i></button>
+    </div>
+
+    <form class="form-stack" id="homeworkForm">
+      <input class="form-input" id="homeworkTitleInput" placeholder="Homework title" required />
+      <textarea class="form-textarea" id="homeworkDetails" placeholder="Instructions for the parent"></textarea>
+      <button class="primary-action" type="submit">Assign homework</button>
+      <div class="sheet-message" id="homeworkMessage"></div>
+    </form>
+  </section>
+
+  <section class="sheet" id="noteSheet">
+    <div class="sheet-head">
+      <div>
+        <h3>Add trainer note</h3>
+        <p>Write a short progress update.</p>
+      </div>
+      <button class="sheet-close" type="button" data-close-sheet><i data-lucide="x"></i></button>
+    </div>
+
+    <form class="form-stack" id="noteForm">
+      <textarea class="form-textarea" id="trainerNote" placeholder="Trainer note" required></textarea>
+      <button class="primary-action" type="submit">Save note</button>
+      <div class="sheet-message" id="noteMessage"></div>
+    </form>
+  </section>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -392,6 +534,9 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const role = getRole();
+    document.body.dataset.role = role;
 
     function safe(value, fallback = "") {
       return value ?? fallback;
@@ -414,27 +559,22 @@
       return `${page}?role=${role}&dog=${dogId}`;
     }
 
-    const role = getRole();
-
-    document.body.dataset.role = role;
-
     function renderRoleCopy() {
       if (role === "owner") {
-        document.getElementById("pageSubtitle").textContent =
-          "View enrolment, class and progress information.";
+        pageSubtitle.textContent = "View enrolment, class and progress information.";
       }
 
       if (role === "trainer") {
-        document.getElementById("pageSubtitle").textContent =
-          "View progress and record training actions.";
+        pageSubtitle.textContent = "View progress and record training actions.";
+        badgesTitle.textContent = "Badges";
+        badgesStatus.textContent = "View / Award";
+        homeworkTitle.textContent = "Homework";
+        homeworkStatus.textContent = "View / Assign";
       }
 
       if (role === "parent") {
-        document.getElementById("pageTitle").textContent =
-          "My dog";
-
-        document.getElementById("pageSubtitle").textContent =
-          "Follow training progress, homework and achievements.";
+        pageTitle.textContent = "My dog";
+        pageSubtitle.textContent = "Follow training progress, homework and achievements.";
       }
     }
 
@@ -476,11 +616,6 @@
             <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
             Dogs
           </a>
-
-          <a href="trainer-school.html" class="bottom-nav-item">
-            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
-            School
-          </a>
         `;
       }
 
@@ -504,39 +639,55 @@
       }
     }
 
-    function setBackButton(dogId) {
-      document.getElementById("backBtn").onclick = () => {
-        if (role === "owner") {
-          window.location = "dogs.html?role=owner";
-          return;
-        }
-
-        if (role === "trainer") {
-          window.location = "dogs.html?role=trainer";
-          return;
-        }
-
-        if (role === "parent") {
-          window.location = "parent-dashboard.html";
-          return;
-        }
-
-        window.location = "dogs.html";
+    function setBackButton() {
+      backBtn.onclick = () => {
+        if (role === "owner") window.location = "dogs.html?role=owner";
+        else if (role === "trainer") window.location = "dogs.html?role=trainer";
+        else if (role === "parent") window.location = "parent-dashboard.html";
+        else window.location = "dogs.html";
       };
     }
+
+    function openSheet(type) {
+      closeSheets();
+
+      sheetBackdrop.classList.add("open");
+
+      if (type === "badge") badgeSheet.classList.add("open");
+      if (type === "homework") homeworkSheet.classList.add("open");
+      if (type === "note") noteSheet.classList.add("open");
+    }
+
+    function closeSheets() {
+      sheetBackdrop.classList.remove("open");
+      badgeSheet.classList.remove("open");
+      homeworkSheet.classList.remove("open");
+      noteSheet.classList.remove("open");
+    }
+
+    document.querySelectorAll("[data-open-sheet]").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        openSheet(button.dataset.openSheet);
+      });
+    });
+
+    document.querySelectorAll("[data-close-sheet]").forEach((button) => {
+      button.addEventListener("click", closeSheets);
+    });
+
+    sheetBackdrop.addEventListener("click", closeSheets);
 
     async function loadDog() {
       const dogId = getDogId();
 
       renderRoleCopy();
       renderBottomNav();
-      setBackButton(dogId);
+      setBackButton();
 
       if (!dogId) {
-        console.error("No dog id supplied in URL.");
-        document.getElementById("dogName").textContent = "Dog not found";
-        document.getElementById("dogSub").textContent =
-          "Open this page from the Dogs list.";
+        dogName.textContent = "Dog not found";
+        dogSub.textContent = "Open this page from the Dogs list.";
         lucide.createIcons();
         return;
       }
@@ -549,39 +700,25 @@
 
       if (error) {
         console.error("Dog detail failed:", error);
-        document.getElementById("dogName").textContent = "Dog not found";
-        document.getElementById("dogSub").textContent =
-          "Could not load this dog profile.";
+        dogName.textContent = "Dog not found";
+        dogSub.textContent = "Could not load this dog profile.";
         lucide.createIcons();
         return;
       }
 
-      document.getElementById("dogName").textContent =
-        safe(data.dog_name, "Dog");
+      dogName.textContent = safe(data.dog_name, "Dog");
+      dogSub.textContent = role === "parent" ? "Training journey" : "Currently enrolled";
+      dogStatus.textContent = safe(data.status, "active");
+      dogBreed.textContent = safe(data.breed, "Dog");
+      programName.textContent = safe(data.program_name, "No program assigned");
+      className.textContent = safe(data.class_name, "No class assigned");
 
-      document.getElementById("dogSub").textContent =
-        role === "parent" ? "Training journey" : "Currently enrolled";
+      familyName.textContent =
+        safe(data.parent_name, safe(data.owner_name, safe(data.family_name, "Parent name unavailable")));
 
-      document.getElementById("dogStatus").textContent =
-        safe(data.status, "active");
-
-      document.getElementById("dogBreed").textContent =
-        safe(data.breed, "Dog");
-
-      document.getElementById("programName").textContent =
-        safe(data.program_name, "No program assigned");
-
-      document.getElementById("className").textContent =
-        safe(data.class_name, "No class assigned");
-
-      document.getElementById("attendanceLink").href =
-        withRoleAndDog("dog-sessions.html", dogId);
-
-      document.getElementById("badgesLink").href =
-        withRoleAndDog("dog-badges.html", dogId);
-
-      document.getElementById("homeworkLink").href =
-        withRoleAndDog("dog-homework.html", dogId);
+      attendanceLink.href = withRoleAndDog("dog-sessions.html", dogId);
+      badgesLink.href = withRoleAndDog("dog-badges.html", dogId);
+      homeworkLink.href = withRoleAndDog("dog-homework.html", dogId);
 
       await loadDogProgress(dogId);
 
@@ -589,8 +726,6 @@
     }
 
     async function loadDogProgress(dogId) {
-      if (!dogId) return;
-
       const { count: attendanceCount } = await db
         .from("session_attendance")
         .select("*", { count: "exact", head: true })
@@ -611,21 +746,94 @@
       const badges = badgeCount || 0;
       const homework = homeworkCount || 0;
 
-      document.getElementById("attendanceText").textContent =
-        attendance === 1
-          ? "1 session attended."
-          : `${attendance} sessions attended.`;
+      attendanceText.textContent =
+        attendance === 1 ? "1 session attended." : `${attendance} sessions attended.`;
 
-      document.getElementById("badgeText").textContent =
-        badges === 1
-          ? "1 badge earned."
-          : `${badges} badges earned.`;
+      badgeText.textContent =
+        role === "trainer"
+          ? `${badges} earned. View existing badges or award a new one.`
+          : badges === 1
+            ? "1 badge earned."
+            : `${badges} badges earned.`;
 
-      document.getElementById("homeworkText").textContent =
-        homework === 1
-          ? "1 homework assignment recorded."
-          : `${homework} homework assignments recorded.`;
+      homeworkText.textContent =
+        role === "trainer"
+          ? `${homework} assigned. View homework or assign new practice.`
+          : homework === 1
+            ? "1 homework assignment recorded."
+            : `${homework} homework assignments recorded.`;
     }
+
+    badgeForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const dogId = getDogId();
+
+      const payload = {
+        dog_id: dogId,
+        badge_name: badgeName.value.trim(),
+        note: badgeNote.value.trim() || null
+      };
+
+      const { error } = await db.from("dog_badges").insert(payload);
+
+      if (error) {
+        console.error(error);
+        badgeMessage.textContent = "Could not award badge. Check table columns.";
+        return;
+      }
+
+      badgeMessage.textContent = "Badge awarded.";
+      badgeForm.reset();
+      await loadDogProgress(dogId);
+    });
+
+    homeworkForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const dogId = getDogId();
+
+      const payload = {
+        dog_id: dogId,
+        title: homeworkTitleInput.value.trim(),
+        details: homeworkDetails.value.trim() || null,
+        status: "assigned"
+      };
+
+      const { error } = await db.from("homework_assignments").insert(payload);
+
+      if (error) {
+        console.error(error);
+        homeworkMessage.textContent = "Could not assign homework. Check table columns.";
+        return;
+      }
+
+      homeworkMessage.textContent = "Homework assigned.";
+      homeworkForm.reset();
+      await loadDogProgress(dogId);
+    });
+
+    noteForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const dogId = getDogId();
+
+      const payload = {
+        dog_id: dogId,
+        note: trainerNote.value.trim()
+      };
+
+      const { error } = await db.from("trainer_notes").insert(payload);
+
+      if (error) {
+        console.error(error);
+        noteMessage.textContent = "Could not save note. Check table columns.";
+        return;
+      }
+
+      noteMessage.textContent = "Trainer note saved.";
+      noteForm.reset();
+    });
 
     loadDog();
     lucide.createIcons();
