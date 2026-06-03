@@ -258,10 +258,7 @@
 
   <section class="hero hero-card lift-card">
     <h2 id="dogName">Loading...</h2>
-
-    <p id="heroStats">
-      Loading badges...
-    </p>
+    <p id="heroStats">Loading badges...</p>
   </section>
 
   <section class="award-panel glass-card lift-card" id="awardPanel">
@@ -449,26 +446,22 @@ function setBackButton() {
   };
 }
 
-function badgeIcon(name) {
+function badgeIcon(name, icon) {
+  if (icon) return icon;
+
   switch (name) {
     case "First Session":
-      return "flag";
-
+      return "sparkles";
     case "Recall Rookie":
       return "radio";
-
     case "Lead Walker":
       return "footprints";
-
     case "Social Star":
-      return "users";
-
+      return "star";
     case "Graduate":
-      return "graduation-cap";
-
+      return "badge-check";
     case "Off Leash Ready":
-      return "mountain";
-
+      return "lock";
     default:
       return "award";
   }
@@ -508,12 +501,14 @@ async function loadAwardBadgeChoices() {
 
   const { data, error } = await db
     .from("badge_templates")
-    .select("id, name")
+    .select("id, name, description, icon, sort_order, is_active")
     .eq("school_id", currentDog.school_id)
-    .order("name", { ascending: true });
+    .eq("is_active", true)
+    .order("sort_order", { ascending: true });
 
   if (error) {
     console.error("Badge templates failed:", error);
+
     choices.innerHTML = `
       <button class="chip selected" type="button">
         Could not load badges
@@ -574,6 +569,10 @@ async function awardSelectedBadge() {
     return;
   }
 
+  const button = document.getElementById("awardBadgeButton");
+  button.disabled = true;
+  button.textContent = "Awarding...";
+
   const comment =
     document.getElementById("awardComment")?.value?.trim() ||
     `${selectedAwardBadgeName} awarded to ${currentDog.name}.`;
@@ -582,18 +581,25 @@ async function awardSelectedBadge() {
     school_id: currentDog.school_id,
     dog_id: currentDog.id,
     badge_template_id: selectedAwardBadgeId,
-    trainer_comment: comment
+    trainer_comment: comment,
+    awarded_at: new Date().toISOString()
   });
 
   if (error) {
     console.error("Award badge failed:", error);
     alert("Could not award badge. It may already be awarded.");
+
+    button.disabled = false;
+    button.textContent = "Award selected badge";
     return;
   }
 
   alert(`${selectedAwardBadgeName} awarded to ${currentDog.name}.`);
 
   document.getElementById("awardComment").value = "";
+
+  button.disabled = false;
+  button.textContent = "Award selected badge";
 
   await loadBadges();
 }
@@ -666,13 +672,8 @@ async function loadBadges() {
     return;
   }
 
-  const earned = data.filter(
-    row => row.earned === true
-  );
-
-  const locked = data.filter(
-    row => row.earned === false
-  );
+  const earned = data.filter(row => row.earned === true);
+  const locked = data.filter(row => row.earned === false);
 
   const dogName =
     data[0].dog_name || currentDog?.name || "Dog";
@@ -696,19 +697,16 @@ async function loadBadges() {
     earnedContainer.innerHTML =
       earned.map(badge => `
         <div class="badge-card glass-card lift-card earned">
-
           <div class="badge-icon">
-            <i data-lucide="${badgeIcon(badge.badge_name)}"></i>
+            <i data-lucide="${badgeIcon(badge.badge_name, badge.icon)}"></i>
           </div>
 
           <div class="badge-copy">
-
             <h4>${badge.badge_name}</h4>
 
             <div class="badge-date">
               ${badge.awarded_at
-                ? new Date(badge.awarded_at)
-                    .toLocaleDateString("en-AU")
+                ? new Date(badge.awarded_at).toLocaleDateString("en-AU")
                 : ""}
             </div>
 
@@ -725,9 +723,7 @@ async function loadBadges() {
               `
               : ""
             }
-
           </div>
-
         </div>
       `).join("");
   }
@@ -745,21 +741,17 @@ async function loadBadges() {
     lockedContainer.innerHTML =
       locked.map(badge => `
         <div class="badge-card glass-card locked">
-
           <div class="badge-icon">
             <i data-lucide="lock"></i>
           </div>
 
           <div class="badge-copy">
-
             <h4>${badge.badge_name}</h4>
 
             <div class="badge-description">
               ${badge.description || ""}
             </div>
-
           </div>
-
         </div>
       `).join("");
   }
