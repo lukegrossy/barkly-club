@@ -92,6 +92,13 @@
       padding: 18px;
     }
 
+    .note-title {
+      font-size: 16px;
+      font-weight: var(--font-heavy);
+      margin-bottom: 6px;
+      color: var(--navy);
+    }
+
     .note-date {
       font-size: var(--text-xs);
       color: var(--sage);
@@ -238,7 +245,7 @@ const SUPABASE_URL =
   "https://woolaaiunapsaowheifj.supabase.co";
 
 const SUPABASE_ANON_KEY =
-  "YOUR_ANON_KEY_HERE";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
 const db = supabase.createClient(
   SUPABASE_URL,
@@ -251,9 +258,7 @@ function getParams() {
 
 function getRole() {
   const role = getParams().get("role");
-  return ["owner","trainer","parent"].includes(role)
-    ? role
-    : "owner";
+  return ["owner", "trainer", "parent"].includes(role) ? role : "owner";
 }
 
 function getDogId() {
@@ -267,12 +272,11 @@ document.body.dataset.role = role;
 
 let currentDog = null;
 
-  function withRoleAndDog(page, dogId) {
+function withRoleAndDog(page, dogId) {
   return `${page}?role=${role}&dog=${dogId}`;
 }
 
 function renderRoleCopy() {
-
   if (role === "owner") {
     document.getElementById("pageSubtitle").textContent =
       "Trainer observations and progress updates.";
@@ -290,82 +294,60 @@ function renderRoleCopy() {
 }
 
 function renderBottomNav() {
-
   const nav = document.getElementById("bottomNav");
 
   if (role === "owner") {
-
     nav.innerHTML = `
       <a href="owner-dashboard.html" class="bottom-nav-item">
-        <div class="bottom-nav-icon">
-          <i data-lucide="layout-dashboard"></i>
-        </div>
+        <div class="bottom-nav-icon"><i data-lucide="layout-dashboard"></i></div>
         Home
       </a>
 
       <a href="owner-dashboard.html#programs" class="bottom-nav-item">
-        <div class="bottom-nav-icon">
-          <i data-lucide="layers-3"></i>
-        </div>
+        <div class="bottom-nav-icon"><i data-lucide="layers-3"></i></div>
         Programs
       </a>
 
       <a href="dogs.html?role=owner" class="bottom-nav-item active">
-        <div class="bottom-nav-icon">
-          <i data-lucide="users"></i>
-        </div>
+        <div class="bottom-nav-icon"><i data-lucide="users"></i></div>
         People
       </a>
 
       <a href="owner-dashboard.html#school" class="bottom-nav-item">
-        <div class="bottom-nav-icon">
-          <i data-lucide="building-2"></i>
-        </div>
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
         School
       </a>
     `;
   }
 
   if (role === "trainer") {
-
     nav.innerHTML = `
       <a href="trainer-dashboard.html" class="bottom-nav-item">
-        <div class="bottom-nav-icon">
-          <i data-lucide="calendar-check"></i>
-        </div>
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
         Sessions
       </a>
 
-      <a href="dogs.html?role=trainer" class="bottom-nav-item active">
-        <div class="bottom-nav-icon">
-          <i data-lucide="dog"></i>
-        </div>
+      <a href="trainer-dashboard.html#dogs" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
         Dogs
       </a>
     `;
   }
 
   if (role === "parent") {
-
     nav.innerHTML = `
       <a href="dog-detail.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
-        <div class="bottom-nav-icon">
-          <i data-lucide="dog"></i>
-        </div>
+        <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
         Dog
       </a>
 
       <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
-        <div class="bottom-nav-icon">
-          <i data-lucide="calendar-check"></i>
-        </div>
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
         Sessions
       </a>
 
       <a href="parent-school.html" class="bottom-nav-item">
-        <div class="bottom-nav-icon">
-          <i data-lucide="building-2"></i>
-        </div>
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
         School
       </a>
     `;
@@ -373,12 +355,9 @@ function renderBottomNav() {
 }
 
 function setBackButton() {
-
   document.getElementById("backBtn").onclick = () => {
-
     if (dogId) {
-      window.location =
-        withRoleAndDog("dog-detail.html", dogId);
+      window.location = withRoleAndDog("dog-detail.html", dogId);
       return;
     }
 
@@ -396,29 +375,50 @@ function setBackButton() {
       window.location = "parent-dashboard.html";
       return;
     }
+
+    window.location = "dogs.html";
   };
 }
 
 async function loadNotes() {
-
   renderRoleCopy();
   renderBottomNav();
   setBackButton();
 
   if (!dogId) {
+    document.getElementById("dogName").textContent = "Dog not found";
+    document.getElementById("heroStats").textContent =
+      "Open this page from a dog profile.";
+    document.getElementById("notesList").innerHTML = `
+      <div class="empty-card glass-card">
+        No dog was selected.
+      </div>
+    `;
+    lucide.createIcons();
     return;
   }
 
-  const { data: dog } = await db
+  const { data: dog, error: dogError } = await db
     .from("dogs")
-    .select("name")
+    .select("id, school_id, name")
     .eq("id", dogId)
     .single();
+
+  if (dogError || !dog) {
+    console.error("Dog lookup failed:", dogError);
+
+    document.getElementById("dogName").textContent = "Dog not found";
+    document.getElementById("heroStats").textContent =
+      "Could not load this dog.";
+
+    lucide.createIcons();
+    return;
+  }
 
   currentDog = dog;
 
   document.getElementById("dogName").textContent =
-    dog?.name || "Dog";
+    dog.name || "Dog";
 
   const { data: notes, error } = await db
     .from("parent_updates")
@@ -432,37 +432,44 @@ async function loadNotes() {
     document.getElementById("heroStats").textContent =
       "Unable to load trainer notes.";
 
+    lucide.createIcons();
     return;
   }
 
+  const noteCount = notes?.length || 0;
+
   document.getElementById("heroStats").textContent =
-    `${notes.length} trainer update${notes.length === 1 ? "" : "s"} recorded`;
+    `${noteCount} trainer update${noteCount === 1 ? "" : "s"} recorded`;
 
   const container =
     document.getElementById("notesList");
 
-  if (!notes.length) {
-
+  if (!noteCount) {
     container.innerHTML = `
       <div class="empty-card glass-card">
         No trainer notes recorded yet.
       </div>
     `;
 
+    lucide.createIcons();
     return;
   }
 
   container.innerHTML = notes.map(note => `
-
     <div class="note-card glass-card lift-card">
 
+      <div class="note-title">
+        ${note.title || "Trainer update"}
+      </div>
+
       <div class="note-date">
-        ${new Date(note.created_at)
-          .toLocaleDateString("en-AU")}
+        ${note.created_at
+          ? new Date(note.created_at).toLocaleDateString("en-AU")
+          : ""}
       </div>
 
       <div class="note-text">
-        ${note.note || ""}
+        ${note.update_text || ""}
       </div>
 
       <div class="note-label">
@@ -470,13 +477,13 @@ async function loadNotes() {
       </div>
 
     </div>
-
   `).join("");
 
   lucide.createIcons();
 }
 
 async function saveTrainerNote() {
+  if (!(role === "owner" || role === "trainer")) return;
 
   const text =
     document.getElementById("newTrainerNote")
@@ -485,6 +492,11 @@ async function saveTrainerNote() {
 
   if (!text) {
     alert("Enter a trainer note first.");
+    return;
+  }
+
+  if (!currentDog?.id || !currentDog?.school_id) {
+    alert("No dog selected.");
     return;
   }
 
@@ -497,17 +509,18 @@ async function saveTrainerNote() {
   const { error } = await db
     .from("parent_updates")
     .insert({
-      dog_id: dogId,
-      note: text
+      school_id: currentDog.school_id,
+      dog_id: currentDog.id,
+      session_id: null,
+      title: `${currentDog.name} trainer update`,
+      update_text: text,
+      published_at: new Date().toISOString()
     });
 
   if (error) {
-
     console.error(error);
 
-    alert(
-      "Unable to save trainer note."
-    );
+    alert("Unable to save trainer note.");
 
     button.disabled = false;
     button.textContent = "Save Trainer Note";
@@ -515,21 +528,17 @@ async function saveTrainerNote() {
     return;
   }
 
-  document.getElementById("newTrainerNote")
-    .value = "";
+  document.getElementById("newTrainerNote").value = "";
 
   button.disabled = false;
   button.textContent = "Save Trainer Note";
 
-  loadNotes();
+  await loadNotes();
 }
 
 document
   .getElementById("saveTrainerNoteBtn")
-  ?.addEventListener(
-    "click",
-    saveTrainerNote
-  );
+  ?.addEventListener("click", saveTrainerNote);
 
 loadNotes();
 lucide.createIcons();
