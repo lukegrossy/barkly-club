@@ -1183,6 +1183,111 @@
     publishSessionButton.addEventListener("click", completeSession);
   }
 
+  let allTrainerDogs = [];
+let selectedDogId = null;
+let selectedDogSchoolId = null;
+
+async function loadTrainerDogs() {
+  const { data, error } = await db
+    .from("owner_dogs_view")
+    .select("*")
+    .order("dog_name", { ascending: true });
+
+  if (error) {
+    console.error("Trainer dogs failed:", error);
+    document.getElementById("trainerDogsList").innerHTML = `
+      <div class="trainer-card glass-card">
+        <div class="row-left">
+          <div class="card-icon"><i data-lucide="alert-circle"></i></div>
+          <div>
+            <h4>Could not load dogs</h4>
+            <p>Please try again.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  allTrainerDogs = data || [];
+  renderTrainerDogs();
+}
+
+function renderTrainerDogs() {
+  const list = document.getElementById("trainerDogsList");
+  const search = document.getElementById("trainerDogSearch").value.toLowerCase();
+
+  const filteredDogs = allTrainerDogs.filter(dog => {
+    const text = `
+      ${dog.dog_name || ""}
+      ${dog.breed || ""}
+      ${dog.program_name || ""}
+      ${dog.class_name || ""}
+    `.toLowerCase();
+
+    return text.includes(search);
+  });
+
+  if (filteredDogs.length === 0) {
+    list.innerHTML = `
+      <div class="trainer-card glass-card">
+        <div class="row-left">
+          <div class="card-icon"><i data-lucide="dog"></i></div>
+          <div>
+            <h4>No dogs found</h4>
+            <p>Try another search.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = filteredDogs.map(dog => `
+    <a
+      href="dog-detail.html?role=trainer&dog=${dog.dog_id}"
+      class="dog-card glass-card lift-card"
+      data-dog-id="${dog.dog_id}"
+      data-dog-name="${dog.dog_name}"
+    >
+      <div class="dog-card-top">
+        <div class="dog-left">
+          <div class="card-icon"><i data-lucide="dog"></i></div>
+          <div>
+            <h4>${dog.dog_name || "Dog"}</h4>
+            <p>${dog.breed || "Dog"} · ${dog.program_name || "Program"}</p>
+          </div>
+        </div>
+
+        <div class="dog-pill">${dog.status || "active"}</div>
+      </div>
+
+      <p>${dog.class_name || "No class assigned"}</p>
+
+      <div class="dog-actions">
+        <button class="dog-action" data-sheet="noteSheet">Note</button>
+        <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
+        <button class="dog-action" data-sheet="badgeSheet">Badge</button>
+      </div>
+    </a>
+  `).join("");
+
+  document.querySelectorAll(".dog-action").forEach(button => {
+    button.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const card = button.closest(".dog-card");
+
+      selectedDogId = card?.dataset.dogId || null;
+      selectedDogName = card?.dataset.dogName || "Dog";
+
+      openSheet(button.dataset.sheet);
+    });
+  });
+
+  lucide.createIcons();
+}  
   loadCurrentSession();
   lucide.createIcons();
 </script>
