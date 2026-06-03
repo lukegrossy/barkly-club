@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Trainer Notes | Barkly Schools</title>
+
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .page-title {
+      font-size: var(--display-md);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: var(--space-xl);
+      color: white;
+    }
+
+    .hero h2 {
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: rgba(255,255,255,.75);
+    }
+
+    .section-title {
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .note-card {
+      padding: 18px;
+    }
+
+    .note-date {
+      font-size: var(--text-xs);
+      color: var(--sage);
+      font-weight: var(--font-heavy);
+      margin-bottom: 10px;
+    }
+
+    .note-text {
+      color: var(--text-primary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .note-label {
+      color: var(--text-secondary);
+      font-size: var(--text-xs);
+      font-weight: var(--font-heavy);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .empty-card {
+      padding: 18px;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+    }
+
+    .note-panel {
+      display: none;
+      padding: 18px;
+      margin-bottom: var(--space-xl);
+    }
+
+    body[data-role="owner"] .note-panel,
+    body[data-role="trainer"] .note-panel {
+      display: block;
+    }
+
+    .note-textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.72);
+      padding: 14px;
+      font-family: var(--font-family);
+      font-size: var(--text-md);
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    .save-note-btn {
+      width: 100%;
+      height: 54px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      font-size: var(--text-md);
+      font-weight: var(--font-heavy);
+    }
+
+    .bottom-nav {
+      max-width: 540px;
+    }
+
+    .bottom-nav-item {
+      min-width: 62px;
+    }
+
+    body[data-role="trainer"] .bottom-nav {
+      max-width: 340px;
+    }
+
+    body[data-role="trainer"] .bottom-nav-item {
+      min-width: 96px;
+    }
+  </style>
+</head>
+
+<body data-role="owner">
+
+<main class="dashboard fade-in">
+
+  <div class="brand-row">
+    <button class="back-btn" id="backBtn">
+      ←
+    </button>
+
+    <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+    <p class="eyebrow">Barkly Schools</p>
+  </div>
+
+  <h1 class="page-title">Trainer Notes</h1>
+
+  <p class="page-subtitle" id="pageSubtitle">
+    Trainer observations and progress updates.
+  </p>
+
+  <section class="hero hero-card lift-card">
+    <h2 id="dogName">Loading...</h2>
+
+    <p id="heroStats">
+      Loading notes...
+    </p>
+  </section>
+
+  <section class="note-panel glass-card lift-card">
+    <h3 class="section-title">Add Trainer Note</h3>
+
+    <textarea
+      id="newTrainerNote"
+      class="note-textarea"
+      placeholder="Enter a trainer update for the parent..."
+    ></textarea>
+
+    <button
+      id="saveTrainerNoteBtn"
+      class="save-note-btn"
+      type="button">
+      Save Trainer Note
+    </button>
+  </section>
+
+  <h3 class="section-title">Trainer Updates</h3>
+
+  <div class="card-list" id="notesList">
+    <div class="empty-card glass-card">
+      Loading trainer notes...
+    </div>
+  </div>
+
+</main>
+
+<nav class="bottom-nav" id="bottomNav"></nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+const SUPABASE_URL =
+  "https://woolaaiunapsaowheifj.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "YOUR_ANON_KEY_HERE";
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+function getParams() {
+  return new URLSearchParams(window.location.search);
+}
+
+function getRole() {
+  const role = getParams().get("role");
+  return ["owner","trainer","parent"].includes(role)
+    ? role
+    : "owner";
+}
+
+function getDogId() {
+  return getParams().get("dog");
+}
+
+const role = getRole();
+const dogId = getDogId();
+
+document.body.dataset.role = role;
+
+let currentDog = null;
+
+  function withRoleAndDog(page, dogId) {
+  return `${page}?role=${role}&dog=${dogId}`;
+}
+
+function renderRoleCopy() {
+
+  if (role === "owner") {
+    document.getElementById("pageSubtitle").textContent =
+      "Trainer observations and progress updates.";
+  }
+
+  if (role === "trainer") {
+    document.getElementById("pageSubtitle").textContent =
+      "Record and review training updates.";
+  }
+
+  if (role === "parent") {
+    document.getElementById("pageSubtitle").textContent =
+      "Updates from your trainer after classes.";
+  }
+}
+
+function renderBottomNav() {
+
+  const nav = document.getElementById("bottomNav");
+
+  if (role === "owner") {
+
+    nav.innerHTML = `
+      <a href="owner-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="layout-dashboard"></i>
+        </div>
+        Home
+      </a>
+
+      <a href="owner-dashboard.html#programs" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="layers-3"></i>
+        </div>
+        Programs
+      </a>
+
+      <a href="dogs.html?role=owner" class="bottom-nav-item active">
+        <div class="bottom-nav-icon">
+          <i data-lucide="users"></i>
+        </div>
+        People
+      </a>
+
+      <a href="owner-dashboard.html#school" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="building-2"></i>
+        </div>
+        School
+      </a>
+    `;
+  }
+
+  if (role === "trainer") {
+
+    nav.innerHTML = `
+      <a href="trainer-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="calendar-check"></i>
+        </div>
+        Sessions
+      </a>
+
+      <a href="dogs.html?role=trainer" class="bottom-nav-item active">
+        <div class="bottom-nav-icon">
+          <i data-lucide="dog"></i>
+        </div>
+        Dogs
+      </a>
+    `;
+  }
+
+  if (role === "parent") {
+
+    nav.innerHTML = `
+      <a href="dog-detail.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="dog"></i>
+        </div>
+        Dog
+      </a>
+
+      <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="calendar-check"></i>
+        </div>
+        Sessions
+      </a>
+
+      <a href="parent-school.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon">
+          <i data-lucide="building-2"></i>
+        </div>
+        School
+      </a>
+    `;
+  }
+}
+
+function setBackButton() {
+
+  document.getElementById("backBtn").onclick = () => {
+
+    if (dogId) {
+      window.location =
+        withRoleAndDog("dog-detail.html", dogId);
+      return;
+    }
+
+    if (role === "owner") {
+      window.location = "dogs.html?role=owner";
+      return;
+    }
+
+    if (role === "trainer") {
+      window.location = "dogs.html?role=trainer";
+      return;
+    }
+
+    if (role === "parent") {
+      window.location = "parent-dashboard.html";
+      return;
+    }
+  };
+}
+
+async function loadNotes() {
+
+  renderRoleCopy();
+  renderBottomNav();
+  setBackButton();
+
+  if (!dogId) {
+    return;
+  }
+
+  const { data: dog } = await db
+    .from("dogs")
+    .select("name")
+    .eq("id", dogId)
+    .single();
+
+  currentDog = dog;
+
+  document.getElementById("dogName").textContent =
+    dog?.name || "Dog";
+
+  const { data: notes, error } = await db
+    .from("parent_updates")
+    .select("*")
+    .eq("dog_id", dogId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+
+    document.getElementById("heroStats").textContent =
+      "Unable to load trainer notes.";
+
+    return;
+  }
+
+  document.getElementById("heroStats").textContent =
+    `${notes.length} trainer update${notes.length === 1 ? "" : "s"} recorded`;
+
+  const container =
+    document.getElementById("notesList");
+
+  if (!notes.length) {
+
+    container.innerHTML = `
+      <div class="empty-card glass-card">
+        No trainer notes recorded yet.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = notes.map(note => `
+
+    <div class="note-card glass-card lift-card">
+
+      <div class="note-date">
+        ${new Date(note.created_at)
+          .toLocaleDateString("en-AU")}
+      </div>
+
+      <div class="note-text">
+        ${note.note || ""}
+      </div>
+
+      <div class="note-label">
+        Trainer Update
+      </div>
+
+    </div>
+
+  `).join("");
+
+  lucide.createIcons();
+}
+
+async function saveTrainerNote() {
+
+  const text =
+    document.getElementById("newTrainerNote")
+      .value
+      .trim();
+
+  if (!text) {
+    alert("Enter a trainer note first.");
+    return;
+  }
+
+  const button =
+    document.getElementById("saveTrainerNoteBtn");
+
+  button.disabled = true;
+  button.textContent = "Saving...";
+
+  const { error } = await db
+    .from("parent_updates")
+    .insert({
+      dog_id: dogId,
+      note: text
+    });
+
+  if (error) {
+
+    console.error(error);
+
+    alert(
+      "Unable to save trainer note."
+    );
+
+    button.disabled = false;
+    button.textContent = "Save Trainer Note";
+
+    return;
+  }
+
+  document.getElementById("newTrainerNote")
+    .value = "";
+
+  button.disabled = false;
+  button.textContent = "Save Trainer Note";
+
+  loadNotes();
+}
+
+document
+  .getElementById("saveTrainerNoteBtn")
+  ?.addEventListener(
+    "click",
+    saveTrainerNote
+  );
+
+loadNotes();
+lucide.createIcons();
+</script>
+
+</body>
+</html>
