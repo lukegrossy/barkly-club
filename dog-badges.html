@@ -486,156 +486,99 @@ async function loadDogRecord() {
 }
 
 async function loadAwardBadgeChoices() {
-
   if (!(role === "owner" || role === "trainer")) return;
 
-  const choices =
-    document.getElementById("awardBadgeChoices");
+  const choices = document.getElementById("awardBadgeChoices");
+  const button = document.getElementById("awardBadgeButton");
 
   if (!currentDog?.school_id) {
-
     choices.innerHTML = `
-      <button class="chip selected" type="button">
-        No school linked
-      </button>
+      <button class="chip selected" type="button">No school linked</button>
     `;
-
+    button.disabled = true;
     return;
   }
 
-  const { data, error } = await db
+  const { data: templates, error: templateError } = await db
     .from("badge_templates")
-    .select("id, name")
+    .select("id, name, description, icon, sort_order, is_active")
     .eq("school_id", currentDog.school_id)
     .eq("is_active", true)
     .order("sort_order", { ascending: true });
 
-  if (error) {
-
-    console.error("Badge templates failed:", error);
-
+  if (templateError) {
+    console.error("Badge templates failed:", templateError);
     choices.innerHTML = `
-      <button class="chip selected" type="button">
-        Could not load badges
-      </button>
+      <button class="chip selected" type="button">Could not load badges</button>
     `;
-
+    button.disabled = true;
     return;
   }
 
-  const { data: awardedBadges, error: awardedError } =
-    await db
-      .from("dog_badges")
-      .select("badge_template_id")
-      .eq("dog_id", currentDog.id);
+  const { data: awardedBadges, error: awardedError } = await db
+    .from("dog_badges")
+    .select("badge_template_id")
+    .eq("dog_id", currentDog.id);
 
   if (awardedError) {
-    console.error(
-      "Awarded badges lookup failed:",
-      awardedError
-    );
+    console.error("Awarded badges lookup failed:", awardedError);
   }
 
   const awardedBadgeIds = new Set(
-    (awardedBadges || []).map(
-      row => row.badge_template_id
-    )
+    (awardedBadges || []).map(row => row.badge_template_id)
   );
 
-  const availableBadges =
-    (data || []).filter(
-      badge => !awardedBadgeIds.has(badge.id)
-    );
+  const availableBadges = (templates || []).filter(
+    badge => !awardedBadgeIds.has(badge.id)
+  );
 
   if (!availableBadges.length) {
+    selectedAwardBadgeId = null;
+    selectedAwardBadgeName = null;
 
     choices.innerHTML = `
-      <button class="chip selected" type="button">
-        All badges already awarded
-      </button>
+      <button class="chip selected" type="button">All badges already awarded</button>
     `;
 
-    document.getElementById(
-      "awardBadgeButton"
-    ).disabled = true;
-
+    button.disabled = true;
     return;
   }
 
-  document.getElementById(
-    "awardBadgeButton"
-  ).disabled = false;
+  button.disabled = false;
+  selectedAwardBadgeId = availableBadges[0].id;
+  selectedAwardBadgeName = availableBadges[0].name;
 
-  selectedAwardBadgeId =
-    availableBadges[0].id;
+  choices.innerHTML = availableBadges.map((badge, index) => `
+    <button
+      class="chip ${index === 0 ? "selected" : ""}"
+      type="button"
+      data-badge-id="${badge.id}"
+      data-badge-name="${badge.name}"
+    >
+      ${badge.name}
+    </button>
+  `).join("");
 
-  selectedAwardBadgeName =
-    availableBadges[0].name;
+  document.querySelectorAll("#awardBadgeChoices .chip").forEach(chip => {
+    chip.addEventListener("click", event => {
+      event.preventDefault();
 
-  choices.innerHTML =
-    availableBadges.map(
-      (badge, index) => `
-        <button
-          class="chip ${
-            index === 0 ? "selected" : ""
-          }"
-          type="button"
-          data-badge-id="${badge.id}"
-          data-badge-name="${badge.name}"
-        >
-          ${badge.name}
-        </button>
-      `
-    ).join("");
+      document
+        .querySelectorAll("#awardBadgeChoices .chip")
+        .forEach(item => item.classList.remove("selected"));
 
-  document
-    .querySelectorAll(
-      "#awardBadgeChoices .chip"
-    )
-    .forEach(button => {
+      chip.classList.add("selected");
 
-      button.addEventListener(
-        "click",
-        event => {
-
-          event.preventDefault();
-
-          document
-            .querySelectorAll(
-              "#awardBadgeChoices .chip"
-            )
-            .forEach(chip =>
-              chip.classList.remove(
-                "selected"
-              )
-            );
-
-          button.classList.add(
-            "selected"
-          );
-
-          selectedAwardBadgeId =
-            button.dataset.badgeId;
-
-          selectedAwardBadgeName =
-            button.dataset.badgeName;
-        }
-      );
+      selectedAwardBadgeId = chip.dataset.badgeId;
+      selectedAwardBadgeName = chip.dataset.badgeName;
     });
+  });
 }
 
 async function awardSelectedBadge() {
+  if (!(role === "owner" || role === "trainer")) return;
 
-  if (
-    !(role === "owner" || role === "trainer")
-  ) {
-    return;
-  }
-
-  if (
-    !currentDog?.id ||
-    !currentDog?.school_id
-  ) {
+  if (!currentDog?.id || !currentDog?.school_id) {
     alert("No dog selected.");
     return;
   }
@@ -645,11 +588,12 @@ async function awardSelectedBadge() {
     return;
   }
 
+  const button = document.getElementById("awardBadgeButton");
+  button.disabled = true;
+  button.textContent = "Awarding...";
+
   const comment =
-    document
-      .getElementById("awardComment")
-      ?.value
-      ?.trim() ||
+    document.getElementById("awardComment")?.value?.trim() ||
     `${selectedAwardBadgeName} awarded to ${currentDog.name}.`;
 
   const { error } = await db
@@ -657,40 +601,143 @@ async function awardSelectedBadge() {
     .insert({
       school_id: currentDog.school_id,
       dog_id: currentDog.id,
-      badge_template_id:
-        selectedAwardBadgeId,
-      trainer_comment: comment
+      badge_template_id: selectedAwardBadgeId,
+      trainer_comment: comment,
+      awarded_at: new Date().toISOString()
     });
 
+  button.textContent = "Award selected badge";
+
   if (error) {
-
-    console.error(
-      "Award badge failed:",
-      error
-    );
-
-    alert(
-      "Could not award badge. It may already exist."
-    );
-
+    console.error("Award badge failed:", error);
+    alert("Could not award badge. It may already exist.");
+    button.disabled = false;
     return;
   }
 
-  document.getElementById(
-    "awardComment"
-  ).value = "";
-
+  document.getElementById("awardComment").value = "";
   await loadBadges();
 }
 
+async function loadBadges() {
+  renderRoleCopy();
+  renderBottomNav();
+  setBackButton();
+
+  if (!dogId) {
+    document.getElementById("dogName").textContent = "Dog not found";
+    document.getElementById("heroStats").textContent =
+      "Open this page from a dog profile.";
+
+    document.getElementById("earnedBadges").innerHTML = `
+      <div class="empty-card glass-card">No dog was selected.</div>
+    `;
+
+    document.getElementById("lockedBadges").innerHTML = "";
+    lucide.createIcons();
+    return;
+  }
+
+  await loadDogRecord();
+  await loadAwardBadgeChoices();
+
+  const { data, error } = await db
+    .from("owner_dog_badges_view")
+    .select("*")
+    .eq("dog_id", dogId);
+
+  if (error) {
+    console.error("Badge view failed:", error);
+
+    document.getElementById("dogName").textContent =
+      currentDog?.name || "Could not load badges";
+
+    document.getElementById("heroStats").textContent =
+      "Please try again.";
+
+    lucide.createIcons();
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    document.getElementById("dogName").textContent =
+      currentDog?.name || "Dog";
+
+    document.getElementById("heroStats").textContent =
+      "No badge data found.";
+
+    document.getElementById("earnedBadges").innerHTML = `
+      <div class="empty-card glass-card">No badges recorded yet.</div>
+    `;
+
+    document.getElementById("lockedBadges").innerHTML = `
+      <div class="empty-card glass-card">No upcoming milestones found.</div>
+    `;
+
+    lucide.createIcons();
+    return;
+  }
+
+  const earned = data.filter(row => row.earned === true);
+  const locked = data.filter(row => row.earned === false);
+
+  const dogName = data[0].dog_name || currentDog?.name || "Dog";
+
+  document.getElementById("dogName").textContent = dogName;
+  document.getElementById("heroStats").textContent =
+    `${earned.length} badges earned · ${locked.length} remaining`;
+
+  document.getElementById("earnedBadges").innerHTML = earned.length
+    ? earned.map(badge => `
+      <div class="badge-card glass-card lift-card earned">
+        <div class="badge-icon">
+          <i data-lucide="${badgeIcon(badge.badge_name, badge.icon)}"></i>
+        </div>
+
+        <div class="badge-copy">
+          <h4>${badge.badge_name}</h4>
+
+          <div class="badge-date">
+            ${badge.awarded_at
+              ? new Date(badge.awarded_at).toLocaleDateString("en-AU")
+              : ""}
+          </div>
+
+          <div class="badge-description">
+            ${badge.description || ""}
+          </div>
+
+          ${
+            badge.trainer_comment
+              ? `<div class="badge-comment">"${badge.trainer_comment}"</div>`
+              : ""
+          }
+        </div>
+      </div>
+    `).join("")
+    : `<div class="empty-card glass-card">No badges earned yet.</div>`;
+
+  document.getElementById("lockedBadges").innerHTML = locked.length
+    ? locked.map(badge => `
+      <div class="badge-card glass-card locked">
+        <div class="badge-icon">
+          <i data-lucide="lock"></i>
+        </div>
+
+        <div class="badge-copy">
+          <h4>${badge.badge_name}</h4>
+          <div class="badge-description">${badge.description || ""}</div>
+        </div>
+      </div>
+    `).join("")
+    : `<div class="empty-card glass-card">All milestones achieved.</div>`;
+
+  lucide.createIcons();
+}
+
 document
-  .getElementById(
-    "awardBadgeButton"
-  )
-  .addEventListener(
-    "click",
-    awardSelectedBadge
-  );
+  .getElementById("awardBadgeButton")
+  .addEventListener("click", awardSelectedBadge);
 
 loadBadges();
 lucide.createIcons();
