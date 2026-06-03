@@ -491,35 +491,29 @@
     </section>
 
     <section class="page" id="dogs">
-      <input class="dog-search" type="search" placeholder="Search dogs" />
+  <input
+    class="dog-search"
+    id="trainerDogSearch"
+    type="search"
+    placeholder="Search dogs"
+  />
 
-      <div class="section-head">
-        <h3>Dogs</h3>
+  <div class="section-head">
+    <h3>Dogs</h3>
+  </div>
+
+  <div class="card-list" id="trainerDogsList">
+    <div class="trainer-card glass-card">
+      <div class="row-left">
+        <div class="card-icon"><i data-lucide="loader"></i></div>
+        <div>
+          <h4>Loading dogs</h4>
+          <p>Fetching enrolled dogs.</p>
+        </div>
       </div>
-
-      <div class="card-list">
-        <a href="dog-detail.html?role=trainer&dog=DOG_ID_HERE" class="dog-card glass-card lift-card">
-          <div class="dog-card-top">
-            <div class="dog-left">
-              <div class="card-icon"><i data-lucide="dog"></i></div>
-              <div>
-                <h4>Luna</h4>
-                <p>Groodle · Puppy Foundations</p>
-              </div>
-            </div>
-            <div class="dog-pill">Active</div>
-          </div>
-
-          <p>Last update: settling faster around other dogs. Homework assigned.</p>
-
-          <div class="dog-actions">
-            <button class="dog-action" data-sheet="noteSheet">Note</button>
-            <button class="dog-action" data-sheet="homeworkSheet">Homework</button>
-            <button class="dog-action" data-sheet="badgeSheet">Badge</button>
-          </div>
-        </a>
-      </div>
-    </section>
+    </div>
+  </div>
+</section>
   </main>
 
   <nav class="bottom-nav">
