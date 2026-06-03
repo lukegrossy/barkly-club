@@ -201,6 +201,15 @@
     .bottom-nav-item {
       min-width: 62px;
     }
+
+    body[data-role="trainer"] .bottom-nav {
+max-width: 340px;
+}
+
+body[data-role="trainer"] .bottom-nav-item {
+min-width: 96px;
+}
+
   </style>
 </head>
 
@@ -472,17 +481,13 @@
             Sessions
           </a>
 
-          <a href="dogs.html?role=trainer" class="bottom-nav-item active">
+          <a href="trainer-dashboard.html#dogs" class="bottom-nav-item active">
             <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
             Dogs
           </a>
-
-          <a href="trainer-school.html" class="bottom-nav-item">
-            <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
-            School
-          </a>
         `;
       }
+
 
       if (role === "parent") {
         nav.innerHTML = `
