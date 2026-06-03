@@ -321,7 +321,7 @@
       </div>
 
       <div class="card-list">
-        <a href="#" class="owner-card glass-card lift-card">
+        <a href="classes.html?role=owner" class="owner-card glass-card lift-card">
           <div class="card-icon"><i data-lucide="calendar-check"></i></div>
           <div>
             <h4>Classes</h4>
@@ -478,7 +478,7 @@
 
       data.forEach(program => {
         list.innerHTML += `
-          <a href="#" class="owner-card glass-card lift-card">
+          <a href="program-detail.html?role=owner&program=${program.id}" class="owner-card glass-card lift-card">
             <div class="card-icon"><i data-lucide="layers-3"></i></div>
             <div>
               <h4>${safe(program.name, "Program")}</h4>
@@ -523,7 +523,7 @@
 
       dogs.forEach(dog => {
         list.innerHTML += `
-          <a href="#" class="owner-card glass-card lift-card">
+          <a href="dog-detail.html?role=owner&dog=${dog.id}" class="owner-card glass-card lift-card">
             <div class="card-icon"><i data-lucide="dog"></i></div>
             <div>
               <h4>${safe(dog.name, "Dog")}</h4>
