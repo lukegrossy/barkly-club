@@ -203,13 +203,12 @@
     }
 
     body[data-role="trainer"] .bottom-nav {
-max-width: 340px;
-}
+      max-width: 340px;
+    }
 
-body[data-role="trainer"] .bottom-nav-item {
-min-width: 96px;
-}
-
+    body[data-role="trainer"] .bottom-nav-item {
+      min-width: 96px;
+    }
   </style>
 </head>
 
@@ -267,6 +266,17 @@ min-width: 96px;
           <div class="detail-copy">
             <h4>Breed</h4>
             <p id="dogBreed">Loading...</p>
+          </div>
+        </div>
+
+        <div class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="users"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Family</h4>
+            <p id="familyName">Loading...</p>
           </div>
         </div>
 
@@ -488,7 +498,6 @@ min-width: 96px;
         `;
       }
 
-
       if (role === "parent") {
         nav.innerHTML = `
           <a href="dog-detail.html?role=parent&dog=${getDogId() || ""}" class="bottom-nav-item active">
@@ -589,6 +598,7 @@ min-width: 96px;
         withRoleAndDog("dog-homework.html", dogId);
 
       await loadDogProgress(dogId);
+      await loadDogFamily(dogId);
 
       lucide.createIcons();
     }
@@ -630,6 +640,36 @@ min-width: 96px;
         homework === 1
           ? "1 homework assignment recorded."
           : `${homework} homework assignments recorded.`;
+    }
+
+    async function loadDogFamily(dogId) {
+      if (!dogId) return;
+
+      const { data: link, error: linkError } = await db
+        .from("dog_owners")
+        .select("owner_id, relationship")
+        .eq("dog_id", dogId)
+        .limit(1)
+        .single();
+
+      if (linkError || !link) {
+        document.getElementById("familyName").textContent = "No family linked";
+        return;
+      }
+
+      const { data: owner, error: ownerError } = await db
+        .from("owners")
+        .select("full_name")
+        .eq("id", link.owner_id)
+        .single();
+
+      if (ownerError || !owner) {
+        document.getElementById("familyName").textContent = "Family linked";
+        return;
+      }
+
+      document.getElementById("familyName").textContent =
+        `${owner.full_name} · Primary Parent`;
     }
 
     loadDog();
