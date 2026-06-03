@@ -1289,5 +1289,7 @@ function renderTrainerDogs() {
   lucide.createIcons();
 }  
   loadCurrentSession();
-  lucide.createIcons();
+loadTrainerDogs();
+document.getElementById("trainerDogSearch").addEventListener("input", renderTrainerDogs);
+lucide.createIcons();
 </script>
