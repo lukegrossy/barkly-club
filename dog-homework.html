@@ -155,12 +155,68 @@
       line-height: 1.5;
     }
 
+    .assignment-panel {
+      display: none;
+      padding: 18px;
+      margin-bottom: var(--space-xl);
+    }
+
+    body[data-role="owner"] .assignment-panel,
+    body[data-role="trainer"] .assignment-panel {
+      display: block;
+    }
+
+    .assignment-panel h3 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .homework-title-input,
+    .homework-textarea {
+      width: 100%;
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.72);
+      padding: 14px;
+      font-family: var(--font-family);
+      font-size: var(--text-md);
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    .homework-title-input {
+      height: 52px;
+    }
+
+    .homework-textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .assign-homework-btn {
+      width: 100%;
+      height: 54px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      font-size: var(--text-md);
+      font-weight: var(--font-heavy);
+    }
+
     .bottom-nav {
       max-width: 540px;
     }
 
     .bottom-nav-item {
       min-width: 62px;
+    }
+
+    body[data-role="trainer"] .bottom-nav {
+      max-width: 340px;
+    }
+
+    body[data-role="trainer"] .bottom-nav-item {
+      min-width: 96px;
     }
   </style>
 </head>
@@ -192,6 +248,28 @@
     </p>
   </section>
 
+  <section class="assignment-panel glass-card lift-card" id="assignmentPanel">
+    <h3 class="section-title">Assign homework</h3>
+
+    <input
+      class="homework-title-input"
+      id="newHomeworkTitle"
+      type="text"
+      placeholder="Homework title"
+      value="Calm greeting practice"
+    />
+
+    <textarea
+      class="homework-textarea"
+      id="newHomeworkText"
+      placeholder="Enter homework instructions..."
+    ></textarea>
+
+    <button class="assign-homework-btn" id="assignHomeworkBtn" type="button">
+      Assign homework
+    </button>
+  </section>
+
   <h3 class="section-title">Assigned homework</h3>
 
   <div class="card-list" id="homeworkList">
@@ -219,6 +297,8 @@ const db = supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
+let currentDog = null;
+
 function getParams() {
   return new URLSearchParams(window.location.search);
 }
@@ -244,12 +324,12 @@ document.body.dataset.role = role;
 function renderRoleCopy() {
   if (role === "owner") {
     document.getElementById("pageSubtitle").textContent =
-      "Practice tasks and trainer guidance.";
+      "View homework and assign new practice tasks.";
   }
 
   if (role === "trainer") {
     document.getElementById("pageSubtitle").textContent =
-      "Review and support assigned practice tasks.";
+      "View homework and assign new practice tasks.";
   }
 
   if (role === "parent") {
@@ -292,14 +372,9 @@ function renderBottomNav() {
         Sessions
       </a>
 
-      <a href="dogs.html?role=trainer" class="bottom-nav-item active">
+      <a href="trainer-dashboard.html#dogs" class="bottom-nav-item active">
         <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
         Dogs
-      </a>
-
-      <a href="trainer-school.html" class="bottom-nav-item">
-        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
-        School
       </a>
     `;
   }
@@ -350,6 +425,66 @@ function setBackButton() {
   };
 }
 
+async function loadDogRecord() {
+  if (!dogId) return null;
+
+  const { data, error } = await db
+    .from("dogs")
+    .select("id, school_id, name")
+    .eq("id", dogId)
+    .single();
+
+  if (error) {
+    console.error("Dog lookup failed:", error);
+    return null;
+  }
+
+  currentDog = data;
+  return data;
+}
+
+async function assignHomework() {
+  if (!(role === "owner" || role === "trainer")) return;
+
+  if (!currentDog?.id || !currentDog?.school_id) {
+    alert("No dog selected.");
+    return;
+  }
+
+  const title =
+    document.getElementById("newHomeworkTitle")?.value?.trim() ||
+    "Trainer Homework";
+
+  const instructions =
+    document.getElementById("newHomeworkText")?.value?.trim();
+
+  if (!instructions) {
+    alert("Enter homework instructions.");
+    return;
+  }
+
+  const { error } = await db
+    .from("homework_assignments")
+    .insert({
+      school_id: currentDog.school_id,
+      dog_id: currentDog.id,
+      title,
+      instructions
+    });
+
+  if (error) {
+    console.error("Assign homework failed:", error);
+    alert("Could not assign homework.");
+    return;
+  }
+
+  alert("Homework assigned.");
+
+  document.getElementById("newHomeworkText").value = "";
+
+  await loadHomework();
+}
+
 async function loadHomework() {
   renderRoleCopy();
   renderBottomNav();
@@ -369,6 +504,8 @@ async function loadHomework() {
     return;
   }
 
+  await loadDogRecord();
+
   const { data, error } = await db
     .from("owner_dog_homework_view")
     .select("*")
@@ -379,7 +516,7 @@ async function loadHomework() {
     console.error(error);
 
     document.getElementById("dogName").textContent =
-      "Could not load homework";
+      currentDog?.name || "Could not load homework";
 
     document.getElementById("heroStats").textContent =
       "Please try again.";
@@ -390,7 +527,7 @@ async function loadHomework() {
 
   if (!data || data.length === 0) {
     document.getElementById("dogName").textContent =
-      "Dog";
+      currentDog?.name || "Dog";
 
     document.getElementById("heroStats").textContent =
       "No homework assigned yet.";
@@ -403,7 +540,7 @@ async function loadHomework() {
   }
 
   const dogName =
-    data[0]?.dog_name || "Dog";
+    data[0]?.dog_name || currentDog?.name || "Dog";
 
   document.getElementById("dogName").textContent =
     dogName;
@@ -447,6 +584,10 @@ async function loadHomework() {
 
   lucide.createIcons();
 }
+
+document
+  .getElementById("assignHomeworkBtn")
+  .addEventListener("click", assignHomework);
 
 loadHomework();
 lucide.createIcons();
