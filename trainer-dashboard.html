@@ -1109,7 +1109,8 @@
       card.addEventListener("click", event => {
         if (event.target.classList.contains("check-btn")) return;
 
-        selectedDogName = card.dataset.dogName || "Luna";
+        se;ectedDogId = card.dataset.dogId || null;
+        selectedDogName = card.dataset.dogName || "Dog";
         document.getElementById("dogSheetName").textContent = selectedDogName;
         document.getElementById("dogSheetTitle").textContent = selectedDogName;
         openSheet("dogSheet");
@@ -1271,20 +1272,6 @@ function renderTrainerDogs() {
       </div>
     </a>
   `).join("");
-
-  document.querySelectorAll(".dog-action").forEach(button => {
-    button.addEventListener("click", event => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const card = button.closest(".dog-card");
-
-      selectedDogId = card?.dataset.dogId || null;
-      selectedDogName = card?.dataset.dogName || "Dog";
-
-      openSheet(button.dataset.sheet);
-    });
-  });
 
   lucide.createIcons();
 }  
