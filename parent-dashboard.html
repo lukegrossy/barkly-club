@@ -446,30 +446,30 @@
 
   </main>
 
-  <nav class="bottom-nav">
+ <nav class="bottom-nav">
 
-    <a href="#" id="dogNavLink" class="bottom-nav-item active">
-      <div class="bottom-nav-icon">
-        <i data-lucide="dog"></i>
-      </div>
-      Dog
-    </a>
+  <a href="parent-dashboard.html" id="homeNavLink" class="bottom-nav-item active">
+    <div class="bottom-nav-icon">
+      <i data-lucide="home"></i>
+    </div>
+    Home
+  </a>
 
-    <a href="#" id="sessionsNavLink" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="calendar-check"></i>
-      </div>
-      Sessions
-    </a>
+  <a href="#" id="sessionsNavLink" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="calendar-check"></i>
+    </div>
+    Sessions
+  </a>
 
-    <a href="parent-school.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="building-2"></i>
-      </div>
-      School
-    </a>
+  <a href="#" id="schoolNavLink" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="building-2"></i>
+    </div>
+    School
+  </a>
 
-  </nav>
+</nav>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -544,46 +544,39 @@
       `;
     }
 
-    function renderJourney(sessionCount, badgeCount) {
-      const steps = [
-        { label: "Enrol", done: true },
-        { label: "Start", done: sessionCount > 0 },
-        { label: "Practise", done: sessionCount >= 2 },
-        { label: "Advance", done: badgeCount >= 3 },
-        { label: "Graduate", done: badgeCount >= 6 }
-      ];
+  function renderJourney(sessionCount) {
+  const totalSessions = 6;
+  const completed = Math.min(sessionCount || 0, totalSessions);
 
-      let currentIndex =
-        steps.findIndex(step => !step.done);
+  let steps = [];
 
-      if (currentIndex === -1) {
-        currentIndex = steps.length - 1;
-      }
+  for (let i = 1; i <= totalSessions; i++) {
+    const done = i <= completed;
+    const isCurrent = i === completed + 1 && completed < totalSessions;
 
-      document.getElementById("journeyTrack").innerHTML =
-        steps.map((step, index) => {
-          const state =
-            step.done
-              ? "done"
-              : index === currentIndex
-                ? "current"
-                : "";
+    steps.push({
+      number: i,
+      label:
+        i === 1
+          ? "Start"
+          : i === totalSessions
+            ? "Graduate"
+            : "",
+      done,
+      current: isCurrent
+    });
+  }
 
-          const content =
-            step.done
-              ? `<i data-lucide="check"></i>`
-              : index === currentIndex
-                ? `${index + 1}`
-                : "";
-
-          return `
-            <div class="journey-step ${state}">
-              <div class="journey-dot">${content}</div>
-              ${step.label}
-            </div>
-          `;
-        }).join("");
-    }
+  document.getElementById("journeyTrack").innerHTML =
+    steps.map(step => `
+      <div class="journey-step ${step.done ? "done" : step.current ? "current" : ""}">
+        <div class="journey-dot">
+          ${step.done ? `<i data-lucide="check"></i>` : step.current ? step.number : ""}
+        </div>
+        ${step.label}
+      </div>
+    `).join("");
+}
 
     async function loadParentDashboard() {
       const { data, error } = await db
@@ -644,25 +637,34 @@
       document.getElementById("homeworkText").textContent =
         homeworkText;
 
-      if (dogId) {
-        document.getElementById("dogProfileLink").href =
-          dogLink("dog-detail.html", dogId);
+     if (dogId) {
+  document.getElementById("dogProfileLink").href =
+    dogLink("dog-detail.html", dogId);
 
-        document.getElementById("dogNavLink").href =
-          dogLink("dog-detail.html", dogId);
+  document.getElementById("homeNavLink").href =
+    "parent-dashboard.html";
 
-        document.getElementById("sessionsNavLink").href =
-          dogLink("dog-sessions.html", dogId);
+  document.getElementById("sessionsNavLink").href =
+    dogLink("dog-sessions.html", dogId);
 
-        document.getElementById("badgesLink").href =
-          dogLink("dog-badges.html", dogId);
+  document.getElementById("schoolNavLink").href =
+    "#";
 
-        document.getElementById("latestUpdateLink").href =
-          dogLink("dog-notes.html", dogId);
+  document.getElementById("schoolNavLink").onclick = event => {
+    event.preventDefault();
+    alert("School page coming next.");
+  };
 
-        document.getElementById("homeworkLink").href =
-          dogLink("dog-homework.html", dogId);
-      }
+  document.getElementById("badgesLink").href =
+    dogLink("dog-badges.html", dogId);
+
+  document.getElementById("latestUpdateLink").href =
+    dogLink("dog-notes.html", dogId);
+
+  document.getElementById("homeworkLink").href =
+    dogLink("dog-homework.html", dogId);
+}
+
 
       const { count: sessionCount } = await db
         .from("session_attendance")
@@ -675,7 +677,7 @@
         .select("*", { count: "exact", head: true })
         .eq("dog_id", dogId);
 
-      renderJourney(sessionCount || 0, badgeCount || 0);
+      renderJourney(sessionCount || 0);
 
       const { data: badgeRows, error: badgeError } = await db
         .from("owner_dog_badges_view")
