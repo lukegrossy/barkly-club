@@ -135,16 +135,16 @@
     }
 
     .bottom-nav-item {
-      min-width: 62px;
+      min-width: 92px;
     }
 
-body[data-role="trainer"] .bottom-nav {
-  max-width: 340px;
-}
+    body[data-role="trainer"] .bottom-nav {
+      max-width: 340px;
+    }
 
-body[data-role="trainer"] .bottom-nav-item {
-  min-width: 96px;
-}
+    body[data-role="trainer"] .bottom-nav-item {
+      min-width: 96px;
+    }
   </style>
 </head>
 
@@ -269,64 +269,74 @@ function renderBottomNav() {
   }
 
   if (role === "trainer") {
-  nav.innerHTML = `
-    <a href="trainer-dashboard.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
-      Sessions
-    </a>
+    nav.innerHTML = `
+      <a href="trainer-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+        Sessions
+      </a>
 
-    <a href="dogs.html?role=trainer" class="bottom-nav-item active">
-      <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
-      Dogs
-    </a>
-  `;
-}
+      <a href="dogs.html?role=trainer" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
+        Dogs
+      </a>
+    `;
+  }
 
   if (role === "parent") {
-  nav.innerHTML = `
-    <a href="parent-dashboard.html" class="bottom-nav-item">
-      <div class="bottom-nav-icon"><i data-lucide="home"></i></div>
-      Home
-    </a>
+    nav.innerHTML = `
+      <a href="parent-dashboard.html" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="home"></i></div>
+        Home
+      </a>
 
-    <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item active">
-      <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
-      Sessions
-    </a>
+      <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+        Sessions
+      </a>
 
-    <a href="#" class="bottom-nav-item" onclick="alert('School page coming next.'); return false;">
-      <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
-      School
-    </a>
-  `;
-}
+      <a href="#" class="bottom-nav-item" onclick="alert('School page coming next.'); return false;">
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+        School
+      </a>
+    `;
+  }
 }
 
 function setBackButton() {
   document.getElementById("backBtn").onclick = () => {
     if (role === "parent") {
-  window.location = "parent-dashboard.html";
-  return;
-}
+      window.location = "parent-dashboard.html";
+      return;
+    }
 
-if (dogId) {
-  window.location = withRoleAndDog("dog-detail.html", dogId);
-  return;
-}
+    if (role === "owner") {
+      window.location = "dogs.html?role=owner";
+      return;
+    }
 
-if (role === "owner") {
-  window.location = "dogs.html?role=owner";
-  return;
-}
-
-if (role === "trainer") {
-  window.location = "dogs.html?role=trainer";
-  return;
-};l
+    if (role === "trainer") {
+      window.location = "dogs.html?role=trainer";
+      return;
     }
 
     window.location = "dogs.html";
   };
+}
+
+async function loadDogName(dogId) {
+  if (!dogId) return "Dog";
+
+  const { data, error } = await db
+    .from("dogs")
+    .select("name")
+    .eq("id", dogId)
+    .single();
+
+  if (error || !data) {
+    return "Dog";
+  }
+
+  return data.name || "Dog";
 }
 
 async function loadSessions() {
@@ -339,7 +349,7 @@ async function loadSessions() {
       "Dog not found";
 
     document.getElementById("heroStats").textContent =
-      "Open this page from a dog profile.";
+      "Open this page from the parent dashboard.";
 
     document.getElementById("sessionsList").innerHTML = `
       <div class="empty-card glass-card">
@@ -351,44 +361,44 @@ async function loadSessions() {
     return;
   }
 
-  const { data: dogRecord } = await db
-  .from("dogs")
-  .select("name")
-  .eq("id", dogId)
-  .single();
-  
+  const dogName = await loadDogName(dogId);
+
+  document.getElementById("dogName").textContent =
+    dogName;
+
   const { data, error } = await db
     .from("owner_dog_sessions_view")
     .select("*")
     .eq("dog_id", dogId)
     .order("checked_in_at", { ascending: false });
+
   console.log("DOG ID:", dogId);
-console.log("SESSIONS:", data);
-console.log("ERROR:", error);
+  console.log("SESSIONS:", data);
+  console.log("ERROR:", error);
 
   if (error) {
-    console.error(error);
-
-    document.getElementById("dogName").textContent =
-      "Could not load sessions";
+    console.error("Sessions failed:", error);
 
     document.getElementById("heroStats").textContent =
-      "Please try again.";
+      "Could not load sessions.";
+
+    document.getElementById("sessionsList").innerHTML = `
+      <div class="empty-card glass-card">
+        Sessions could not be loaded. Please try again.
+      </div>
+    `;
 
     lucide.createIcons();
     return;
   }
 
   if (!data || data.length === 0) {
-    document.getElementById("dogName").textContent =
-  dogRecord?.name || "Dog";
-
     document.getElementById("heroStats").textContent =
       "No sessions recorded yet.";
 
     document.getElementById("sessionsList").innerHTML = `
       <div class="empty-card glass-card">
-        No sessions recorded for this dog yet.
+        No sessions recorded for ${dogName} yet.
       </div>
     `;
 
@@ -397,14 +407,13 @@ console.log("ERROR:", error);
   }
 
   document.getElementById("dogName").textContent =
-    data[0].dog_name || "Dog";
+    data[0].dog_name || dogName;
 
   document.getElementById("heroStats").textContent =
     `${data.length} session${data.length === 1 ? "" : "s"} attended`;
 
   document.getElementById("sessionsList").innerHTML =
     data.map(session => `
-
       <div class="session-card glass-card lift-card">
 
         <div class="session-header">
@@ -421,13 +430,11 @@ console.log("ERROR:", error);
           Program: ${session.program_name || "Program"}<br>
           Checked in:
           ${session.checked_in_at
-            ? new Date(session.checked_in_at)
-                .toLocaleDateString("en-AU")
+            ? new Date(session.checked_in_at).toLocaleDateString("en-AU")
             : "-"}
         </div>
 
       </div>
-
     `).join("");
 
   lucide.createIcons();
