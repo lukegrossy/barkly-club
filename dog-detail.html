@@ -139,31 +139,6 @@
       margin-bottom: var(--space-xl);
     }
 
-    .badge-preview-strip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.badge-preview-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 10px;
-  border-radius: var(--radius-pill);
-  background: rgba(138,166,143,0.12);
-  color: var(--sage);
-  font-size: var(--text-xs);
-  font-weight: var(--font-heavy);
-}
-
-.badge-preview-chip svg {
-  width: 14px;
-  height: 14px;
-  stroke-width: 2.2;
-}
-
     .detail-card {
       display: flex;
       align-items: center;
@@ -215,6 +190,50 @@
       flex-shrink: 0;
     }
 
+    .badge-preview-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .badge-preview-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      font-size: var(--text-xs);
+      font-weight: var(--font-heavy);
+    }
+
+    .badge-preview-chip svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2.2;
+    }
+
+    .latest-update-card,
+    .homework-preview-card {
+      display: none;
+      margin-bottom: var(--space-md);
+    }
+
+    .latest-update-card.visible,
+    .homework-preview-card.visible {
+      display: flex;
+    }
+
+    .latest-update-card .detail-copy p,
+    .homework-preview-card .detail-copy p {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
     .trainer-note-card {
       display: none;
     }
@@ -224,39 +243,6 @@
       display: flex;
     }
 
-    .latest-update-card {
-      display: none;
-      margin-bottom: var(--space-xl);
-    }
-
-    .latest-update-card.visible {
-      display: flex;
-    }
-
-    .latest-update-card .detail-copy p {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-.homework-preview-card {
-  display: none;
-  margin-bottom: var(--space-xl);
-}
-
-.homework-preview-card.visible {
-  display: flex;
-}
-
-.homework-preview-card .detail-copy p {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-    
     .bottom-nav {
       max-width: 540px;
     }
@@ -320,15 +306,79 @@
       </div>
 
       <div class="detail-copy">
-  <h4>Badges</h4>
-  <p id="badgeText">Loading badges.</p>
-  <div class="badge-preview-strip" id="badgePreviewStrip"></div>
-</div>
+        <h4>Badges</h4>
+        <p id="badgeText">Loading badges.</p>
+        <div class="badge-preview-strip" id="badgePreviewStrip"></div>
+      </div>
+
+      <div class="row-status" id="badgesActionText">View</div>
+    </a>
+
+    <a href="#" id="latestUpdateLink" class="detail-card glass-card lift-card latest-update-card">
+      <div class="card-icon">
+        <i data-lucide="message-square-text"></i>
+      </div>
+
+      <div class="detail-copy">
+        <h4>Latest update</h4>
+        <p id="latestUpdateText">Loading latest update.</p>
+      </div>
+
+      <div class="row-status">View</div>
+    </a>
+
+    <a href="#" id="homeworkPreviewLink" class="detail-card glass-card lift-card homework-preview-card">
+      <div class="card-icon">
+        <i data-lucide="clipboard-check"></i>
+      </div>
+
+      <div class="detail-copy">
+        <h4>This week’s homework</h4>
+        <p id="homeworkPreviewText">Loading homework.</p>
+      </div>
+
+      <div class="row-status">View</div>
     </a>
 
     <section>
       <div class="section-head">
-        <h3>Profile</h3>
+        <h3>Training</h3>
+      </div>
+
+      <div class="card-list">
+
+        <a href="#" id="attendanceLink" class="detail-card glass-card lift-card">
+          <div class="card-icon">
+            <i data-lucide="check-circle-2"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Attendance</h4>
+            <p id="attendanceText">Loading attendance history.</p>
+          </div>
+
+          <div class="row-status">View</div>
+        </a>
+
+        <a href="#" id="trainerNoteLink" class="detail-card glass-card lift-card trainer-note-card">
+          <div class="card-icon">
+            <i data-lucide="message-square-text"></i>
+          </div>
+
+          <div class="detail-copy">
+            <h4>Trainer notes</h4>
+            <p>Add a short progress update.</p>
+          </div>
+
+          <div class="row-status">Add</div>
+        </a>
+
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h3>Details</h3>
       </div>
 
       <div class="card-list">
@@ -380,70 +430,6 @@
       </div>
     </section>
 
-    <a href="#" id="latestUpdateLink" class="detail-card glass-card lift-card latest-update-card">
-      <div class="card-icon">
-        <i data-lucide="message-square-text"></i>
-      </div>
-
-      <div class="detail-copy">
-        <h4>Latest update</h4>
-        <p id="latestUpdateText">Loading latest update.</p>
-      </div>
-
-      <div class="row-status">View</div>
-    </a>
-
-    
-    <a href="#" id="homeworkPreviewLink" class="detail-card glass-card lift-card homework-preview-card">
-  <div class="card-icon">
-    <i data-lucide="clipboard-check"></i>
-  </div>
-
-  <div class="detail-copy">
-    <h4>This week’s homework</h4>
-    <p id="homeworkPreviewText">Loading homework.</p>
-  </div>
-
-  <div class="row-status">View</div>
-</a>
-
-    
-    <section>
-      <div class="section-head">
-        <h3>Training</h3>
-      </div>
-
-      <div class="card-list">
-
-        <a href="#" id="attendanceLink" class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="check-circle-2"></i>
-          </div>
-
-          <div class="detail-copy">
-            <h4>Attendance</h4>
-            <p id="attendanceText">Loading attendance history.</p>
-          </div>
-
-          <div class="row-status">View</div>
-        </a>
-
-        <a href="#" id="trainerNoteLink" class="detail-card glass-card lift-card trainer-note-card">
-          <div class="card-icon">
-            <i data-lucide="message-square-text"></i>
-          </div>
-
-          <div class="detail-copy">
-            <h4>Trainer notes</h4>
-            <p>Add a short progress update.</p>
-          </div>
-
-          <div class="row-status">Add</div>
-        </a>
-
-      </div>
-    </section>
-
   </main>
 
   <nav class="bottom-nav" id="bottomNav"></nav>
@@ -481,7 +467,6 @@
     }
 
     const role = getRole();
-
     document.body.dataset.role = role;
 
     function renderRoleCopy() {
@@ -565,7 +550,7 @@
       }
     }
 
-    function setBackButton(dogId) {
+    function setBackButton() {
       document.getElementById("backBtn").onclick = () => {
         if (role === "owner") {
           window.location = "dogs.html?role=owner";
@@ -591,10 +576,9 @@
 
       renderRoleCopy();
       renderBottomNav();
-      setBackButton(dogId);
+      setBackButton();
 
       if (!dogId) {
-        console.error("No dog id supplied in URL.");
         document.getElementById("dogName").textContent = "Dog not found";
         document.getElementById("dogSub").textContent =
           "Open this page from the Dogs list.";
@@ -621,9 +605,9 @@
         safe(data.dog_name, "Dog");
 
       document.getElementById("dogSub").textContent =
-  role === "parent"
-    ? safe(data.program_name, "Training journey")
-    : "Currently enrolled";
+        role === "parent"
+          ? safe(data.program_name, "Training journey")
+          : "Currently enrolled";
 
       document.getElementById("dogStatus").textContent =
         safe(data.status, "active");
@@ -669,67 +653,48 @@
         .select("*", { count: "exact", head: true })
         .eq("dog_id", dogId);
 
-      const { count: homeworkCount } = await db
-        .from("homework_assignments")
-        .select("*", { count: "exact", head: true })
-        .eq("dog_id", dogId);
-
       const attendance = attendanceCount || 0;
       const badges = badgeCount || 0;
-      const homework = homeworkCount || 0;
 
       document.getElementById("attendanceText").textContent =
         attendance === 1
           ? "1 session attended."
           : `${attendance} sessions attended.`;
 
-      if (role === "owner" || role === "trainer") {
-        document.getElementById("badgeText").textContent =
-          badges === 1
-            ? "1 badge earned · view and award badges."
-            : `${badges} badges earned · view and award badges.`;
-
-      } else {
-        document.getElementById("badgeText").textContent =
-          badges === 1
-            ? "1 badge earned."
-            : `${badges} badges earned.`;
-      }
+      document.getElementById("badgeText").textContent =
+        badges === 1
+          ? "1 badge earned."
+          : `${badges} badges earned.`;
     }
 
     async function loadBadgePreview(dogId) {
-  if (!dogId) return;
+      if (!dogId) return;
 
-  const strip = document.getElementById("badgePreviewStrip");
-  if (!strip) return;
+      const strip = document.getElementById("badgePreviewStrip");
+      if (!strip) return;
 
-  const { data, error } = await db
-    .from("owner_dog_badges_view")
-    .select("*")
-    .eq("dog_id", dogId)
-    .eq("earned", true)
-    .limit(3);
+      const { data, error } = await db
+        .from("owner_dog_badges_view")
+        .select("*")
+        .eq("dog_id", dogId)
+        .eq("earned", true)
+        .limit(3);
 
-  if (error) {
-    console.error("Badge preview failed:", error);
-    strip.innerHTML = "";
-    return;
-  }
+      if (error || !data || data.length === 0) {
+        if (error) console.error("Badge preview failed:", error);
+        strip.innerHTML = "";
+        return;
+      }
 
-  if (!data || data.length === 0) {
-    strip.innerHTML = "";
-    return;
-  }
+      strip.innerHTML = data.map(badge => `
+        <span class="badge-preview-chip">
+          <i data-lucide="${badge.icon || "badge-check"}"></i>
+          ${badge.badge_name || "Badge"}
+        </span>
+      `).join("");
 
-  strip.innerHTML = data.map(badge => `
-    <span class="badge-preview-chip">
-      <i data-lucide="${badge.icon || "badge-check"}"></i>
-      ${badge.badge_name || "Badge"}
-    </span>
-  `).join("");
-
-  lucide.createIcons();
-}
+      lucide.createIcons();
+    }
 
     async function loadDogFamily(dogId) {
       if (!dogId) return;
@@ -742,7 +707,8 @@
         .single();
 
       if (linkError || !link) {
-        document.getElementById("familyName").textContent = "No family linked";
+        document.getElementById("familyName").textContent =
+          "No family linked";
         return;
       }
 
@@ -753,7 +719,8 @@
         .single();
 
       if (ownerError || !owner) {
-        document.getElementById("familyName").textContent = "Family linked";
+        document.getElementById("familyName").textContent =
+          "Family linked";
         return;
       }
 
@@ -762,54 +729,55 @@
     }
 
     async function loadLatestUpdate(dogId) {
-  if (!dogId) return;
+      if (!dogId) return;
 
-  const card = document.getElementById("latestUpdateLink");
-  const text = document.getElementById("latestUpdateText");
+      const card = document.getElementById("latestUpdateLink");
+      const text = document.getElementById("latestUpdateText");
 
-  const { data, error } = await db
-    .from("parent_updates")
-    .select("update_text, created_at")
-    .eq("dog_id", dogId)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .single();
+      if (!card || !text) return;
 
-  if (error || !data) {
-    return;
-  }
+      const { data, error } = await db
+        .from("parent_updates")
+        .select("*")
+        .eq("dog_id", dogId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
 
-  text.textContent = data.update_text || "View the latest trainer update.";
-  card.href = withRoleAndDog("dog-notes.html", dogId);
-  card.classList.add("visible");
-}
+      if (error || !data) return;
 
- async function loadHomeworkPreview(dogId) {
-  if (!dogId) return;
+      text.textContent =
+        data.update_text || "View the latest trainer update.";
 
-  const card = document.getElementById("homeworkPreviewLink");
-  const text = document.getElementById("homeworkPreviewText");
+      card.href = withRoleAndDog("dog-notes.html", dogId);
+      card.classList.add("visible");
+    }
 
-  const { data, error } = await db
-    .from("homework_assignments")
-    .select("*")
-    .eq("dog_id", dogId)
-    .order("assigned_at", { ascending: false })
-    .limit(1)
-    .single();
+    async function loadHomeworkPreview(dogId) {
+      if (!dogId) return;
 
-  if (error || !data) {
-    return;
-  }
+      const card = document.getElementById("homeworkPreviewLink");
+      const text = document.getElementById("homeworkPreviewText");
 
-  text.textContent =
-    data.instructions || data.title || "View homework.";
+      if (!card || !text) return;
 
-  card.href = withRoleAndDog("dog-homework.html", dogId);
-  card.classList.add("visible");
-}
-   
-    
+      const { data, error } = await db
+        .from("homework_assignments")
+        .select("*")
+        .eq("dog_id", dogId)
+        .order("assigned_at", { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error || !data) return;
+
+      text.textContent =
+        data.instructions || data.title || "View homework.";
+
+      card.href = withRoleAndDog("dog-homework.html", dogId);
+      card.classList.add("visible");
+    }
+
     loadDog();
     lucide.createIcons();
   </script>
