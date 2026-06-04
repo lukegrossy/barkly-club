@@ -792,9 +792,9 @@
 
   const { data, error } = await db
     .from("homework_assignments")
-    .select("title, instructions, created_at")
+    .select("*")
     .eq("dog_id", dogId)
-    .order("created_at", { ascending: false })
+    .order("assigned_at", { ascending: false })
     .limit(1)
     .single();
 
