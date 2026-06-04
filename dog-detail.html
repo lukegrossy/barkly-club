@@ -139,6 +139,31 @@
       margin-bottom: var(--space-xl);
     }
 
+    .badge-preview-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.badge-preview-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(138,166,143,0.12);
+  color: var(--sage);
+  font-size: var(--text-xs);
+  font-weight: var(--font-heavy);
+}
+
+.badge-preview-chip svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.2;
+}
+
     .detail-card {
       display: flex;
       align-items: center;
@@ -278,11 +303,10 @@
       </div>
 
       <div class="detail-copy">
-        <h4>Badges</h4>
-        <p id="badgeText">Loading badges.</p>
-      </div>
-
-      <div class="row-status" id="badgesActionText">View</div>
+  <h4>Badges</h4>
+  <p id="badgeText">Loading badges.</p>
+  <div class="badge-preview-strip" id="badgePreviewStrip"></div>
+</div>
     </a>
 
     <section>
@@ -612,6 +636,7 @@
       }
 
       await loadDogProgress(dogId);
+      await loadBadgePreview(dogId);
       await loadDogFamily(dogId);
       await loadLatestUpdate(dogId);
 
@@ -668,6 +693,35 @@
             : `${homework} homework assignments recorded.`;
       }
     }
+
+    async function loadBadgePreview(dogId) {
+  if (!dogId) return;
+
+  const strip = document.getElementById("badgePreviewStrip");
+  if (!strip) return;
+
+  const { data, error } = await db
+    .from("owner_dog_badges_view")
+    .select("badge_name, icon, earned, awarded_at")
+    .eq("dog_id", dogId)
+    .eq("earned", true)
+    .order("awarded_at", { ascending: false })
+    .limit(3);
+
+  if (error || !data || data.length === 0) {
+    strip.innerHTML = "";
+    return;
+  }
+
+  strip.innerHTML = data.map(badge => `
+    <span class="badge-preview-chip">
+      <i data-lucide="${badge.icon || "badge-check"}"></i>
+      ${badge.badge_name}
+    </span>
+  `).join("");
+
+  lucide.createIcons();
+}
 
     async function loadDogFamily(dogId) {
       if (!dogId) return;
