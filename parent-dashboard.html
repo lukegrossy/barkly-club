@@ -210,7 +210,7 @@
 
     .journey-track {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 6px;
       position: relative;
     }
@@ -623,7 +623,7 @@
         dogName;
 
       document.getElementById("dogProfileMeta").innerHTML =
-        `${breed || "Dog"}<br>${programName}${className ? " · " + className : ""}`;
+        `${breed || "Dog"}<br>${className || programName} `;
 
       document.getElementById("latestUpdateTitle").textContent =
         updateTitle;
@@ -672,10 +672,6 @@
         .eq("dog_id", dogId)
         .eq("status", "present");
 
-      const { count: badgeCount } = await db
-        .from("dog_badges")
-        .select("*", { count: "exact", head: true })
-        .eq("dog_id", dogId);
 
       renderJourney(sessionCount || 0);
 
