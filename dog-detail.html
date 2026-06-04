@@ -578,7 +578,9 @@
         safe(data.dog_name, "Dog");
 
       document.getElementById("dogSub").textContent =
-        role === "parent" ? "Training journey" : "Currently enrolled";
+  role === "parent"
+    ? safe(data.program_name, "Training journey")
+    : "Currently enrolled";
 
       document.getElementById("dogStatus").textContent =
         safe(data.status, "active");
