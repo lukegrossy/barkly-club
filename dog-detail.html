@@ -72,7 +72,7 @@
 
     .hero {
       padding: 24px;
-      margin-bottom: var(--space-xl);
+      margin-bottom: var(--space-md);
       color: white;
     }
 
@@ -132,6 +132,10 @@
       display: flex;
       flex-direction: column;
       gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .featured-card {
       margin-bottom: var(--space-xl);
     }
 
@@ -196,17 +200,25 @@
     }
 
     .latest-update-card {
-  display: none;
-}
+      display: none;
+      margin-bottom: var(--space-xl);
+    }
 
-.latest-update-card.visible {
-  display: flex;
-}
-    
+    .latest-update-card.visible {
+      display: flex;
+    }
+
+    .latest-update-card .detail-copy p {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
     .bottom-nav {
       max-width: 540px;
     }
-    
+
     .bottom-nav-item {
       min-width: 62px;
     }
@@ -260,19 +272,19 @@
       </p>
     </section>
 
-<a href="#" id="latestUpdateLink" class="detail-card glass-card lift-card latest-update-card">
-  <div class="card-icon">
-    <i data-lucide="message-square-text"></i>
-  </div>
+    <a href="#" id="badgesLink" class="detail-card glass-card lift-card featured-card">
+      <div class="card-icon">
+        <i data-lucide="badge-check"></i>
+      </div>
 
-  <div class="detail-copy">
-    <h4>Latest trainer update</h4>
-    <p id="latestUpdateText">Loading latest update.</p>
-  </div>
+      <div class="detail-copy">
+        <h4>Badges</h4>
+        <p id="badgeText">Loading badges.</p>
+      </div>
 
-  <div class="row-status">View</div>
-</a>
-    
+      <div class="row-status" id="badgesActionText">View</div>
+    </a>
+
     <section>
       <div class="section-head">
         <h3>Profile</h3>
@@ -327,9 +339,22 @@
       </div>
     </section>
 
+    <a href="#" id="latestUpdateLink" class="detail-card glass-card lift-card latest-update-card">
+      <div class="card-icon">
+        <i data-lucide="message-square-text"></i>
+      </div>
+
+      <div class="detail-copy">
+        <h4>Latest update</h4>
+        <p id="latestUpdateText">Loading latest update.</p>
+      </div>
+
+      <div class="row-status">View</div>
+    </a>
+
     <section>
       <div class="section-head">
-        <h3>Progress</h3>
+        <h3>Training</h3>
       </div>
 
       <div class="card-list">
@@ -345,19 +370,6 @@
           </div>
 
           <div class="row-status">View</div>
-        </a>
-
-        <a href="#" id="badgesLink" class="detail-card glass-card lift-card">
-          <div class="card-icon">
-            <i data-lucide="badge-check"></i>
-          </div>
-
-          <div class="detail-copy">
-            <h4>Badges</h4>
-            <p id="badgeText">Loading badges.</p>
-          </div>
-
-          <div class="row-status" id="badgesActionText">View</div>
         </a>
 
         <a href="#" id="homeworkLink" class="detail-card glass-card lift-card">
