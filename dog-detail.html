@@ -195,10 +195,18 @@
       display: flex;
     }
 
+    .latest-update-card {
+  display: none;
+}
+
+.latest-update-card.visible {
+  display: flex;
+}
+    
     .bottom-nav {
       max-width: 540px;
     }
-
+    
     .bottom-nav-item {
       min-width: 62px;
     }
@@ -252,6 +260,19 @@
       </p>
     </section>
 
+<a href="#" id="latestUpdateLink" class="detail-card glass-card lift-card latest-update-card">
+  <div class="card-icon">
+    <i data-lucide="message-square-text"></i>
+  </div>
+
+  <div class="detail-copy">
+    <h4>Latest trainer update</h4>
+    <p id="latestUpdateText">Loading latest update.</p>
+  </div>
+
+  <div class="row-status">View</div>
+</a>
+    
     <section>
       <div class="section-head">
         <h3>Profile</h3>
@@ -578,6 +599,7 @@
 
       await loadDogProgress(dogId);
       await loadDogFamily(dogId);
+      await loadLatestUpdate(dogId);
 
       lucide.createIcons();
     }
@@ -663,6 +685,29 @@
         `${owner.full_name} · Primary Parent`;
     }
 
+    async function loadLatestUpdate(dogId) {
+  if (!dogId) return;
+
+  const card = document.getElementById("latestUpdateLink");
+  const text = document.getElementById("latestUpdateText");
+
+  const { data, error } = await db
+    .from("parent_updates")
+    .select("update_text, created_at")
+    .eq("dog_id", dogId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  if (error || !data) {
+    return;
+  }
+
+  text.textContent = data.update_text || "View the latest trainer update.";
+  card.href = withRoleAndDog("dog-notes.html", dogId);
+  card.classList.add("visible");
+}
+    
     loadDog();
     lucide.createIcons();
   </script>
