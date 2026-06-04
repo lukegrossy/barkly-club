@@ -646,11 +646,6 @@
       document.getElementById("trainerNoteLink").href =
         withRoleAndDog("dog-notes.html", dogId);
 
-      if (role === "owner" || role === "trainer") {
-        document.getElementById("badgesActionText").textContent = "Open";
-        document.getElementById("homeworkActionText").textContent = "Open";
-      }
-
       await loadDogProgress(dogId);
       await loadBadgePreview(dogId);
       await loadDogFamily(dogId);
