@@ -283,45 +283,46 @@ function renderBottomNav() {
 }
 
   if (role === "parent") {
-    nav.innerHTML = `
-      <a href="parent-dashboard.html" class="bottom-nav-item">
-        <div class="bottom-nav-icon"><i data-lucide="home"></i></div>
-        Home
-      </a>
+  nav.innerHTML = `
+    <a href="parent-dashboard.html" class="bottom-nav-item">
+      <div class="bottom-nav-icon"><i data-lucide="home"></i></div>
+      Home
+    </a>
 
-      <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item active">
-        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
-        Sessions
-      </a>
+    <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item active">
+      <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+      Sessions
+    </a>
 
-      <a href="parent-school.html" class="bottom-nav-item">
-        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
-        School
-      </a>
-    `;
-  }
+    <a href="#" class="bottom-nav-item" onclick="alert('School page coming next.'); return false;">
+      <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+      School
+    </a>
+  `;
+}
 }
 
 function setBackButton() {
   document.getElementById("backBtn").onclick = () => {
-    if (dogId) {
-      window.location = withRoleAndDog("dog-detail.html", dogId);
-      return;
-    }
-
-    if (role === "owner") {
-      window.location = "dogs.html?role=owner";
-      return;
-    }
-
-    if (role === "trainer") {
-      window.location = "dogs.html?role=trainer";
-      return;
-    }
-
     if (role === "parent") {
-      window.location = "parent-dashboard.html";
-      return;
+  window.location = "parent-dashboard.html";
+  return;
+}
+
+if (dogId) {
+  window.location = withRoleAndDog("dog-detail.html", dogId);
+  return;
+}
+
+if (role === "owner") {
+  window.location = "dogs.html?role=owner";
+  return;
+}
+
+if (role === "trainer") {
+  window.location = "dogs.html?role=trainer";
+  return;
+};l
     }
 
     window.location = "dogs.html";
@@ -350,11 +351,20 @@ async function loadSessions() {
     return;
   }
 
+  const { data: dogRecord } = await db
+  .from("dogs")
+  .select("name")
+  .eq("id", dogId)
+  .single();
+  
   const { data, error } = await db
     .from("owner_dog_sessions_view")
     .select("*")
     .eq("dog_id", dogId)
     .order("checked_in_at", { ascending: false });
+  console.log("DOG ID:", dogId);
+console.log("SESSIONS:", data);
+console.log("ERROR:", error);
 
   if (error) {
     console.error(error);
@@ -371,7 +381,7 @@ async function loadSessions() {
 
   if (!data || data.length === 0) {
     document.getElementById("dogName").textContent =
-      "Dog";
+  dogRecord?.name || "Dog";
 
     document.getElementById("heroStats").textContent =
       "No sessions recorded yet.";
