@@ -350,7 +350,7 @@
       <i data-lucide="chevron-down"></i>
     </button>
 
-    <a href="#" id="dogProfileLink" class="dog-profile glass-card lift-card">
+    <div class="dog-profile glass-card">
       <div class="dog-avatar">
         <i data-lucide="dog"></i>
       </div>
@@ -360,7 +360,7 @@
       <p id="dogProfileMeta">
         Loading profile.
       </p>
-    </a>
+    </div>
 
     <section>
       <div class="section-head">
@@ -638,9 +638,7 @@
         homeworkText;
 
      if (dogId) {
-  document.getElementById("dogProfileLink").href =
-    dogLink("dog-detail.html", dogId);
-
+  
   document.getElementById("homeNavLink").href =
     "parent-dashboard.html";
 
