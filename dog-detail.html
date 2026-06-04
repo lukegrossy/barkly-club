@@ -240,6 +240,23 @@
       overflow: hidden;
     }
 
+.homework-preview-card {
+  display: none;
+  margin-bottom: var(--space-xl);
+}
+
+.homework-preview-card.visible {
+  display: flex;
+}
+
+.homework-preview-card .detail-copy p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+    
     .bottom-nav {
       max-width: 540px;
     }
@@ -376,6 +393,20 @@
       <div class="row-status">View</div>
     </a>
 
+    <a href="#" id="homeworkPreviewLink" class="detail-card glass-card lift-card homework-preview-card">
+  <div class="card-icon">
+    <i data-lucide="clipboard-check"></i>
+  </div>
+
+  <div class="detail-copy">
+    <h4>This week’s homework</h4>
+    <p id="homeworkPreviewText">Loading homework.</p>
+  </div>
+
+  <div class="row-status">View</div>
+</a>
+
+    
     <section>
       <div class="section-head">
         <h3>Training</h3>
@@ -639,6 +670,7 @@
       await loadBadgePreview(dogId);
       await loadDogFamily(dogId);
       await loadLatestUpdate(dogId);
+      await loadHomeworkPreview(dogId);
 
       lucide.createIcons();
     }
@@ -780,6 +812,32 @@
   card.href = withRoleAndDog("dog-notes.html", dogId);
   card.classList.add("visible");
 }
+
+ async function loadHomeworkPreview(dogId) {
+  if (!dogId) return;
+
+  const card = document.getElementById("homeworkPreviewLink");
+  const text = document.getElementById("homeworkPreviewText");
+
+  const { data, error } = await db
+    .from("homework_assignments")
+    .select("title, instructions, created_at")
+    .eq("dog_id", dogId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  if (error || !data) {
+    return;
+  }
+
+  text.textContent =
+    data.instructions || data.title || "View homework.";
+
+  card.href = withRoleAndDog("dog-homework.html", dogId);
+  card.classList.add("visible");
+}
+   
     
     loadDog();
     lucide.createIcons();
