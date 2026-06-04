@@ -702,13 +702,18 @@
 
   const { data, error } = await db
     .from("owner_dog_badges_view")
-    .select("badge_name, icon, earned, awarded_at")
+    .select("*")
     .eq("dog_id", dogId)
     .eq("earned", true)
-    .order("awarded_at", { ascending: false })
     .limit(3);
 
-  if (error || !data || data.length === 0) {
+  if (error) {
+    console.error("Badge preview failed:", error);
+    strip.innerHTML = "";
+    return;
+  }
+
+  if (!data || data.length === 0) {
     strip.innerHTML = "";
     return;
   }
@@ -716,7 +721,7 @@
   strip.innerHTML = data.map(badge => `
     <span class="badge-preview-chip">
       <i data-lucide="${badge.icon || "badge-check"}"></i>
-      ${badge.badge_name}
+      ${badge.badge_name || "Badge"}
     </span>
   `).join("");
 
