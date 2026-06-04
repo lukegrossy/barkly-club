@@ -643,9 +643,6 @@
       document.getElementById("badgesLink").href =
         withRoleAndDog("dog-badges.html", dogId);
 
-      document.getElementById("homeworkLink").href =
-        withRoleAndDog("dog-homework.html", dogId);
-
       document.getElementById("trainerNoteLink").href =
         withRoleAndDog("dog-notes.html", dogId);
 
@@ -697,20 +694,11 @@
             ? "1 badge earned · view and award badges."
             : `${badges} badges earned · view and award badges.`;
 
-        document.getElementById("homeworkText").textContent =
-          homework === 1
-            ? "1 homework assignment · view and assign homework."
-            : `${homework} homework assignments · view and assign homework.`;
       } else {
         document.getElementById("badgeText").textContent =
           badges === 1
             ? "1 badge earned."
             : `${badges} badges earned.`;
-
-        document.getElementById("homeworkText").textContent =
-          homework === 1
-            ? "1 homework assignment recorded."
-            : `${homework} homework assignments recorded.`;
       }
     }
 
