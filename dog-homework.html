@@ -401,9 +401,10 @@ function renderBottomNav() {
 
 function setBackButton() {
   document.getElementById("backBtn").onclick = () => {
-    if (dogId) {
-      window.location = withRoleAndDog("dog-detail.html", dogId);
-      return;
+    if (role === "parent") {
+  window.location = "parent-dashboard.html";
+  return;
+}
     }
 
     if (role === "owner") {
