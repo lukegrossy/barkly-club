@@ -98,27 +98,9 @@
       text-transform: capitalize;
     }
 
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: var(--space-sm);
-    }
-
-    .section-head h3 {
+    .section-title {
       font-size: var(--text-xl);
-      letter-spacing: var(--tracking-tight);
-    }
-
-    .section-head a,
-    .section-head button {
-      border: none;
-      background: none;
-      color: var(--sage);
-      font-size: var(--text-sm);
-      font-weight: var(--font-heavy);
-      text-decoration: none;
-      padding: 0;
+      margin-bottom: var(--space-sm);
     }
 
     .card-list {
@@ -128,7 +110,7 @@
       margin-bottom: var(--space-xl);
     }
 
-    .owner-card {
+    .hub-card {
       display: flex;
       align-items: center;
       gap: 14px;
@@ -137,9 +119,9 @@
       color: inherit;
     }
 
-    .owner-card-icon {
-      width: 48px;
-      height: 48px;
+    .hub-icon {
+      width: 52px;
+      height: 52px;
       border-radius: var(--radius-md);
       background: rgba(138,166,143,0.12);
       color: var(--sage);
@@ -148,18 +130,23 @@
       flex-shrink: 0;
     }
 
-    .owner-card-icon svg {
-      width: 22px;
-      height: 22px;
+    .hub-icon svg {
+      width: 24px;
+      height: 24px;
       stroke-width: 2.2;
     }
 
-    .owner-card h4 {
+    .hub-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hub-copy h4 {
       font-size: 16px;
       margin-bottom: 4px;
     }
 
-    .owner-card p {
+    .hub-copy p {
       font-size: var(--text-sm);
       color: var(--text-secondary);
       line-height: 1.4;
@@ -172,13 +159,6 @@
       font-weight: var(--font-heavy);
       white-space: nowrap;
       flex-shrink: 0;
-    }
-
-    .empty-card {
-      padding: 16px;
-      color: var(--text-secondary);
-      font-size: var(--text-sm);
-      line-height: 1.45;
     }
 
     .bottom-nav {
@@ -204,7 +184,7 @@
   <h1 class="page-title" id="pageTitle">Program</h1>
 
   <p class="page-subtitle">
-    Configure classes, milestones, badges and homework for this program.
+    Configure how this training program works.
   </p>
 
   <section class="hero hero-card lift-card">
@@ -214,53 +194,80 @@
     <div class="hero-meta">
       <span class="hero-pill" id="programStatus">Active</span>
       <span class="hero-pill" id="programSessions">6 sessions</span>
-      <span class="hero-pill">Configurable pathway</span>
+      <span class="hero-pill">School configurable</span>
     </div>
   </section>
 
-  <section>
-    <div class="section-head">
-      <h3>Classes</h3>
-      <button type="button" onclick="alert('New class coming soon.')">+ Add</button>
-    </div>
+  <h3 class="section-title">Program setup</h3>
 
-    <div class="card-list" id="classesList">
-      <div class="empty-card glass-card">Loading classes...</div>
-    </div>
-  </section>
+  <div class="card-list">
 
-  <section>
-    <div class="section-head">
-      <h3>Progression pathway</h3>
-      <button type="button" onclick="alert('Edit pathway coming soon.')">Edit</button>
-    </div>
+    <a href="#" id="classesLink" class="hub-card glass-card lift-card">
+      <div class="hub-icon">
+        <i data-lucide="calendar-check"></i>
+      </div>
 
-    <div class="card-list" id="stagesList">
-      <div class="empty-card glass-card">Loading stages...</div>
-    </div>
-  </section>
+      <div class="hub-copy">
+        <h4>Classes</h4>
+        <p id="classesMeta">Manage class groups, days and trainers.</p>
+      </div>
 
-  <section>
-    <div class="section-head">
-      <h3>Badge templates</h3>
-      <button type="button" onclick="alert('New badge template coming soon.')">+ Add</button>
-    </div>
+      <div class="row-status">Open</div>
+    </a>
 
-    <div class="card-list" id="badgesList">
-      <div class="empty-card glass-card">Loading badge templates...</div>
-    </div>
-  </section>
+    <a href="#" id="stagesLink" class="hub-card glass-card lift-card">
+      <div class="hub-icon">
+        <i data-lucide="route"></i>
+      </div>
 
-  <section>
-    <div class="section-head">
-      <h3>Homework templates</h3>
-      <button type="button" onclick="alert('New homework template coming soon.')">+ Add</button>
-    </div>
+      <div class="hub-copy">
+        <h4>Progression Pathway</h4>
+        <p id="stagesMeta">Configure stages, sessions and graduation steps.</p>
+      </div>
 
-    <div class="card-list" id="homeworkList">
-      <div class="empty-card glass-card">Loading homework templates...</div>
-    </div>
-  </section>
+      <div class="row-status">Open</div>
+    </a>
+
+    <a href="#" id="badgesLink" class="hub-card glass-card lift-card">
+      <div class="hub-icon">
+        <i data-lucide="badge-check"></i>
+      </div>
+
+      <div class="hub-copy">
+        <h4>Badge Templates</h4>
+        <p id="badgesMeta">Create achievements trainers can award.</p>
+      </div>
+
+      <div class="row-status">Open</div>
+    </a>
+
+    <a href="#" id="homeworkLink" class="hub-card glass-card lift-card">
+      <div class="hub-icon">
+        <i data-lucide="clipboard-check"></i>
+      </div>
+
+      <div class="hub-copy">
+        <h4>Homework Templates</h4>
+        <p id="homeworkMeta">Reusable practice tasks for trainers.</p>
+      </div>
+
+      <div class="row-status">Open</div>
+    </a>
+
+    <a href="#" id="reportingLink" class="hub-card glass-card lift-card">
+      <div class="hub-icon">
+        <i data-lucide="bar-chart-3"></i>
+      </div>
+
+      <div class="hub-copy">
+        <h4>Reporting</h4>
+        <p>Attendance, progress and program outcomes.</p>
+      </div>
+
+      <div class="row-status">Soon</div>
+    </a>
+
+  </div>
 
 </main>
 
@@ -329,21 +336,18 @@ function sessionCount(program) {
   );
 }
 
-function renderOwnerCard(icon, title, text, status = "View") {
-  return `
-    <div class="owner-card glass-card lift-card">
-      <div class="owner-card-icon">
-        <i data-lucide="${icon}"></i>
-      </div>
+async function countRows(table, column, value) {
+  const { count, error } = await db
+    .from(table)
+    .select("*", { count: "exact", head: true })
+    .eq(column, value);
 
-      <div>
-        <h4>${title}</h4>
-        <p>${text}</p>
-      </div>
+  if (error) {
+    console.error(`${table} count failed:`, error);
+    return null;
+  }
 
-      <div class="row-status">${status}</div>
-    </div>
-  `;
+  return count || 0;
 }
 
 async function loadProgram() {
@@ -386,9 +390,6 @@ async function loadProgram() {
   const programName =
     safe(program.name, "Training Program");
 
-  const description =
-    safe(program.description, "Program description to be added.");
-
   document.getElementById("pageTitle").textContent =
     programName;
 
@@ -396,7 +397,7 @@ async function loadProgram() {
     programName;
 
   document.getElementById("programDescription").textContent =
-    description;
+    safe(program.description, "Program description to be added.");
 
   document.getElementById("programStatus").textContent =
     safe(program.status, "active");
@@ -404,140 +405,49 @@ async function loadProgram() {
   document.getElementById("programSessions").textContent =
     `${sessionCount(program)} sessions`;
 
-  await loadClasses(programId);
-  await loadStages(programId);
-  await loadBadges(programId, program.school_id);
-  await loadHomework(programId, program.school_id);
+  document.getElementById("classesLink").href =
+    `owner-classes.html?program=${programId}`;
+
+  document.getElementById("stagesLink").href =
+    `owner-program-stages.html?program=${programId}`;
+
+  document.getElementById("badgesLink").href =
+    `owner-program-badges.html?program=${programId}`;
+
+  document.getElementById("homeworkLink").href =
+    `owner-program-homework.html?program=${programId}`;
+
+  document.getElementById("reportingLink").onclick = event => {
+    event.preventDefault();
+    alert("Reporting coming soon.");
+  };
+
+  const classCount = await countRows("classes", "program_id", programId);
+  const stageCount = await countRows("program_stages", "program_id", programId);
+  const badgeCount = await countRows("badge_templates", "school_id", program.school_id);
+  const homeworkCount = await countRows("homework_templates", "school_id", program.school_id);
+
+  document.getElementById("classesMeta").textContent =
+    classCount === null
+      ? "Manage class groups, days and trainers."
+      : `${classCount} class${classCount === 1 ? "" : "es"} linked to this program.`;
+
+  document.getElementById("stagesMeta").textContent =
+    stageCount === null
+      ? "Configure stages, sessions and graduation steps."
+      : `${stageCount} progression stage${stageCount === 1 ? "" : "s"} configured.`;
+
+  document.getElementById("badgesMeta").textContent =
+    badgeCount === null
+      ? "Create achievements trainers can award."
+      : `${badgeCount} badge template${badgeCount === 1 ? "" : "s"} available.`;
+
+  document.getElementById("homeworkMeta").textContent =
+    homeworkCount === null
+      ? "Reusable practice tasks for trainers."
+      : `${homeworkCount} homework template${homeworkCount === 1 ? "" : "s"} available.`;
 
   lucide.createIcons();
-}
-
-async function loadClasses(programId) {
-  const list = document.getElementById("classesList");
-
-  const { data, error } = await db
-    .from("classes")
-    .select("*")
-    .eq("program_id", programId)
-    .order("name", { ascending: true });
-
-  if (error) {
-    console.error("Classes failed:", error);
-    list.innerHTML =
-      `<div class="empty-card glass-card">Could not load classes.</div>`;
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    list.innerHTML =
-      `<div class="empty-card glass-card">No classes created for this program yet.</div>`;
-    return;
-  }
-
-  list.innerHTML = data.map(item =>
-    renderOwnerCard(
-      "calendar-check",
-      safe(item.name, item.title || "Class"),
-      safe(item.description, "Class schedule and enrolments."),
-      "Open"
-    )
-  ).join("");
-}
-
-async function loadStages(programId) {
-  const list = document.getElementById("stagesList");
-
-  const { data, error } = await db
-    .from("program_stages")
-    .select("*")
-    .eq("program_id", programId)
-    .order("sort_order", { ascending: true });
-
-  if (error) {
-    console.error("Stages failed:", error);
-    list.innerHTML =
-      `<div class="empty-card glass-card">Could not load progression stages.</div>`;
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    list.innerHTML =
-      `<div class="empty-card glass-card">No progression stages configured yet.</div>`;
-    return;
-  }
-
-  list.innerHTML = data.map(item =>
-    renderOwnerCard(
-      "route",
-      safe(item.name, "Program stage"),
-      safe(item.description, "Training milestone."),
-      "Stage"
-    )
-  ).join("");
-}
-
-async function loadBadges(programId, schoolId) {
-  const list = document.getElementById("badgesList");
-
-  const { data, error } = await db
-    .from("badge_templates")
-    .select("*")
-    .eq("school_id", schoolId)
-    .order("sort_order", { ascending: true });
-
-  if (error) {
-    console.error("Badges failed:", error);
-    list.innerHTML =
-      `<div class="empty-card glass-card">Could not load badge templates.</div>`;
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    list.innerHTML =
-      `<div class="empty-card glass-card">No badge templates configured yet.</div>`;
-    return;
-  }
-
-  list.innerHTML = data.slice(0, 6).map(item =>
-    renderOwnerCard(
-      item.icon || "badge-check",
-      safe(item.name, "Badge template"),
-      safe(item.description, "Achievement parents can see."),
-      "Template"
-    )
-  ).join("");
-}
-
-async function loadHomework(programId, schoolId) {
-  const list = document.getElementById("homeworkList");
-
-  const { data, error } = await db
-    .from("homework_templates")
-    .select("*")
-    .eq("school_id", schoolId)
-    .order("sort_order", { ascending: true });
-
-  if (error) {
-    console.error("Homework templates failed:", error);
-    list.innerHTML =
-      `<div class="empty-card glass-card">Could not load homework templates.</div>`;
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    list.innerHTML =
-      `<div class="empty-card glass-card">No homework templates configured yet.</div>`;
-    return;
-  }
-
-  list.innerHTML = data.slice(0, 6).map(item =>
-    renderOwnerCard(
-      "clipboard-check",
-      safe(item.title || item.name, "Homework template"),
-      safe(item.instructions || item.description, "Reusable trainer homework."),
-      "Template"
-    )
-  ).join("");
 }
 
 loadProgram();
