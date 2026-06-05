@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Badge Templates | Barkly Schools</title>
+
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-size: var(--display-md);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+      line-height: 1.5;
+    }
+
+    .action-row {
+      margin-bottom: var(--space-lg);
+    }
+
+    .new-btn {
+      width: 100%;
+      height: 54px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      font-size: var(--text-md);
+      font-weight: var(--font-heavy);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .section-title {
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .badge-template-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .badge-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: rgba(138,166,143,0.12);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .badge-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2.2;
+    }
+
+    .badge-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .badge-copy h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .badge-copy p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .status-pill {
+      margin-left: auto;
+      padding: 7px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(138,166,143,.12);
+      color: var(--sage);
+      font-size: var(--text-xs);
+      font-weight: var(--font-heavy);
+      text-transform: capitalize;
+      flex-shrink: 0;
+    }
+
+    .status-pill.inactive {
+      background: rgba(15,31,46,.06);
+      color: var(--text-secondary);
+    }
+
+    .empty-card {
+      padding: 18px;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+    }
+
+    .bottom-nav {
+      max-width: 540px;
+    }
+
+    .bottom-nav-item {
+      min-width: 62px;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="dashboard fade-in">
+
+  <div class="brand-row">
+    <button class="back-btn" id="backBtn" type="button">←</button>
+    <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+    <p class="eyebrow">Barkly Schools</p>
+  </div>
+
+  <h1 class="page-title" id="pageTitle">Badge Templates</h1>
+
+  <p class="page-subtitle" id="pageSubtitle">
+    Achievements trainers can award during this program.
+  </p>
+
+  <div class="action-row">
+    <button class="new-btn" type="button" onclick="alert('New badge template coming soon.')">
+      + New Badge Template
+    </button>
+  </div>
+
+  <h3 class="section-title">Templates</h3>
+
+  <div class="card-list" id="badgeList">
+    <div class="empty-card glass-card">
+      Loading badge templates...
+    </div>
+  </div>
+
+</main>
+
+<nav class="bottom-nav">
+
+  <a href="owner-dashboard.html" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="layout-dashboard"></i>
+    </div>
+    Home
+  </a>
+
+  <a href="owner-programs.html" class="bottom-nav-item active">
+    <div class="bottom-nav-icon">
+      <i data-lucide="layers-3"></i>
+    </div>
+    Programs
+  </a>
+
+  <a href="owner-dogs.html" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="users"></i>
+    </div>
+    People
+  </a>
+
+  <a href="owner-dashboard.html#school" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="building-2"></i>
+    </div>
+    School
+  </a>
+
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+const SUPABASE_URL =
+  "https://woolaaiunapsaowheifj.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentProgram = null;
+
+function getParams() {
+  return new URLSearchParams(window.location.search);
+}
+
+function getProgramId() {
+  return getParams().get("program");
+}
+
+function safe(value, fallback = "") {
+  return value ?? fallback;
+}
+
+function badgeIcon(name, icon) {
+  if (icon) return icon;
+
+  switch (name) {
+    case "First Session":
+      return "sparkles";
+    case "Recall Rookie":
+      return "radio";
+    case "Lead Walker":
+      return "footprints";
+    case "Social Star":
+      return "star";
+    case "Graduate":
+      return "badge-check";
+    case "Off Leash Ready":
+      return "lock";
+    default:
+      return "badge-check";
+  }
+}
+
+function renderBadgeTemplate(template) {
+  const name = safe(template.name, "Badge template");
+  const description = safe(template.description, "Badge description to be added.");
+  const icon = badgeIcon(name, template.icon);
+  const isActive = template.is_active !== false;
+
+  return `
+    <div class="badge-template-card glass-card lift-card">
+      <div class="badge-icon">
+        <i data-lucide="${icon}"></i>
+      </div>
+
+      <div class="badge-copy">
+        <h4>${name}</h4>
+        <p>${description}</p>
+      </div>
+
+      <div class="status-pill ${isActive ? "" : "inactive"}">
+        ${isActive ? "Active" : "Inactive"}
+      </div>
+    </div>
+  `;
+}
+
+async function loadProgram() {
+  const programId = getProgramId();
+
+  document.getElementById("backBtn").onclick = () => {
+    if (programId) {
+      window.location = `owner-program-detail.html?program=${programId}`;
+      return;
+    }
+
+    window.location = "owner-programs.html";
+  };
+
+  if (!programId) {
+    document.getElementById("pageTitle").textContent =
+      "Badge Templates";
+
+    document.getElementById("pageSubtitle").textContent =
+      "Open this page from a program.";
+
+    document.getElementById("badgeList").innerHTML =
+      `<div class="empty-card glass-card">No program was selected.</div>`;
+
+    lucide.createIcons();
+    return;
+  }
+
+  const { data: program, error } = await db
+    .from("programs")
+    .select("*")
+    .eq("id", programId)
+    .single();
+
+  if (error || !program) {
+    console.error("Program failed:", error);
+
+    document.getElementById("pageTitle").textContent =
+      "Badge Templates";
+
+    document.getElementById("pageSubtitle").textContent =
+      "Could not load this program.";
+
+    document.getElementById("badgeList").innerHTML =
+      `<div class="empty-card glass-card">Program not found.</div>`;
+
+    lucide.createIcons();
+    return;
+  }
+
+  currentProgram = program;
+
+  document.getElementById("pageTitle").textContent =
+    "Badges";
+
+  document.getElementById("pageSubtitle").textContent =
+    `${program.name}: achievements trainers can award.`;
+
+  await loadBadges(program.school_id);
+
+  lucide.createIcons();
+}
+
+async function loadBadges(schoolId) {
+  const list = document.getElementById("badgeList");
+
+  const { data, error } = await db
+    .from("badge_templates")
+    .select("*")
+    .eq("school_id", schoolId)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error("Badge templates failed:", error);
+
+    list.innerHTML =
+      `<div class="empty-card glass-card">Could not load badge templates.</div>`;
+
+    lucide.createIcons();
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    list.innerHTML =
+      `<div class="empty-card glass-card">No badge templates created yet.</div>`;
+
+    lucide.createIcons();
+    return;
+  }
+
+  list.innerHTML =
+    data.map(renderBadgeTemplate).join("");
+
+  lucide.createIcons();
+}
+
+loadProgram();
+lucide.createIcons();
+</script>
+
+</body>
+</html>
