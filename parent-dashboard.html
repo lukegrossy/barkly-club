@@ -549,13 +549,13 @@
       return `
         <div class="journey-step ${done ? "done" : current ? "current" : ""}">
           <div class="journey-dot">
-            ${
-              done
-                ? `<i data-lucide="check"></i>`
-                : current
-                  ? index
-                  : ""
-            }
+${
+  done
+    ? `<i data-lucide="check"></i>`
+    : current
+      ? `<i data-lucide="paw-print"></i>`
+      : ""
+}
           </div>
           ${label}
         </div>
