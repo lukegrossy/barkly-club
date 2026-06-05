@@ -1,104 +1,287 @@
-<section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>School | Barkly Schools</title>
 
-  <div class="section-head">
-    <h3>School Hub</h3>
-  </div>
+<link rel="stylesheet" href="design-system.css" />
 
-  <div class="card-list">
+<style>
+body{
+  padding:max(26px,env(safe-area-inset-top)) 20px 110px;
+}
 
-    <a href="#" class="parent-card glass-card lift-card">
-      <div class="parent-card-icon">
-        <i data-lucide="phone"></i>
-      </div>
+.dashboard{
+  max-width:var(--content-width);
+  margin:0 auto;
+}
 
-      <div>
-        <h4>Contact School</h4>
-        <p>Questions, attendance changes and enquiries.</p>
-      </div>
+.brand-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
 
-      <div class="row-status">View</div>
-    </a>
+.header-icon{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+}
 
-    <a href="#" class="parent-card glass-card lift-card">
-      <div class="parent-card-icon">
-        <i data-lucide="circle-help"></i>
-      </div>
+.back-btn{
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:var(--radius-pill);
+  background:rgba(255,255,255,.72);
+  border:1.5px solid var(--glass-border);
+  display:grid;
+  place-items:center;
+  color:var(--navy);
+  box-shadow:var(--shadow-soft);
+}
 
-      <div>
-        <h4>FAQs</h4>
-        <p>Common questions and answers.</p>
-      </div>
+.eyebrow{
+  font-size:var(--text-sm);
+  font-weight:var(--font-heavy);
+  color:var(--sage);
+  margin:0;
+}
 
-      <div class="row-status">View</div>
-    </a>
+.page-title{
+  font-size:var(--display-md);
+  line-height:1;
+  margin-bottom:8px;
+}
 
-    <a href="#" class="parent-card glass-card lift-card">
-      <div class="parent-card-icon">
-        <i data-lucide="users"></i>
-      </div>
+.page-subtitle{
+  color:var(--text-secondary);
+  margin-bottom:var(--space-xl);
+}
 
-      <div>
-        <h4>Meet the Team</h4>
-        <p>Trainer profiles and qualifications.</p>
-      </div>
+.school-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:18px;
+  text-decoration:none;
+  color:inherit;
+  margin-bottom:var(--space-sm);
+}
 
-      <div class="row-status">View</div>
-    </a>
+.school-icon{
+  width:52px;
+  height:52px;
+  border-radius:var(--radius-md);
+  background:rgba(138,166,143,.12);
+  color:var(--sage);
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
 
-    <a href="#" class="parent-card glass-card lift-card">
-      <div class="parent-card-icon">
-        <i data-lucide="book-open"></i>
-      </div>
+.school-icon svg{
+  width:24px;
+  height:24px;
+  stroke-width:2.2;
+}
 
-      <div>
-        <h4>Resources</h4>
-        <p>Training guides, policies and handouts.</p>
-      </div>
+.school-copy{
+  flex:1;
+}
 
-      <div class="row-status">View</div>
-    </a>
+.school-copy h3{
+  font-size:16px;
+  margin-bottom:4px;
+}
 
-    <a href="#" class="parent-card glass-card lift-card">
-      <div class="parent-card-icon">
-        <i data-lucide="house"></i>
-      </div>
+.school-copy p{
+  font-size:var(--text-sm);
+  color:var(--text-secondary);
+  line-height:1.45;
+}
 
-      <div>
-        <h4>Family Access</h4>
-        <p>Invite another parent or carer.</p>
-      </div>
+.card-status{
+  color:var(--sage);
+  font-weight:var(--font-heavy);
+  font-size:var(--text-sm);
+}
 
-      <div class="row-status">View</div>
-    </a>
+.coming-soon{
+  margin-top:var(--space-lg);
+  padding:20px;
+}
 
-    <a href="#" class="parent-card glass-card lift-card">
-      <div class="parent-card-icon">
-        <i data-lucide="credit-card"></i>
-      </div>
+.coming-soon h3{
+  margin-bottom:8px;
+}
 
-      <div>
-        <h4>Billing</h4>
-        <p>Invoices, memberships and payments.</p>
-      </div>
+.coming-soon p{
+  color:var(--text-secondary);
+}
 
-      <div class="row-status">View</div>
-    </a>
+.bottom-nav{
+  max-width:540px;
+}
 
-    <div class="parent-card glass-card">
+.bottom-nav-item{
+  min-width:92px;
+}
+</style>
+</head>
 
-      <div class="parent-card-icon">
-        <i data-lucide="calendar-plus"></i>
-      </div>
+<body>
 
-      <div>
-        <h4>Booking Centre</h4>
-        <p>Book classes and private lessons.</p>
-      </div>
+<main class="dashboard fade-in">
 
-      <div class="row-status">Coming Soon</div>
+<div class="brand-row">
+<button class="back-btn" onclick="window.location='parent-dashboard.html'">
+←
+</button>
 
-    </div>
+<img src="assets/barkly-icon.png"
+     alt="Barkly"
+     class="header-icon">
 
-  </div>
+<p class="eyebrow">Barkly Schools</p>
+</div>
 
-</section>
+<h1 class="page-title">School</h1>
+
+<p class="page-subtitle">
+Everything you need from your training school.
+</p>
+
+<a href="#" class="school-card glass-card lift-card">
+<div class="school-icon">
+<i data-lucide="phone"></i>
+</div>
+
+<div class="school-copy">
+<h3>Contact School</h3>
+<p>Questions, attendance changes and enquiries.</p>
+</div>
+
+<div class="card-status">
+View
+</div>
+</a>
+
+<a href="#" class="school-card glass-card lift-card">
+<div class="school-icon">
+<i data-lucide="circle-help"></i>
+</div>
+
+<div class="school-copy">
+<h3>FAQs</h3>
+<p>Common questions and answers.</p>
+</div>
+
+<div class="card-status">
+View
+</div>
+</a>
+
+<a href="#" class="school-card glass-card lift-card">
+<div class="school-icon">
+<i data-lucide="users"></i>
+</div>
+
+<div class="school-copy">
+<h3>Meet the Team</h3>
+<p>Trainer profiles and qualifications.</p>
+</div>
+
+<div class="card-status">
+View
+</div>
+</a>
+
+<a href="#" class="school-card glass-card lift-card">
+<div class="school-icon">
+<i data-lucide="book-open"></i>
+</div>
+
+<div class="school-copy">
+<h3>Resources</h3>
+<p>Training guides, policies and handouts.</p>
+</div>
+
+<div class="card-status">
+View
+</div>
+</a>
+
+<a href="#" class="school-card glass-card lift-card">
+<div class="school-icon">
+<i data-lucide="users-round"></i>
+</div>
+
+<div class="school-copy">
+<h3>Family Access</h3>
+<p>Invite another parent or carer.</p>
+</div>
+
+<div class="card-status">
+View
+</div>
+</a>
+
+<a href="#" class="school-card glass-card lift-card">
+<div class="school-icon">
+<i data-lucide="credit-card"></i>
+</div>
+
+<div class="school-copy">
+<h3>Billing</h3>
+<p>Invoices, memberships and payments.</p>
+</div>
+
+<div class="card-status">
+View
+</div>
+</a>
+
+<div class="coming-soon glass-card">
+<h3>📅 Booking Centre</h3>
+<p>Book classes and private lessons.</p>
+<p><strong>Coming Soon</strong></p>
+</div>
+
+</main>
+
+<nav class="bottom-nav">
+
+<a href="parent-dashboard.html" class="bottom-nav-item">
+<div class="bottom-nav-icon">
+<i data-lucide="home"></i>
+</div>
+Home
+</a>
+
+<a href="dog-sessions.html?role=parent" class="bottom-nav-item">
+<div class="bottom-nav-icon">
+<i data-lucide="calendar-check"></i>
+</div>
+Sessions
+</a>
+
+<a href="parent-school.html" class="bottom-nav-item active">
+<div class="bottom-nav-icon">
+<i data-lucide="building-2"></i>
+</div>
+School
+</a>
+
+</nav>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+lucide.createIcons();
+</script>
+
+</body>
+</html>
