@@ -168,7 +168,7 @@
     }
 
     .bottom-nav-item {
-      min-width: 62px;
+      min-width: 92px;
     }
 
     body[data-role="trainer"] .bottom-nav {
@@ -186,10 +186,7 @@
 <main class="dashboard fade-in">
 
   <div class="brand-row">
-    <button class="back-btn" id="backBtn">
-      ←
-    </button>
-
+    <button class="back-btn" id="backBtn">←</button>
     <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
     <p class="eyebrow">Barkly Schools</p>
   </div>
@@ -202,10 +199,7 @@
 
   <section class="hero hero-card lift-card">
     <h2 id="dogName">Loading...</h2>
-
-    <p id="heroStats">
-      Loading notes...
-    </p>
+    <p id="heroStats">Loading notes...</p>
   </section>
 
   <section class="note-panel glass-card lift-card">
@@ -217,10 +211,7 @@
       placeholder="Enter a trainer update for the parent..."
     ></textarea>
 
-    <button
-      id="saveTrainerNoteBtn"
-      class="save-note-btn"
-      type="button">
+    <button id="saveTrainerNoteBtn" class="save-note-btn" type="button">
       Save Trainer Note
     </button>
   </section>
@@ -247,10 +238,9 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-const db = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentDog = null;
 
 function getParams() {
   return new URLSearchParams(window.location.search);
@@ -269,12 +259,6 @@ const role = getRole();
 const dogId = getDogId();
 
 document.body.dataset.role = role;
-
-let currentDog = null;
-
-function withRoleAndDog(page, dogId) {
-  return `${page}?role=${role}&dog=${dogId}`;
-}
 
 function renderRoleCopy() {
   if (role === "owner") {
@@ -336,9 +320,9 @@ function renderBottomNav() {
 
   if (role === "parent") {
     nav.innerHTML = `
-      <a href="dog-detail.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
-        <div class="bottom-nav-icon"><i data-lucide="dog"></i></div>
-        Dog
+      <a href="parent-dashboard.html" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="home"></i></div>
+        Home
       </a>
 
       <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
@@ -346,7 +330,7 @@ function renderBottomNav() {
         Sessions
       </a>
 
-      <a href="parent-school.html" class="bottom-nav-item">
+      <a href="#" class="bottom-nav-item" onclick="alert('School page coming next.'); return false;">
         <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
         School
       </a>
@@ -357,9 +341,8 @@ function renderBottomNav() {
 function setBackButton() {
   document.getElementById("backBtn").onclick = () => {
     if (role === "parent") {
-  window.location = "parent-dashboard.html";
-  return;
-}
+      window.location = "parent-dashboard.html";
+      return;
     }
 
     if (role === "owner") {
@@ -372,13 +355,26 @@ function setBackButton() {
       return;
     }
 
-    if (role === "parent") {
-      window.location = "parent-dashboard.html";
-      return;
-    }
-
     window.location = "dogs.html";
   };
+}
+
+async function loadDogRecord() {
+  if (!dogId) return null;
+
+  const { data, error } = await db
+    .from("dogs")
+    .select("id, school_id, name")
+    .eq("id", dogId)
+    .single();
+
+  if (error) {
+    console.error("Dog lookup failed:", error);
+    return null;
+  }
+
+  currentDog = data;
+  return data;
 }
 
 async function loadNotes() {
@@ -389,25 +385,21 @@ async function loadNotes() {
   if (!dogId) {
     document.getElementById("dogName").textContent = "Dog not found";
     document.getElementById("heroStats").textContent =
-      "Open this page from a dog profile.";
+      "Open this page from the parent dashboard.";
+
     document.getElementById("notesList").innerHTML = `
       <div class="empty-card glass-card">
         No dog was selected.
       </div>
     `;
+
     lucide.createIcons();
     return;
   }
 
-  const { data: dog, error: dogError } = await db
-    .from("dogs")
-    .select("id, school_id, name")
-    .eq("id", dogId)
-    .single();
+  await loadDogRecord();
 
-  if (dogError || !dog) {
-    console.error("Dog lookup failed:", dogError);
-
+  if (!currentDog) {
     document.getElementById("dogName").textContent = "Dog not found";
     document.getElementById("heroStats").textContent =
       "Could not load this dog.";
@@ -416,10 +408,8 @@ async function loadNotes() {
     return;
   }
 
-  currentDog = dog;
-
   document.getElementById("dogName").textContent =
-    dog.name || "Dog";
+    currentDog.name || "Dog";
 
   const { data: notes, error } = await db
     .from("parent_updates")
@@ -428,10 +418,16 @@ async function loadNotes() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error(error);
+    console.error("Notes failed:", error);
 
     document.getElementById("heroStats").textContent =
       "Unable to load trainer notes.";
+
+    document.getElementById("notesList").innerHTML = `
+      <div class="empty-card glass-card">
+        Trainer notes could not be loaded.
+      </div>
+    `;
 
     lucide.createIcons();
     return;
@@ -442,11 +438,8 @@ async function loadNotes() {
   document.getElementById("heroStats").textContent =
     `${noteCount} trainer update${noteCount === 1 ? "" : "s"} recorded`;
 
-  const container =
-    document.getElementById("notesList");
-
   if (!noteCount) {
-    container.innerHTML = `
+    document.getElementById("notesList").innerHTML = `
       <div class="empty-card glass-card">
         No trainer notes recorded yet.
       </div>
@@ -456,29 +449,30 @@ async function loadNotes() {
     return;
   }
 
-  container.innerHTML = notes.map(note => `
-    <div class="note-card glass-card lift-card">
+  document.getElementById("notesList").innerHTML =
+    notes.map(note => `
+      <div class="note-card glass-card lift-card">
 
-      <div class="note-title">
-        ${note.title || "Trainer update"}
+        <div class="note-title">
+          ${note.title || "Trainer update"}
+        </div>
+
+        <div class="note-date">
+          ${note.created_at
+            ? new Date(note.created_at).toLocaleDateString("en-AU")
+            : ""}
+        </div>
+
+        <div class="note-text">
+          ${note.update_text || note.note || ""}
+        </div>
+
+        <div class="note-label">
+          Trainer Update
+        </div>
+
       </div>
-
-      <div class="note-date">
-        ${note.created_at
-          ? new Date(note.created_at).toLocaleDateString("en-AU")
-          : ""}
-      </div>
-
-      <div class="note-text">
-        ${note.update_text || ""}
-      </div>
-
-      <div class="note-label">
-        Trainer Update
-      </div>
-
-    </div>
-  `).join("");
+    `).join("");
 
   lucide.createIcons();
 }
@@ -487,9 +481,7 @@ async function saveTrainerNote() {
   if (!(role === "owner" || role === "trainer")) return;
 
   const text =
-    document.getElementById("newTrainerNote")
-      .value
-      .trim();
+    document.getElementById("newTrainerNote").value.trim();
 
   if (!text) {
     alert("Enter a trainer note first.");
@@ -501,8 +493,7 @@ async function saveTrainerNote() {
     return;
   }
 
-  const button =
-    document.getElementById("saveTrainerNoteBtn");
+  const button = document.getElementById("saveTrainerNoteBtn");
 
   button.disabled = true;
   button.textContent = "Saving...";
@@ -519,7 +510,7 @@ async function saveTrainerNote() {
     });
 
   if (error) {
-    console.error(error);
+    console.error("Save note failed:", error);
 
     alert("Unable to save trainer note.");
 
