@@ -224,7 +224,7 @@
     }
 
     .bottom-nav-item {
-      min-width: 62px;
+      min-width: 92px;
     }
 
     body[data-role="trainer"] .bottom-nav {
@@ -400,23 +400,24 @@ function renderBottomNav() {
     `;
   }
 
-if (role === "parent") {
-  nav.innerHTML = `
-    <a href="parent-dashboard.html" class="bottom-nav-item active">
-      <div class="bottom-nav-icon"><i data-lucide="home"></i></div>
-      Home
-    </a>
+  if (role === "parent") {
+    nav.innerHTML = `
+      <a href="parent-dashboard.html" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="home"></i></div>
+        Home
+      </a>
 
-    <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
-      <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
-      Sessions
-    </a>
+      <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+        Sessions
+      </a>
 
-    <a href="#" class="bottom-nav-item" onclick="alert('School page coming next.'); return false;">
-      <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
-      School
-    </a>
-  `;
+      <a href="#" class="bottom-nav-item" onclick="alert('School page coming next.'); return false;">
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+        School
+      </a>
+    `;
+  }
 }
 
 function setBackButton() {
@@ -621,7 +622,7 @@ async function loadBadges() {
   if (!dogId) {
     document.getElementById("dogName").textContent = "Dog not found";
     document.getElementById("heroStats").textContent =
-      "Open this page from a dog profile.";
+      "Open this page from the parent dashboard.";
 
     document.getElementById("earnedBadges").innerHTML = `
       <div class="empty-card glass-card">No dog was selected.</div>
