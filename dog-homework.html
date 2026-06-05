@@ -208,7 +208,7 @@
     }
 
     .bottom-nav-item {
-      min-width: 62px;
+      min-width: 92px;
     }
 
     body[data-role="trainer"] .bottom-nav {
@@ -226,10 +226,7 @@
 <main class="dashboard fade-in">
 
   <div class="brand-row">
-    <button class="back-btn" id="backBtn">
-      ←
-    </button>
-
+    <button class="back-btn" id="backBtn">←</button>
     <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
     <p class="eyebrow">Barkly Schools</p>
   </div>
@@ -242,10 +239,7 @@
 
   <section class="hero hero-card lift-card">
     <h2 id="dogName">Loading...</h2>
-
-    <p id="heroStats">
-      Loading homework...
-    </p>
+    <p id="heroStats">Loading homework...</p>
   </section>
 
   <section class="assignment-panel glass-card lift-card" id="assignmentPanel">
@@ -273,9 +267,7 @@
   <h3 class="section-title">Assigned homework</h3>
 
   <div class="card-list" id="homeworkList">
-    <div class="empty-card glass-card">
-      Loading homework...
-    </div>
+    <div class="empty-card glass-card">Loading homework...</div>
   </div>
 
 </main>
@@ -292,10 +284,7 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-const db = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentDog = null;
 
@@ -310,10 +299,6 @@ function getRole() {
 
 function getDogId() {
   return getParams().get("dog");
-}
-
-function withRoleAndDog(page, dogId) {
-  return `${page}?role=${role}&dog=${dogId}`;
 }
 
 const role = getRole();
@@ -380,23 +365,23 @@ function renderBottomNav() {
   }
 
   if (role === "parent") {
-  nav.innerHTML = `
-    <a href="parent-dashboard.html" class="bottom-nav-item active">
-      <div class="bottom-nav-icon"><i data-lucide="home"></i></div>
-      Home
-    </a>
+    nav.innerHTML = `
+      <a href="parent-dashboard.html" class="bottom-nav-item active">
+        <div class="bottom-nav-icon"><i data-lucide="home"></i></div>
+        Home
+      </a>
 
-    <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
-      <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
-      Sessions
-    </a>
+      <a href="dog-sessions.html?role=parent&dog=${dogId || ""}" class="bottom-nav-item">
+        <div class="bottom-nav-icon"><i data-lucide="calendar-check"></i></div>
+        Sessions
+      </a>
 
-    <a href="#" class="bottom-nav-item" onclick="alert('School page coming next.'); return false;">
-      <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
-      School
-    </a>
-  `;
-}
+      <a href="#" class="bottom-nav-item" onclick="alert('School page coming next.'); return false;">
+        <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
+        School
+      </a>
+    `;
+  }
 }
 
 function setBackButton() {
@@ -418,7 +403,6 @@ function setBackButton() {
 
     window.location = "dogs.html";
   };
-}
 }
 
 async function loadDogRecord() {
@@ -475,7 +459,6 @@ async function assignHomework() {
   }
 
   alert("Homework assigned.");
-
   document.getElementById("newHomeworkText").value = "";
 
   await loadHomework();
@@ -487,11 +470,9 @@ async function loadHomework() {
   setBackButton();
 
   if (!dogId) {
-    document.getElementById("dogName").textContent =
-      "Dog not found";
-
+    document.getElementById("dogName").textContent = "Dog not found";
     document.getElementById("heroStats").textContent =
-      "Open this page from a dog profile.";
+      "Open this page from the parent dashboard.";
 
     document.getElementById("homeworkList").innerHTML =
       `<div class="empty-card glass-card">No dog was selected.</div>`;
@@ -509,13 +490,16 @@ async function loadHomework() {
     .order("assigned_at", { ascending: false });
 
   if (error) {
-    console.error(error);
+    console.error("Homework view failed:", error);
 
     document.getElementById("dogName").textContent =
       currentDog?.name || "Could not load homework";
 
     document.getElementById("heroStats").textContent =
       "Please try again.";
+
+    document.getElementById("homeworkList").innerHTML =
+      `<div class="empty-card glass-card">Homework could not be loaded.</div>`;
 
     lucide.createIcons();
     return;
@@ -535,28 +519,21 @@ async function loadHomework() {
     return;
   }
 
-  const dogName =
-    data[0]?.dog_name || currentDog?.name || "Dog";
+  const dogName = data[0]?.dog_name || currentDog?.name || "Dog";
 
-  document.getElementById("dogName").textContent =
-    dogName;
+  document.getElementById("dogName").textContent = dogName;
 
   document.getElementById("heroStats").textContent =
     `${data.length} homework assignment${data.length === 1 ? "" : "s"} recorded`;
 
-  const list =
-    document.getElementById("homeworkList");
-
-  list.innerHTML =
+  document.getElementById("homeworkList").innerHTML =
     data.map(item => `
       <div class="homework-card glass-card lift-card">
-
         <div class="homework-icon">
           <i data-lucide="clipboard-check"></i>
         </div>
 
         <div class="homework-copy">
-
           <h4>${item.title || "Homework"}</h4>
 
           <div class="homework-date">
@@ -572,9 +549,7 @@ async function loadHomework() {
           <span class="status-pill">
             ${item.status || "assigned"}
           </span>
-
         </div>
-
       </div>
     `).join("");
 
