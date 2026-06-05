@@ -527,38 +527,43 @@
     }
 
     function renderJourney(sessionCount) {
-      const totalSessions = 6;
-      const completed = Math.min(sessionCount || 0, totalSessions);
 
-      let steps = [];
+  const steps = [
+    "Enrolled",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "Graduate"
+  ];
 
-      for (let i = 1; i <= totalSessions; i++) {
-        const done = i <= completed;
-        const isCurrent = i === completed + 1 && completed < totalSessions;
+  const completed =
+    Math.min(sessionCount || 0, steps.length - 1);
 
-        steps.push({
-          number: i,
-          label:
-            i === 1
-              ? "Start"
-              : i === totalSessions
-                ? "Graduate"
-                : "",
-          done,
-          current: isCurrent
-        });
-      }
+  document.getElementById("journeyTrack").innerHTML =
+    steps.map((label, index) => {
 
-      document.getElementById("journeyTrack").innerHTML =
-        steps.map(step => `
-          <div class="journey-step ${step.done ? "done" : step.current ? "current" : ""}">
-            <div class="journey-dot">
-              ${step.done ? `<i data-lucide="check"></i>` : step.current ? step.number : ""}
-            </div>
-            ${step.label}
+      const done = index < completed;
+      const current = index === completed;
+
+      return `
+        <div class="journey-step ${done ? "done" : current ? "current" : ""}">
+          <div class="journey-dot">
+            ${
+              done
+                ? `<i data-lucide="check"></i>`
+                : current
+                  ? index
+                  : ""
+            }
           </div>
-        `).join("");
-    }
+          ${label}
+        </div>
+      `;
+    }).join("");
+
+  lucide.createIcons();
+}
 
     async function loadParentDashboard() {
       const { data, error } = await db
