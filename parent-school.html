@@ -1,413 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>School | Barkly Schools</title>
+<section>
 
-  <link rel="stylesheet" href="design-system.css" />
+  <div class="section-head">
+    <h3>School Hub</h3>
+  </div>
 
-  <style>
-    body {
-      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
-    }
+  <div class="card-list">
 
-    .dashboard {
-      max-width: var(--content-width);
-      margin: 0 auto;
-    }
+    <a href="#" class="parent-card glass-card lift-card">
+      <div class="parent-card-icon">
+        <i data-lucide="phone"></i>
+      </div>
 
-    .topbar {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: var(--space-lg);
-    }
-
-    .brand-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .header-icon {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
-
-    .eyebrow {
-      font-size: var(--text-sm);
-      font-weight: var(--font-heavy);
-      color: var(--sage);
-      margin: 0;
-    }
-
-    .topbar h1 {
-      font-size: var(--display-md);
-      line-height: 1.02;
-      letter-spacing: var(--tracking-display);
-      margin-bottom: var(--space-sm);
-    }
-
-    .topbar-copy {
-      font-size: var(--text-md);
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    .avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-pill);
-      background: var(--navy);
-      color: white;
-      display: grid;
-      place-items: center;
-      font-size: var(--text-sm);
-      font-weight: var(--font-heavy);
-      flex-shrink: 0;
-    }
-
-    .section-head {
-      margin-bottom: var(--space-sm);
-    }
-
-    .section-head h3 {
-      font-size: var(--text-xl);
-      letter-spacing: var(--tracking-tight);
-    }
-
-    .hero {
-      padding: 24px;
-      margin-bottom: var(--space-xl);
-      color: white;
-    }
-
-    .hero h2 {
-      color: white;
-      margin-bottom: 8px;
-      font-size: var(--display-sm);
-      letter-spacing: var(--tracking-tight);
-    }
-
-    .hero p {
-      color: rgba(255,255,255,.75);
-      line-height: 1.5;
-    }
-
-    .card-list {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-sm);
-      margin-bottom: var(--space-xl);
-    }
-
-    .parent-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .parent-card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-md);
-      background: rgba(138,166,143,0.12);
-      color: var(--sage);
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-    }
-
-    .parent-card-icon svg {
-      width: 22px;
-      height: 22px;
-      stroke-width: 2.2;
-    }
-
-    .parent-card h4 {
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
-
-    .parent-card p {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
-      line-height: 1.4;
-    }
-
-    .row-status {
-      margin-left: auto;
-      color: var(--sage);
-      font-size: var(--text-sm);
-      font-weight: var(--font-heavy);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .bottom-nav {
-      max-width: 540px;
-    }
-
-    .bottom-nav-item {
-      min-width: 92px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <main class="dashboard fade-in">
-
-    <header class="topbar">
       <div>
-        <div class="brand-row">
-          <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
-          <p class="eyebrow">Barkly Schools</p>
-        </div>
-
-        <h1>School</h1>
-
-        <p class="topbar-copy" id="pageCopy">
-          Loading school details.
-        </p>
+        <h4>Contact School</h4>
+        <p>Questions, attendance changes and enquiries.</p>
       </div>
 
-      <div class="avatar" id="parentAvatar">—</div>
-    </header>
-
-    <section class="hero hero-card lift-card">
-      <h2 id="schoolName">Barkly Schools</h2>
-      <p id="schoolSummary">
-        Your dog’s training school, program and support information.
-      </p>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h3>Your trainer</h3>
-      </div>
-
-      <div class="card-list">
-        <div class="parent-card glass-card lift-card">
-          <div class="parent-card-icon">
-            <i data-lucide="user-round"></i>
-          </div>
-
-          <div>
-            <h4 id="trainerName">Trainer</h4>
-            <p id="trainerMeta">Lead Trainer · Barkly Schools</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h3>Current program</h3>
-      </div>
-
-      <div class="card-list">
-        <a href="#" id="sessionsCardLink" class="parent-card glass-card lift-card">
-          <div class="parent-card-icon">
-            <i data-lucide="layers-3"></i>
-          </div>
-
-          <div>
-            <h4 id="programName">Training program</h4>
-            <p id="programMeta">View sessions and attendance history.</p>
-          </div>
-
-          <div class="row-status">View</div>
-        </a>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h3>School hub</h3>
-      </div>
-
-      <div class="card-list">
-
-        <div class="parent-card glass-card lift-card">
-          <div class="parent-card-icon">
-            <i data-lucide="map-pin"></i>
-          </div>
-
-          <div>
-            <h4>Location</h4>
-            <p id="schoolLocation">Training location to be added.</p>
-          </div>
-        </div>
-
-        <div class="parent-card glass-card lift-card">
-          <div class="parent-card-icon">
-            <i data-lucide="megaphone"></i>
-          </div>
-
-          <div>
-            <h4>Announcements</h4>
-            <p>Class updates, school notices and important reminders.</p>
-          </div>
-        </div>
-
-        <div class="parent-card glass-card lift-card">
-          <div class="parent-card-icon">
-            <i data-lucide="users"></i>
-          </div>
-
-          <div>
-            <h4>Family access</h4>
-            <p>Invite another parent or carer to follow your dog’s progress.</p>
-          </div>
-        </div>
-
-        <div class="parent-card glass-card lift-card">
-          <div class="parent-card-icon">
-            <i data-lucide="credit-card"></i>
-          </div>
-
-          <div>
-            <h4>Billing</h4>
-            <p>Memberships, invoices and payments will appear here.</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-  <nav class="bottom-nav">
-
-    <a href="parent-dashboard.html" id="homeNavLink" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="home"></i>
-      </div>
-      Home
+      <div class="row-status">View</div>
     </a>
 
-    <a href="#" id="sessionsNavLink" class="bottom-nav-item">
-      <div class="bottom-nav-icon">
-        <i data-lucide="calendar-check"></i>
+    <a href="#" class="parent-card glass-card lift-card">
+      <div class="parent-card-icon">
+        <i data-lucide="circle-help"></i>
       </div>
-      Sessions
+
+      <div>
+        <h4>FAQs</h4>
+        <p>Common questions and answers.</p>
+      </div>
+
+      <div class="row-status">View</div>
     </a>
 
-    <a href="parent-school.html" id="schoolNavLink" class="bottom-nav-item active">
-      <div class="bottom-nav-icon">
-        <i data-lucide="building-2"></i>
+    <a href="#" class="parent-card glass-card lift-card">
+      <div class="parent-card-icon">
+        <i data-lucide="users"></i>
       </div>
-      School
+
+      <div>
+        <h4>Meet the Team</h4>
+        <p>Trainer profiles and qualifications.</p>
+      </div>
+
+      <div class="row-status">View</div>
     </a>
 
-  </nav>
+    <a href="#" class="parent-card glass-card lift-card">
+      <div class="parent-card-icon">
+        <i data-lucide="book-open"></i>
+      </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+      <div>
+        <h4>Resources</h4>
+        <p>Training guides, policies and handouts.</p>
+      </div>
 
-  <script>
-    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
+      <div class="row-status">View</div>
+    </a>
 
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+    <a href="#" class="parent-card glass-card lift-card">
+      <div class="parent-card-icon">
+        <i data-lucide="house"></i>
+      </div>
 
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      <div>
+        <h4>Family Access</h4>
+        <p>Invite another parent or carer.</p>
+      </div>
 
-    function safe(value, fallback = "") {
-      return value ?? fallback;
-    }
+      <div class="row-status">View</div>
+    </a>
 
-    function dogLink(page, dogId) {
-      return `${page}?role=parent&dog=${dogId}`;
-    }
+    <a href="#" class="parent-card glass-card lift-card">
+      <div class="parent-card-icon">
+        <i data-lucide="credit-card"></i>
+      </div>
 
-    function initials(name) {
-      if (!name) return "P";
-      return name
-        .split(" ")
-        .filter(Boolean)
-        .slice(0, 2)
-        .map(part => part[0])
-        .join("")
-        .toUpperCase();
-    }
+      <div>
+        <h4>Billing</h4>
+        <p>Invoices, memberships and payments.</p>
+      </div>
 
-    async function loadParentSchool() {
-      const { data, error } = await db
-        .from("parent_dashboard_view")
-        .select("*")
-        .limit(1)
-        .single();
+      <div class="row-status">View</div>
+    </a>
 
-      if (error || !data) {
-        console.error("Parent school failed:", error);
+    <div class="parent-card glass-card">
 
-        document.getElementById("pageCopy").textContent =
-          "Could not load school details.";
+      <div class="parent-card-icon">
+        <i data-lucide="calendar-plus"></i>
+      </div>
 
-        lucide.createIcons();
-        return;
-      }
+      <div>
+        <h4>Booking Centre</h4>
+        <p>Book classes and private lessons.</p>
+      </div>
 
-      const dogId = data.dog_id;
-      const dogName = safe(data.dog_name, "your dog");
-      const ownerName = safe(data.owner_name, "Parent");
-      const programName = safe(data.program_name, data.class_name || "Training program");
-      const className = safe(data.class_name, "");
-      const schoolName = safe(data.school_name, "Barkly Schools");
-      const trainerName = safe(data.trainer_name, "Your trainer");
+      <div class="row-status">Coming Soon</div>
 
-      document.getElementById("parentAvatar").textContent =
-        initials(ownerName);
+    </div>
 
-      document.getElementById("pageCopy").textContent =
-        `School details and support for ${dogName}.`;
+  </div>
 
-      document.getElementById("schoolName").textContent =
-        schoolName;
-
-      document.getElementById("schoolSummary").textContent =
-        `${dogName} is currently enrolled in ${programName}.`;
-
-      document.getElementById("trainerName").textContent =
-        trainerName;
-
-      document.getElementById("trainerMeta").textContent =
-        `Lead Trainer · ${schoolName}`;
-
-      document.getElementById("programName").textContent =
-        programName;
-
-      document.getElementById("programMeta").textContent =
-        className
-          ? `${className} · View sessions and attendance history.`
-          : "View sessions and attendance history.";
-
-      document.getElementById("schoolLocation").textContent =
-        safe(data.school_location, "Training location to be added.");
-
-      if (dogId) {
-        document.getElementById("sessionsNavLink").href =
-          dogLink("dog-sessions.html", dogId);
-
-        document.getElementById("sessionsCardLink").href =
-          dogLink("dog-sessions.html", dogId);
-      }
-
-      lucide.createIcons();
-    }
-
-    loadParentSchool();
-    lucide.createIcons();
-  </script>
-
-</body>
-</html>
+</section>
