@@ -116,6 +116,11 @@
       flex-shrink: 0;
     }
 
+    .status-pill.inactive {
+      background: rgba(15,31,46,.06);
+      color: var(--text-secondary);
+    }
+
     .program-meta {
       display: flex;
       gap: 10px;
@@ -137,6 +142,12 @@
       color: var(--text-secondary);
       font-size: var(--text-sm);
       line-height: 1.5;
+    }
+
+    .empty-title {
+      font-weight: var(--font-heavy);
+      color: var(--navy);
+      margin-bottom: 6px;
     }
 
     .bottom-nav {
@@ -161,11 +172,11 @@
   <h1 class="page-title">Programs</h1>
 
   <p class="page-subtitle">
-    Configure the training programs your school runs.
+    Create and manage the training programs your school runs.
   </p>
 
   <div class="action-row">
-    <button class="new-btn" type="button" onclick="alert('New Program coming soon.')">
+    <button class="new-btn" type="button" onclick="goToNewProgram()">
       + New Program
     </button>
   </div>
@@ -220,14 +231,21 @@ const SUPABASE_URL =
   "https://woolaaiunapsaowheifj.supabase.co";
 
 const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
-</script>
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-<script>
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 function safe(value, fallback = "") {
-  return value ?? fallback;
+  return value === null || value === undefined || value === "" ? fallback : value;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function programSessions(program) {
@@ -235,50 +253,74 @@ function programSessions(program) {
     program.session_count ||
     program.total_sessions ||
     program.sessions_required ||
+    program.session_total ||
     6
   );
 }
 
 function programStatus(program) {
-  if (program.status) return program.status;
+  if (program.status) return String(program.status).toLowerCase();
   if (program.is_active === false) return "inactive";
   return "active";
 }
 
+function statusLabel(status) {
+  if (status === "inactive") return "Inactive";
+  if (status === "draft") return "Draft";
+  if (status === "archived") return "Archived";
+  return "Active";
+}
+
+function goToNewProgram() {
+  window.location.href = "owner-program-new.html";
+}
+
 function renderProgram(program) {
-  const name =
-    safe(program.name, program.title || "Training Program");
-
-  const description =
-    safe(program.description, "Program description to be added.");
-
-  const sessions =
-    programSessions(program);
-
-  const status =
-    programStatus(program);
-
-  const id =
-    program.id || "";
+  const id = safe(program.id);
+  const name = escapeHtml(safe(program.name, program.title || "Training Program"));
+  const description = escapeHtml(
+    safe(program.description, "Program description to be added.")
+  );
+  const sessions = escapeHtml(programSessions(program));
+  const status = programStatus(program);
+  const pillClass = status === "active" ? "status-pill" : "status-pill inactive";
 
   return `
-    <a href="owner-program-detail.html?program=${id}" class="program-card glass-card lift-card">
+    <a href="owner-program-detail.html?program=${encodeURIComponent(id)}" class="program-card glass-card lift-card">
       <div class="program-top">
         <div>
           <div class="program-title">${name}</div>
           <div class="program-desc">${description}</div>
         </div>
 
-        <div class="status-pill">${status}</div>
+        <div class="${pillClass}">${statusLabel(status)}</div>
       </div>
 
       <div class="program-meta">
         <div class="meta-pill">${sessions} sessions</div>
-        <div class="meta-pill">Classes</div>
-        <div class="meta-pill">Badges</div>
-        <div class="meta-pill">Homework</div>
+        <div class="meta-pill">Program builder</div>
       </div>
     </a>
+  `;
+}
+
+function renderEmpty() {
+  return `
+    <div class="empty-card glass-card">
+      <div class="empty-title">No programs yet</div>
+      Add your first training program, such as Puppy Foundations, Adolescent Dogs or Recall Workshop.
+    </div>
+  `;
+}
+
+function renderError(error) {
+  return `
+    <div class="empty-card glass-card">
+      <div class="empty-title">Could not load programs</div>
+      Check that the <strong>programs</strong> table exists in Supabase and is readable.
+      <br><br>
+      ${escapeHtml(error?.message || "")}
+    </div>
   `;
 }
 
@@ -288,34 +330,33 @@ async function loadPrograms() {
   const { data, error } = await db
     .from("programs")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("name", { ascending: true });
 
   if (error) {
     console.error("Programs failed:", error);
-
-    list.innerHTML = `
-      <div class="empty-card glass-card">
-        Could not load programs. Check the programs table exists in Supabase.
-      </div>
-    `;
-
+    list.innerHTML = renderError(error);
     lucide.createIcons();
     return;
   }
 
-  if (!data || data.length === 0) {
-    list.innerHTML = `
-      <div class="empty-card glass-card">
-        No programs created yet. Add Puppy Foundations, Recall Workshop or another school program.
-      </div>
-    `;
+  const programs = data || [];
 
+  if (programs.length === 0) {
+    list.innerHTML = renderEmpty();
     lucide.createIcons();
     return;
   }
+
+  const activePrograms = programs.filter(program => {
+    const status = programStatus(program);
+    return status !== "inactive" && status !== "archived";
+  });
 
   list.innerHTML =
-    data.map(renderProgram).join("");
+    (activePrograms.length ? activePrograms : programs)
+      .map(renderProgram)
+      .join("");
 
   lucide.createIcons();
 }
