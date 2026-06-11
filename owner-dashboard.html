@@ -8,7 +8,9 @@
   <link rel="stylesheet" href="design-system.css" />
 
   <style>
-    body { padding: max(26px, env(safe-area-inset-top)) 20px 110px; }
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
+    }
 
     .dashboard {
       max-width: var(--content-width);
@@ -39,6 +41,7 @@
       font-size: var(--text-sm);
       font-weight: var(--font-heavy);
       color: var(--sage);
+      margin: 0;
     }
 
     .topbar h1 {
@@ -66,9 +69,6 @@
       font-weight: var(--font-heavy);
       flex-shrink: 0;
     }
-
-    .page { display: none; }
-    .page.active { display: block; }
 
     .hero {
       padding: 24px;
@@ -144,10 +144,7 @@
       letter-spacing: var(--tracking-tight);
     }
 
-    .section-head a,
-    .section-head button {
-      border: none;
-      background: transparent;
+    .section-head a {
       text-decoration: none;
       color: var(--sage);
       font-size: var(--text-sm);
@@ -218,204 +215,181 @@
 
 <body>
 
-  <main class="dashboard fade-in">
+<main class="dashboard fade-in">
 
-    <header class="topbar">
-      <div>
-        <div class="brand-row">
-          <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
-          <p class="eyebrow">Barkly Schools</p>
-        </div>
-
-        <h1>School<br />overview</h1>
-
-        <p class="topbar-copy" id="schoolSubtitle">
-          Manage programs, classes, people and school performance.
-        </p>
+  <header class="topbar">
+    <div>
+      <div class="brand-row">
+        <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+        <p class="eyebrow">Barkly Schools</p>
       </div>
 
-      <div class="avatar">LG</div>
-    </header>
+      <h1>School<br />overview</h1>
 
-    <section class="page active" id="home">
+      <p class="topbar-copy" id="schoolSubtitle">
+        Manage programs, classes, people and school performance.
+      </p>
+    </div>
 
-      <section class="hero hero-card lift-card">
-        <div class="hero-top">
-          <span class="pill hero-pill" id="schoolName">School</span>
-          <span class="hero-status" id="sessionsThisWeekText">0 sessions this week</span>
+    <div class="avatar">LG</div>
+  </header>
+
+  <section class="hero hero-card lift-card">
+    <div class="hero-top">
+      <span class="pill hero-pill" id="schoolName">Barkly Schools</span>
+      <span class="hero-status" id="sessionsThisWeekText">0 sessions this week</span>
+    </div>
+
+    <h2>Your school is live.</h2>
+
+    <p>
+      Programs, classes, enrolments and trainer activity are connected through Barkly Schools.
+    </p>
+  </section>
+
+  <div class="stats-grid">
+    <div class="stat-card glass-card lift-card">
+      <p>Active dogs</p>
+      <strong id="activeDogs">—</strong>
+    </div>
+
+    <div class="stat-card glass-card lift-card">
+      <p>Active classes</p>
+      <strong id="activeClasses">—</strong>
+    </div>
+
+    <div class="stat-card glass-card lift-card">
+      <p>Sessions this week</p>
+      <strong id="sessionsThisWeek">—</strong>
+    </div>
+
+    <div class="stat-card glass-card lift-card">
+      <p>Attendance</p>
+      <strong id="attendanceRate">—</strong>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h3>Manage</h3>
+    </div>
+
+    <div class="card-list">
+      <a href="owner-programs.html" class="owner-card glass-card lift-card">
+        <div class="card-icon"><i data-lucide="layers-3"></i></div>
+        <div>
+          <h4>Programs</h4>
+          <p>Create and manage training programs, classes, badges and homework.</p>
         </div>
+        <div class="row-status">Open</div>
+      </a>
 
-        <h2>Your school is live.</h2>
-
-        <p>
-          Programs, classes, enrolments and trainer activity are now connected through Supabase.
-        </p>
-      </section>
-
-      <div class="stats-grid">
-        <div class="stat-card glass-card lift-card">
-          <p>Active dogs</p>
-          <strong id="activeDogs">—</strong>
+      <a href="owner-dogs.html" class="owner-card glass-card lift-card">
+        <div class="card-icon"><i data-lucide="users"></i></div>
+        <div>
+          <h4>People</h4>
+          <p>Manage dogs, owners and trainer relationships.</p>
         </div>
+        <div class="row-status">Open</div>
+      </a>
 
-        <div class="stat-card glass-card lift-card">
-          <p>Active classes</p>
-          <strong id="activeClasses">—</strong>
+      <a href="owner-classes.html" class="owner-card glass-card lift-card">
+        <div class="card-icon"><i data-lucide="calendar-check"></i></div>
+        <div>
+          <h4>Classes</h4>
+          <p>Manage class groups, capacity, trainers and schedules.</p>
         </div>
+        <div class="row-status">Open</div>
+      </a>
+    </div>
+  </section>
 
-        <div class="stat-card glass-card lift-card">
-          <p>Sessions this week</p>
-          <strong id="sessionsThisWeek">—</strong>
+  <section id="school">
+    <div class="section-head">
+      <h3>School</h3>
+    </div>
+
+    <div class="card-list">
+      <a href="#" class="owner-card glass-card lift-card">
+        <div class="card-icon"><i data-lucide="badge-check"></i></div>
+        <div>
+          <h4>Badge templates</h4>
+          <p>Configure achievements that trainers can award.</p>
         </div>
+      </a>
 
-        <div class="stat-card glass-card lift-card">
-          <p>Attendance</p>
-          <strong id="attendanceRate">—</strong>
+      <a href="#" class="owner-card glass-card lift-card">
+        <div class="card-icon"><i data-lucide="clipboard-check"></i></div>
+        <div>
+          <h4>Homework templates</h4>
+          <p>Create reusable homework prompts for trainers.</p>
         </div>
-      </div>
+      </a>
 
-    </section>
-
-    <section class="page" id="programs">
-
-      <div class="section-head">
-        <h3>Programs</h3>
-        <a href="#">Add program</a>
-      </div>
-
-      <div class="card-list" id="programsList">
-        <div class="owner-card glass-card lift-card">
-          <div class="card-icon"><i data-lucide="loader"></i></div>
-          <div>
-            <h4>Loading programs</h4>
-            <p>Fetching live program data.</p>
-          </div>
+      <a href="#" class="owner-card glass-card lift-card">
+        <div class="card-icon"><i data-lucide="settings"></i></div>
+        <div>
+          <h4>School settings</h4>
+          <p>Branding, locations, users and portal configuration.</p>
         </div>
-      </div>
+      </a>
+    </div>
+  </section>
 
-    </section>
+</main>
 
-    <section class="page" id="people">
+<nav class="bottom-nav">
 
-      <div class="section-head">
-        <h3>People</h3>
-        <a href="#">Add person</a>
-      </div>
+  <a href="owner-dashboard.html" class="bottom-nav-item active">
+    <div class="bottom-nav-icon">
+      <i data-lucide="layout-dashboard"></i>
+    </div>
+    Home
+  </a>
 
-      <div class="card-list" id="peopleList">
-        <div class="owner-card glass-card lift-card">
-          <div class="card-icon"><i data-lucide="loader"></i></div>
-          <div>
-            <h4>Loading people</h4>
-            <p>Fetching dogs and owners.</p>
-          </div>
-        </div>
-      </div>
+  <a href="owner-programs.html" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="layers-3"></i>
+    </div>
+    Programs
+  </a>
 
-    </section>
+  <a href="owner-dogs.html" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="users"></i>
+    </div>
+    People
+  </a>
 
-    <section class="page" id="school">
+  <a href="owner-dashboard.html#school" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="building-2"></i>
+    </div>
+    School
+  </a>
 
-      <div class="section-head">
-        <h3>School</h3>
-      </div>
+</nav>
 
-      <div class="card-list">
-        <a href="classes.html?role=owner" class="owner-card glass-card lift-card">
-          <div class="card-icon"><i data-lucide="calendar-check"></i></div>
-          <div>
-            <h4>Classes</h4>
-            <p>Manage class groups, capacity, trainers and schedules.</p>
-          </div>
-        </a>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 
-        <a href="#" class="owner-card glass-card lift-card">
-          <div class="card-icon"><i data-lucide="badge-check"></i></div>
-          <div>
-            <h4>Badge templates</h4>
-            <p>Configure achievements that trainers can award.</p>
-          </div>
-        </a>
+<script>
+const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
 
-        <a href="#" class="owner-card glass-card lift-card">
-          <div class="card-icon"><i data-lucide="clipboard-check"></i></div>
-          <div>
-            <h4>Homework templates</h4>
-            <p>Create reusable homework prompts for trainers.</p>
-          </div>
-        </a>
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
 
-        <a href="#" class="owner-card glass-card lift-card">
-          <div class="card-icon"><i data-lucide="settings"></i></div>
-          <div>
-            <h4>School settings</h4>
-            <p>Branding, locations, users and portal configuration.</p>
-          </div>
-        </a>
-      </div>
-
-    </section>
-
-  </main>
-
-  <nav class="bottom-nav">
-
-    <a href="#" class="bottom-nav-item active" data-tab="home">
-      <div class="bottom-nav-icon"><i data-lucide="layout-dashboard"></i></div>
-      Home
-    </a>
-
-    <a href="#" class="bottom-nav-item" data-tab="programs">
-      <div class="bottom-nav-icon"><i data-lucide="layers-3"></i></div>
-      Programs
-    </a>
-
-    <a href="#" class="bottom-nav-item" data-tab="people">
-      <div class="bottom-nav-icon"><i data-lucide="users"></i></div>
-      People
-    </a>
-
-    <a href="#" class="bottom-nav-item" data-tab="school">
-      <div class="bottom-nav-icon"><i data-lucide="building-2"></i></div>
-      School
-    </a>
-
-  </nav>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script>
-    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
-
-    const SUPABASE_ANON_KEY =
+const REAL_SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const db = supabase.createClient(SUPABASE_URL, REAL_SUPABASE_ANON_KEY);
 
-    const navItems = document.querySelectorAll(".bottom-nav-item[data-tab]");
-    const pages = document.querySelectorAll(".page");
-    const tabLinks = document.querySelectorAll("[data-tab-link]");
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
 
-    function safe(value, fallback = "") {
-      return value ?? fallback;
-    }
-
-    function openTab(tab) {
-      navItems.forEach(item => {
-        item.classList.toggle("active", item.dataset.tab === tab);
-      });
-
-      pages.forEach(page => {
-        page.classList.toggle("active", page.id === tab);
-      });
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      lucide.createIcons();
-    }
-
-      async function loadOwnerDashboard() {
-
+async function loadOwnerDashboard() {
   const { data, error } = await db
     .from("owner_dashboard_metrics_view")
     .select("*")
@@ -423,139 +397,27 @@
 
   if (error) {
     console.error("Owner dashboard failed:", error);
+
+    setText("activeDogs", "0");
+    setText("activeClasses", "0");
+    setText("sessionsThisWeek", "0");
+    setText("sessionsThisWeekText", "0 sessions this week");
+    setText("attendanceRate", "0%");
+
     return;
   }
 
-  document.getElementById("activeDogs").textContent =
-    data.active_dogs ?? 0;
-
-  document.getElementById("activeClasses").textContent =
-    data.active_classes ?? 0;
-
-  document.getElementById("sessionsThisWeek").textContent =
-    data.sessions_this_week ?? 0;
-
-  document.getElementById("sessionsThisWeekText").textContent =
-    `${data.sessions_this_week ?? 0} sessions this week`;
-
-  document.getElementById("attendanceRate").textContent =
-    `${data.attendance_rate ?? 0}%`;
-
-  document.getElementById("schoolName").textContent =
-    "Barkly Schools";
-
-  document.getElementById("schoolSubtitle").textContent =
-    "Manage programs, classes, people and school performance.";
+  setText("activeDogs", data.active_dogs ?? 0);
+  setText("activeClasses", data.active_classes ?? 0);
+  setText("sessionsThisWeek", data.sessions_this_week ?? 0);
+  setText("sessionsThisWeekText", `${data.sessions_this_week ?? 0} sessions this week`);
+  setText("attendanceRate", `${data.attendance_rate ?? 0}%`);
+  setText("schoolName", "Barkly Schools");
 }
 
-    async function loadPrograms() {
-      const { data, error } = await db
-        .from("programs")
-        .select("id, name, description, status, sort_order")
-        .order("sort_order", { ascending: true });
-
-      const list = document.getElementById("programsList");
-
-      if (error) {
-        console.error("Programs failed:", error);
-        return;
-      }
-
-      list.innerHTML = "";
-
-      if (!data || data.length === 0) {
-        list.innerHTML = `
-          <div class="owner-card glass-card lift-card">
-            <div class="card-icon"><i data-lucide="layers-3"></i></div>
-            <div>
-              <h4>No programs yet</h4>
-              <p>Create your first training program.</p>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      data.forEach(program => {
-        list.innerHTML += `
-          <a href="program-detail.html?role=owner&program=${program.id}" class="owner-card glass-card lift-card">
-            <div class="card-icon"><i data-lucide="layers-3"></i></div>
-            <div>
-              <h4>${safe(program.name, "Program")}</h4>
-              <p>${safe(program.description, "Program configuration and class pathways.")}</p>
-            </div>
-            <div class="row-status">${safe(program.status, "active")}</div>
-          </a>
-        `;
-      });
-
-      lucide.createIcons();
-    }
-
-    async function loadPeople() {
-      const { data: dogs, error: dogError } = await db
-        .from("dogs")
-        .select("id, name, breed")
-        .order("name", { ascending: true })
-        .limit(8);
-
-      const list = document.getElementById("peopleList");
-
-      if (dogError) {
-        console.error("People failed:", dogError);
-        return;
-      }
-
-      list.innerHTML = "";
-
-      if (!dogs || dogs.length === 0) {
-        list.innerHTML = `
-          <div class="owner-card glass-card lift-card">
-            <div class="card-icon"><i data-lucide="users"></i></div>
-            <div>
-              <h4>No people yet</h4>
-              <p>Add owners and enrol dogs into classes.</p>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      dogs.forEach(dog => {
-        list.innerHTML += `
-          <a href="dog-detail.html?role=owner&dog=${dog.id}" class="owner-card glass-card lift-card">
-            <div class="card-icon"><i data-lucide="dog"></i></div>
-            <div>
-              <h4>${safe(dog.name, "Dog")}</h4>
-              <p>${safe(dog.breed, "Dog")} · enrolled learner</p>
-            </div>
-          </a>
-        `;
-      });
-
-      lucide.createIcons();
-    }
-
-    navItems.forEach(item => {
-      item.addEventListener("click", event => {
-        event.preventDefault();
-        openTab(item.dataset.tab);
-      });
-    });
-
-    tabLinks.forEach(link => {
-      link.addEventListener("click", event => {
-        event.preventDefault();
-        openTab(link.dataset.tabLink);
-      });
-    });
-
-    loadOwnerDashboard();
-    loadPrograms();
-    loadPeople();
-
-    lucide.createIcons();
-  </script>
+loadOwnerDashboard();
+lucide.createIcons();
+</script>
 
 </body>
 </html>
