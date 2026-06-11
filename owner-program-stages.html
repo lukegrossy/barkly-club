@@ -1,1 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Program Progression | Barkly Schools</title>
 
+  <link rel="stylesheet" href="design-system.css" />
+
+  <style>
+    body {
+      padding: max(26px, env(safe-area-inset-top)) 20px 110px;
+    }
+
+    .dashboard {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.72);
+      border: 1.5px solid var(--glass-border);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+      flex-shrink: 0;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--font-heavy);
+      color: var(--sage);
+      margin: 0;
+    }
+
+    .page-title {
+      font-size: var(--display-md);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+      line-height: 1.5;
+    }
+
+    .action-row {
+      margin-bottom: var(--space-lg);
+    }
+
+    .new-btn {
+      width: 100%;
+      height: 54px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      font-size: var(--text-md);
+      font-weight: var(--font-heavy);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .section-title {
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+
+    .stage-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+    }
+
+    .stage-number {
+      width: 46px;
+      height: 46px;
+      border-radius: var(--radius-pill);
+      background: rgba(138,166,143,.14);
+      color: var(--sage);
+      display: grid;
+      place-items: center;
+      font-weight: var(--font-heavy);
+      flex-shrink: 0;
+    }
+
+    .stage-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .stage-copy h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+      color: var(--navy);
+    }
+
+    .stage-copy p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .empty-card {
+      padding: 18px;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+    }
+
+    .empty-title {
+      font-weight: var(--font-heavy);
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,31,46,.28);
+      display: none;
+      align-items: flex-end;
+      z-index: 50;
+    }
+
+    .sheet-backdrop.open {
+      display: flex;
+    }
+
+    .sheet {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      background: var(--cream);
+      border-radius: 28px 28px 0 0;
+      padding: 22px 20px max(22px, env(safe-area-inset-bottom));
+      box-shadow: 0 -18px 60px rgba(15,31,46,.18);
+    }
+
+    .sheet h3 {
+      font-size: var(--text-xl);
+      margin-bottom: 8px;
+    }
+
+    .sheet p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: var(--text-xs);
+      font-weight: var(--font-heavy);
+      color: var(--text-secondary);
+      margin-bottom: 7px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      font: inherit;
+      background: rgba(255,255,255,.72);
+      color: var(--navy);
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .sheet-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .sheet-btn {
+      flex: 1;
+      height: 50px;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-weight: var(--font-heavy);
+      font-size: var(--text-sm);
+    }
+
+    .sheet-btn.primary {
+      background: var(--navy);
+      color: white;
+    }
+
+    .sheet-btn.secondary {
+      background: rgba(15,31,46,.06);
+      color: var(--navy);
+    }
+
+    .bottom-nav {
+      max-width: 540px;
+    }
+
+    .bottom-nav-item {
+      min-width: 62px;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="dashboard fade-in">
+
+  <div class="brand-row">
+    <button class="back-btn" id="backBtn" type="button">←</button>
+    <img src="assets/barkly-icon.png" alt="Barkly" class="header-icon" />
+    <p class="eyebrow">Barkly Schools</p>
+  </div>
+
+  <h1 class="page-title">Progression</h1>
+
+  <p class="page-subtitle" id="pageSubtitle">
+    Configure the stages dogs move through in this program.
+  </p>
+
+  <div class="action-row">
+    <button class="new-btn" type="button" onclick="openSheet()">
+      + Add Stage
+    </button>
+  </div>
+
+  <h3 class="section-title">Program stages</h3>
+
+  <div class="card-list" id="stageList">
+    <div class="empty-card glass-card">
+      Loading progression stages...
+    </div>
+  </div>
+
+</main>
+
+<nav class="bottom-nav">
+
+  <a href="owner-dashboard.html" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="layout-dashboard"></i>
+    </div>
+    Home
+  </a>
+
+  <a href="owner-programs.html" class="bottom-nav-item active">
+    <div class="bottom-nav-icon">
+      <i data-lucide="layers-3"></i>
+    </div>
+    Programs
+  </a>
+
+  <a href="owner-dogs.html" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="users"></i>
+    </div>
+    People
+  </a>
+
+  <a href="owner-dashboard.html#school" class="bottom-nav-item">
+    <div class="bottom-nav-icon">
+      <i data-lucide="building-2"></i>
+    </div>
+    School
+  </a>
+
+</nav>
+
+<div class="sheet-backdrop" id="stageSheet">
+  <div class="sheet">
+    <h3>Add stage</h3>
+    <p>Create a progression milestone for this program.</p>
+
+    <div class="field">
+      <label for="stageName">Stage name</label>
+      <input id="stageName" type="text" placeholder="e.g. Building Confidence" />
+    </div>
+
+    <div class="field">
+      <label for="stageDescription">Description</label>
+      <textarea id="stageDescription" placeholder="What this stage represents."></textarea>
+    </div>
+
+    <div class="sheet-actions">
+      <button class="sheet-btn secondary" type="button" onclick="closeSheet()">Cancel</button>
+      <button class="sheet-btn primary" type="button" onclick="createStage()">Save Stage</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+const SUPABASE_URL =
+  "https://woolaaiunapsaowheifj.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
+
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentProgram = null;
+let currentStages = [];
+
+function getParams() {
+  return new URLSearchParams(window.location.search);
+}
+
+function getProgramId() {
+  return getParams().get("program");
+}
+
+function safe(value, fallback = "") {
+  return value === null || value === undefined || value === "" ? fallback : value;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function openSheet() {
+  document.getElementById("stageSheet").classList.add("open");
+  setTimeout(() => document.getElementById("stageName").focus(), 120);
+}
+
+function closeSheet() {
+  document.getElementById("stageSheet").classList.remove("open");
+  document.getElementById("stageName").value = "";
+  document.getElementById("stageDescription").value = "";
+}
+
+function renderStages(stages) {
+  const list = document.getElementById("stageList");
+
+  if (!stages || stages.length === 0) {
+    list.innerHTML = `
+      <div class="empty-card glass-card">
+        <div class="empty-title">No stages yet</div>
+        Add the first progression stage for this program.
+      </div>
+    `;
+    lucide.createIcons();
+    return;
+  }
+
+  list.innerHTML = stages.map((stage, index) => `
+    <div class="stage-card glass-card lift-card">
+      <div class="stage-number">${index + 1}</div>
+      <div class="stage-copy">
+        <h4>${escapeHtml(safe(stage.name, "Stage"))}</h4>
+        <p>${escapeHtml(safe(stage.description, "No description added."))}</p>
+      </div>
+    </div>
+  `).join("");
+
+  lucide.createIcons();
+}
+
+async function loadProgramAndStages() {
+  const programId = getProgramId();
+
+  document.getElementById("backBtn").onclick = () => {
+    window.location.href = `owner-program-detail.html?program=${encodeURIComponent(programId || "")}`;
+  };
+
+  if (!programId) {
+    document.getElementById("pageSubtitle").textContent =
+      "Open this page from a program.";
+    renderStages([]);
+    return;
+  }
+
+  const { data: program, error: programError } = await db
+    .from("programs")
+    .select("*")
+    .eq("id", programId)
+    .single();
+
+  if (programError || !program) {
+    console.error("Program failed:", programError);
+    document.getElementById("pageSubtitle").textContent =
+      "Could not load the selected program.";
+    renderStages([]);
+    return;
+  }
+
+  currentProgram = program;
+
+  document.getElementById("pageSubtitle").textContent =
+    `Configure the progression pathway for ${safe(program.name, "this program")}.`;
+
+  const { data: stages, error: stagesError } = await db
+    .from("program_stages")
+    .select("*")
+    .eq("program_id", programId)
+    .order("sort_order", { ascending: true });
+
+  if (stagesError) {
+    console.error("Stages failed:", stagesError);
+    document.getElementById("stageList").innerHTML = `
+      <div class="empty-card glass-card">
+        <div class="empty-title">Could not load stages</div>
+        Check that program_stages is readable in Supabase.
+      </div>
+    `;
+    lucide.createIcons();
+    return;
+  }
+
+  currentStages = stages || [];
+  renderStages(currentStages);
+}
+
+async function createStage() {
+  const programId = getProgramId();
+  const name = document.getElementById("stageName").value.trim();
+  const description = document.getElementById("stageDescription").value.trim();
+
+  if (!programId || !currentProgram) {
+    alert("Program not loaded.");
+    return;
+  }
+
+  if (!name) {
+    alert("Add a stage name.");
+    return;
+  }
+
+  const nextSortOrder =
+    currentStages.length > 0
+      ? Math.max(...currentStages.map(stage => Number(stage.sort_order || 0))) + 1
+      : 1;
+
+  const payload = {
+    school_id: currentProgram.school_id,
+    program_id: programId,
+    name,
+    description,
+    sort_order: nextSortOrder
+  };
+
+  const { error } = await db
+    .from("program_stages")
+    .insert(payload);
+
+  if (error) {
+    console.error("Create stage failed:", error);
+    alert("Could not save stage. Check Supabase permissions.");
+    return;
+  }
+
+  closeSheet();
+  await loadProgramAndStages();
+}
+
+document.getElementById("stageSheet").addEventListener("click", event => {
+  if (event.target.id === "stageSheet") {
+    closeSheet();
+  }
+});
+
+loadProgramAndStages();
+lucide.createIcons();
+</script>
+
+</body>
+</html>
