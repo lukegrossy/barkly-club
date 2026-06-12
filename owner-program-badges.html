@@ -84,6 +84,13 @@
       margin-bottom: var(--space-sm);
     }
 
+    .section-note {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.45;
+      margin: -4px 0 var(--space-sm);
+    }
+
     .card-list {
       display: flex;
       flex-direction: column;
@@ -125,12 +132,29 @@
     .badge-copy h4 {
       font-size: 16px;
       margin-bottom: 4px;
+      color: var(--navy);
     }
 
     .badge-copy p {
       font-size: var(--text-sm);
       color: var(--text-secondary);
       line-height: 1.4;
+    }
+
+    .badge-meta {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .mini-pill {
+      padding: 5px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(15,31,46,.05);
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: var(--font-heavy);
     }
 
     .status-pill {
@@ -157,6 +181,102 @@
       line-height: 1.5;
     }
 
+    .empty-title {
+      font-weight: var(--font-heavy);
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,31,46,.28);
+      display: none;
+      align-items: flex-end;
+      z-index: 50;
+    }
+
+    .sheet-backdrop.open {
+      display: flex;
+    }
+
+    .sheet {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      background: var(--cream);
+      border-radius: 28px 28px 0 0;
+      padding: 22px 20px max(22px, env(safe-area-inset-bottom));
+      box-shadow: 0 -18px 60px rgba(15,31,46,.18);
+    }
+
+    .sheet h3 {
+      font-size: var(--text-xl);
+      margin-bottom: 8px;
+    }
+
+    .sheet p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: var(--text-xs);
+      font-weight: var(--font-heavy);
+      color: var(--text-secondary);
+      margin-bottom: 7px;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      font: inherit;
+      background: rgba(255,255,255,.72);
+      color: var(--navy);
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .sheet-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .sheet-btn {
+      flex: 1;
+      height: 50px;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-weight: var(--font-heavy);
+      font-size: var(--text-sm);
+    }
+
+    .sheet-btn.primary {
+      background: var(--navy);
+      color: white;
+    }
+
+    .sheet-btn.secondary {
+      background: rgba(15,31,46,.06);
+      color: var(--navy);
+    }
+
     .bottom-nav {
       max-width: 540px;
     }
@@ -177,23 +297,37 @@
     <p class="eyebrow">Barkly Schools</p>
   </div>
 
-  <h1 class="page-title" id="pageTitle">Badge Templates</h1>
+  <h1 class="page-title" id="pageTitle">Badges</h1>
 
   <p class="page-subtitle" id="pageSubtitle">
     Achievements trainers can award during this program.
   </p>
 
   <div class="action-row">
-    <button class="new-btn" type="button" onclick="alert('New badge template coming soon.')">
+    <button class="new-btn" type="button" onclick="openBadgeSheet()">
       + New Badge Template
     </button>
   </div>
 
-  <h3 class="section-title">Templates</h3>
+  <h3 class="section-title">Program badges</h3>
+  <p class="section-note">
+    Badges created specifically for this program.
+  </p>
 
-  <div class="card-list" id="badgeList">
+  <div class="card-list" id="programBadgeList">
     <div class="empty-card glass-card">
-      Loading badge templates...
+      Loading program badges...
+    </div>
+  </div>
+
+  <h3 class="section-title">School badge library</h3>
+  <p class="section-note">
+    Shared school-wide badges available across programs.
+  </p>
+
+  <div class="card-list" id="schoolBadgeList">
+    <div class="empty-card glass-card">
+      Loading school badge library...
     </div>
   </div>
 
@@ -231,7 +365,52 @@
 
 </nav>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<div class="sheet-backdrop" id="badgeSheet">
+  <div class="sheet">
+    <h3>New badge template</h3>
+    <p>Create an achievement trainers can award in this program.</p>
+
+    <div class="field">
+      <label for="badgeName">Badge name</label>
+      <input id="badgeName" type="text" placeholder="e.g. Calm Energy" />
+    </div>
+
+    <div class="field">
+      <label for="badgeDescription">Description</label>
+      <textarea id="badgeDescription" placeholder="What this badge is awarded for."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="badgeIcon">Icon</label>
+      <select id="badgeIcon">
+        <option value="badge-check">Badge</option>
+        <option value="sparkles">Sparkles</option>
+        <option value="star">Star</option>
+        <option value="radio">Recall</option>
+        <option value="footprints">Footprints</option>
+        <option value="leaf">Calm</option>
+        <option value="target">Focus</option>
+        <option value="graduation-cap">Graduate</option>
+        <option value="heart">Heart</option>
+        <option value="shield-check">Shield</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="badgeStage">Program stage</label>
+      <select id="badgeStage">
+        <option value="">No specific stage</option>
+      </select>
+    </div>
+
+    <div class="sheet-actions">
+      <button class="sheet-btn secondary" type="button" onclick="closeBadgeSheet()">Cancel</button>
+      <button class="sheet-btn primary" type="button" onclick="createBadgeTemplate()">Save Badge</button>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <script>
@@ -241,9 +420,15 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
 
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
 let currentProgram = null;
+let currentStages = [];
+let currentProgramBadges = [];
+let currentSchoolBadges = [];
 
 function getParams() {
   return new URLSearchParams(window.location.search);
@@ -255,6 +440,15 @@ function getProgramId() {
 
 function safe(value, fallback = "") {
   return value ?? fallback;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function badgeIcon(name, icon) {
@@ -272,59 +466,166 @@ function badgeIcon(name, icon) {
     case "Graduate":
       return "badge-check";
     case "Off Leash Ready":
-      return "lock";
+      return "shield-check";
     default:
       return "badge-check";
   }
 }
 
 function renderBadgeTemplate(template) {
-  const name = safe(template.name, "Badge template");
-  const description = safe(template.description, "Badge description to be added.");
-  const icon = badgeIcon(name, template.icon);
-  const isActive = template.is_active !== false;
+
+  const name =
+    escapeHtml(
+      safe(template.name, "Badge")
+    );
+
+  const description =
+    escapeHtml(
+      safe(
+        template.description,
+        "Badge description to be added."
+      )
+    );
+
+  const icon =
+    badgeIcon(template.name, template.icon);
+
+  const isActive =
+    template.is_active !== false;
+
+  const stage =
+    currentStages.find(
+      stage => stage.id === template.stage_id
+    );
 
   return `
     <div class="badge-template-card glass-card lift-card">
+
       <div class="badge-icon">
         <i data-lucide="${icon}"></i>
       </div>
 
       <div class="badge-copy">
+
         <h4>${name}</h4>
+
         <p>${description}</p>
+
+        <div class="badge-meta">
+
+          ${
+            stage
+              ? `
+                <div class="mini-pill">
+                  ${escapeHtml(stage.name)}
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            template.program_id
+              ? `
+                <div class="mini-pill">
+                  Program
+                </div>
+              `
+              : `
+                <div class="mini-pill">
+                  School
+                </div>
+              `
+          }
+
+        </div>
+
       </div>
 
       <div class="status-pill ${isActive ? "" : "inactive"}">
         ${isActive ? "Active" : "Inactive"}
       </div>
+
     </div>
   `;
 }
 
+function openBadgeSheet() {
+  document
+    .getElementById("badgeSheet")
+    .classList.add("open");
+
+  setTimeout(() => {
+    document
+      .getElementById("badgeName")
+      .focus();
+  }, 120);
+}
+
+function closeBadgeSheet() {
+
+  document
+    .getElementById("badgeSheet")
+    .classList.remove("open");
+
+  document.getElementById("badgeName").value = "";
+  document.getElementById("badgeDescription").value = "";
+  document.getElementById("badgeIcon").value = "badge-check";
+  document.getElementById("badgeStage").value = "";
+}
+
+async function loadStages(programId) {
+
+  const { data, error } = await db
+    .from("program_stages")
+    .select("*")
+    .eq("program_id", programId)
+    .order("sort_order", {
+      ascending: true
+    });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  currentStages = data || [];
+
+  const select =
+    document.getElementById("badgeStage");
+
+  select.innerHTML = `
+    <option value="">
+      No specific stage
+    </option>
+    ${
+      currentStages.map(stage => `
+        <option value="${stage.id}">
+          ${escapeHtml(stage.name)}
+        </option>
+      `).join("")
+    }
+  `;
+}
+
 async function loadProgram() {
+
   const programId = getProgramId();
 
-  document.getElementById("backBtn").onclick = () => {
-    if (programId) {
-      window.location = `owner-program-detail.html?program=${programId}`;
-      return;
-    }
-
-    window.location = "owner-programs.html";
-  };
+  document.getElementById("backBtn").onclick =
+    () => {
+      window.location =
+        `owner-program-detail.html?program=${programId}`;
+    };
 
   if (!programId) {
-    document.getElementById("pageTitle").textContent =
-      "Badge Templates";
 
-    document.getElementById("pageSubtitle").textContent =
-      "Open this page from a program.";
+    document.getElementById("programBadgeList").innerHTML =
+      `
+      <div class="empty-card glass-card">
+        No program selected.
+      </div>
+      `;
 
-    document.getElementById("badgeList").innerHTML =
-      `<div class="empty-card glass-card">No program was selected.</div>`;
-
-    lucide.createIcons();
     return;
   }
 
@@ -335,18 +636,14 @@ async function loadProgram() {
     .single();
 
   if (error || !program) {
-    console.error("Program failed:", error);
 
-    document.getElementById("pageTitle").textContent =
-      "Badge Templates";
+    document.getElementById("programBadgeList").innerHTML =
+      `
+      <div class="empty-card glass-card">
+        Program not found.
+      </div>
+      `;
 
-    document.getElementById("pageSubtitle").textContent =
-      "Could not load this program.";
-
-    document.getElementById("badgeList").innerHTML =
-      `<div class="empty-card glass-card">Program not found.</div>`;
-
-    lucide.createIcons();
     return;
   }
 
@@ -358,45 +655,169 @@ async function loadProgram() {
   document.getElementById("pageSubtitle").textContent =
     `${program.name}: achievements trainers can award.`;
 
-  await loadBadges(program.school_id);
+  await loadStages(programId);
 
-  lucide.createIcons();
+  await loadBadges(
+    program.id,
+    program.school_id
+  );
 }
 
-async function loadBadges(schoolId) {
-  const list = document.getElementById("badgeList");
+async function loadBadges(programId, schoolId) {
 
   const { data, error } = await db
     .from("badge_templates")
     .select("*")
     .eq("school_id", schoolId)
-    .order("sort_order", { ascending: true });
+    .order("sort_order", {
+      ascending: true
+    });
 
   if (error) {
-    console.error("Badge templates failed:", error);
+    console.error(error);
 
-    list.innerHTML =
-      `<div class="empty-card glass-card">Could not load badge templates.</div>`;
+    document.getElementById("programBadgeList").innerHTML =
+      `
+      <div class="empty-card glass-card">
+        Could not load badges.
+      </div>
+      `;
 
-    lucide.createIcons();
     return;
   }
 
-  if (!data || data.length === 0) {
-    list.innerHTML =
-      `<div class="empty-card glass-card">No badge templates created yet.</div>`;
+  currentProgramBadges =
+    (data || []).filter(
+      badge => badge.program_id === programId
+    );
 
-    lucide.createIcons();
-    return;
-  }
+  currentSchoolBadges =
+    (data || []).filter(
+      badge => !badge.program_id
+    );
 
-  list.innerHTML =
-    data.map(renderBadgeTemplate).join("");
+  document.getElementById("programBadgeList").innerHTML =
+    currentProgramBadges.length
+      ? currentProgramBadges
+          .map(renderBadgeTemplate)
+          .join("")
+      : `
+        <div class="empty-card glass-card">
+          <div class="empty-title">
+            No program badges yet
+          </div>
+
+          Create badges specific to this program.
+        </div>
+      `;
+
+  document.getElementById("schoolBadgeList").innerHTML =
+    currentSchoolBadges.length
+      ? currentSchoolBadges
+          .map(renderBadgeTemplate)
+          .join("")
+      : `
+        <div class="empty-card glass-card">
+          <div class="empty-title">
+            No school badge library
+          </div>
+
+          Create school-wide badges.
+        </div>
+      `;
 
   lucide.createIcons();
 }
 
+async function createBadgeTemplate() {
+
+  if (!currentProgram) {
+    return;
+  }
+
+  const name =
+    document
+      .getElementById("badgeName")
+      .value
+      .trim();
+
+  const description =
+    document
+      .getElementById("badgeDescription")
+      .value
+      .trim();
+
+  const icon =
+    document
+      .getElementById("badgeIcon")
+      .value;
+
+  const stageId =
+    document
+      .getElementById("badgeStage")
+      .value || null;
+
+  if (!name) {
+    alert("Enter a badge name.");
+    return;
+  }
+
+  const nextSortOrder =
+    currentProgramBadges.length > 0
+      ? Math.max(
+          ...currentProgramBadges.map(
+            badge =>
+              Number(
+                badge.sort_order || 0
+              )
+          )
+        ) + 1
+      : 1;
+
+  const payload = {
+    school_id: currentProgram.school_id,
+    program_id: currentProgram.id,
+    stage_id: stageId,
+    name,
+    description,
+    icon,
+    sort_order: nextSortOrder,
+    is_active: true
+  };
+
+  const { error } = await db
+    .from("badge_templates")
+    .insert(payload);
+
+  if (error) {
+    console.error(error);
+    alert(
+      "Could not save badge template."
+    );
+    return;
+  }
+
+  closeBadgeSheet();
+
+  await loadBadges(
+    currentProgram.id,
+    currentProgram.school_id
+  );
+}
+
+document
+  .getElementById("badgeSheet")
+  .addEventListener("click", event => {
+
+    if (
+      event.target.id === "badgeSheet"
+    ) {
+      closeBadgeSheet();
+    }
+  });
+
 loadProgram();
+
 lucide.createIcons();
 </script>
 
