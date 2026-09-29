@@ -174,7 +174,7 @@
 
     <header class="topbar">
       <div class="brand-row">
-        <button class="back-btn" onclick="window.location='class-detail.html'">
+        <button class="back-btn" id="backBtn" type="button">
           <i data-lucide="arrow-left"></i>
         </button>
 
@@ -223,15 +223,15 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="auth.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
-    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
-
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
-
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const db = BarklyAuth.db;
+    const classId = new URLSearchParams(location.search).get("class");
+    document.getElementById("backBtn").onclick = () => {
+      location.href = classId ? "owner-class-detail.html?class=" + encodeURIComponent(classId) : "owner-classes.html";
+    };
 
     let currentClass = null;
     let enrolledDogs = [];
@@ -240,16 +240,25 @@
     function safe(value, fallback = "") {
       return value ?? fallback;
     }
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+    }
 
     async function loadClass() {
+      if (!classId) {
+        document.getElementById("classSubtitle").textContent = "Choose a class from Classes.";
+        return;
+      }
       const { data, error } = await db
         .from("owner_class_detail_view")
         .select("*")
-        .limit(1)
-        .single();
+        .eq("class_id", classId)
+        .maybeSingle();
 
-      if (error) {
+      if (error || !data) {
         console.error("Class load failed:", error);
+        document.getElementById("classSubtitle").textContent = "Class unavailable.";
         return;
       }
 
@@ -267,7 +276,7 @@
       const { data: enrolments, error: enrolmentError } = await db
         .from("class_enrolments")
         .select("id, dog_id, status, dogs(id, name, breed)")
-        .eq("class_id", currentClass.class_id)
+        .eq("class_id", classId)
         .eq("status", "active");
 
       if (enrolmentError) {
@@ -319,8 +328,8 @@
           </div>
 
           <div class="dog-copy">
-            <h4>${dog.name}</h4>
-            <p>${dog.breed}</p>
+            <h4>${escapeHtml(dog.name)}</h4>
+            <p>${escapeHtml(dog.breed)}</p>
           </div>
 
           <button
@@ -349,6 +358,7 @@
         enrolledDogs.map(dog => dog.dog_id)
       );
 
+      const full = enrolledDogs.length >= Number(currentClass.capacity);
       const available = allDogs
         .filter(dog => !enrolledIds.has(dog.id))
         .filter(dog => {
@@ -372,13 +382,14 @@
           </div>
 
           <div class="dog-copy">
-            <h4>${dog.name}</h4>
-            <p>${dog.breed || "Dog"}</p>
+            <h4>${escapeHtml(dog.name)}</h4>
+            <p>${escapeHtml(dog.breed || "Dog")}</p>
           </div>
 
           <button
             class="small-btn add-btn"
             data-dog-id="${dog.id}"
+            ${full ? "disabled title=\"Class is full\"" : ""}
           >
             Add
           </button>
@@ -396,12 +407,22 @@
 
     async function addDog(dogId) {
       if (!currentClass) return;
+      if (enrolledDogs.length >= Number(currentClass.capacity)) {
+        alert("This class is full.");
+        return;
+      }
+      const { data: previous, error: previousError } = await db.from("class_enrolments")
+        .select("id").eq("class_id", classId).eq("dog_id", dogId).maybeSingle();
+      if (previousError) {
+        alert("Could not check this enrolment.");
+        return;
+      }
 
-      const { error } = await db
-        .from("class_enrolments")
-        .insert({
+      const { error } = previous
+        ? await db.from("class_enrolments").update({ status: "active" }).eq("id", previous.id)
+        : await db.from("class_enrolments").insert({
           school_id: currentClass.school_id,
-          class_id: currentClass.class_id,
+          class_id: classId,
           dog_id: dogId,
           status: "active",
           enrolled_at: new Date().toISOString()
@@ -409,7 +430,7 @@
 
       if (error) {
         console.error("Add dog failed:", error);
-        alert("Could not add dog.");
+        alert(error.message?.includes("Class is full") ? "This class is full." : "Could not add dog.");
         return;
       }
 
@@ -422,7 +443,7 @@
         .update({
           status: "inactive"
         })
-        .eq("id", enrolmentId);
+        .eq("id", enrolmentId).eq("class_id", classId);
 
       if (error) {
         console.error("Remove dog failed:", error);

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Create class | Barkly Schools</title>
+  <link rel="stylesheet" href="design-system.css" />
+  <style>
+    body { padding: max(26px, env(safe-area-inset-top)) 20px 100px; }
+    main { max-width: var(--content-width); margin: auto; }
+    .back { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 24px; color: var(--navy); text-decoration: none; font-weight: var(--font-heavy); }
+    h1 { font-size: var(--display-md); margin-bottom: 10px; }
+    .intro { color: var(--text-secondary); line-height: 1.5; margin-bottom: 24px; }
+    form { padding: 22px; }
+    label { display: block; margin-bottom: 18px; font-weight: var(--font-heavy); }
+    input, select { display: block; width: 100%; min-height: 50px; margin-top: 8px; padding: 12px; border: 1px solid var(--glass-border); border-radius: var(--radius-md); background: white; color: var(--navy); font: inherit; }
+    button { width: 100%; min-height: 54px; border: 0; border-radius: var(--radius-pill); background: var(--navy); color: white; font: inherit; font-weight: var(--font-heavy); }
+    button:disabled { opacity: .5; }
+    .message { min-height: 1.5em; margin: 12px 0 0; color: #9a3030; }
+  </style>
+</head>
+<body>
+  <main class="fade-in">
+    <a class="back" href="owner-classes.html">← Classes</a>
+    <h1>Create a class</h1>
+    <p class="intro">Set up the group, then add its session dates and enrol dogs.</p>
+    <form class="glass-card" id="classForm">
+      <label>School<select id="school" required></select></label>
+      <label>Program<select id="program" required></select></label>
+      <label>Class name<input id="name" required maxlength="120" placeholder="Saturday Puppy Foundations" /></label>
+      <label>Location<input id="locationField" maxlength="160" placeholder="Training room or park" /></label>
+      <label>Capacity<input id="capacity" required type="number" min="1" max="100" value="10" /></label>
+      <label>Start date<input id="startDate" required type="date" /></label>
+      <label>Trainer<select id="trainer"><option value="">Assign later</option></select></label>
+      <button id="submit" type="submit">Create class</button>
+      <p class="message" id="message" role="alert"></p>
+    </form>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    const db = BarklyAuth.db;
+    const school = document.getElementById("school");
+    const program = document.getElementById("program");
+    const trainer = document.getElementById("trainer");
+    const message = document.getElementById("message");
+    const form = document.getElementById("classForm");
+    let ownerSchools = [];
+
+    async function loadSchoolOptions() {
+      const account = await BarklyAuth.roles();
+      ownerSchools = account.roles.filter(item => item.role === "owner").map(item => item.school_id);
+      if (!ownerSchools.length) return;
+      const { data, error } = await db.from("schools").select("id, name").in("id", ownerSchools).order("name");
+      if (error) throw error;
+      school.replaceChildren(...(data || []).map(item => new Option(item.name, item.id)));
+      await loadRelated();
+    }
+
+    async function loadRelated() {
+      const schoolId = school.value;
+      const [programsResult, membersResult] = await Promise.all([
+        db.from("programs").select("id, name").eq("school_id", schoolId).order("name"),
+        db.from("school_members").select("user_id").eq("school_id", schoolId).eq("role", "trainer").eq("status", "active")
+      ]);
+      if (programsResult.error || membersResult.error) throw programsResult.error || membersResult.error;
+      program.replaceChildren(new Option("Choose a program", ""), ...(programsResult.data || []).map(item => new Option(item.name, item.id)));
+      trainer.replaceChildren(new Option("Assign later", ""));
+      const ids = (membersResult.data || []).map(item => item.user_id);
+      if (ids.length) {
+        const { data, error } = await db.from("profiles").select("id, full_name, email").in("id", ids);
+        if (error) throw error;
+        (data || []).forEach(item => trainer.add(new Option(item.full_name || item.email || "Trainer", item.id)));
+      }
+    }
+
+    school.addEventListener("change", () => loadRelated().catch(() => { message.textContent = "Could not load school options."; }));
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      const button = document.getElementById("submit");
+      button.disabled = true;
+      message.textContent = "";
+      const schoolId = school.value;
+      if (!ownerSchools.includes(schoolId)) { button.disabled = false; return; }
+      const { data, error } = await db.from("classes").insert({
+        school_id: schoolId,
+        program_id: program.value,
+        name: document.getElementById("name").value.trim(),
+        location: document.getElementById("locationField").value.trim() || null,
+        capacity: Number(document.getElementById("capacity").value),
+        start_date: document.getElementById("startDate").value,
+        trainer_id: trainer.value || null,
+        status: "active"
+      }).select("id").single();
+      button.disabled = false;
+      if (error) { console.error(error); message.textContent = "Could not create this class. Check the details and try again."; return; }
+      location.href = "owner-class-detail.html?class=" + encodeURIComponent(data.id);
+    });
+    loadSchoolOptions().catch(error => { console.error(error); message.textContent = "Could not load your school. Please reload."; });
+  </script>
+</body>
+</html>

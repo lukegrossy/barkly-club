@@ -34,17 +34,19 @@
         <h1>Create your account</h1>
 
         <p>
-          Start remembering the dogs you meet.
+          Join your puppy school. Your school will connect your account to your role.
         </p>
       </div>
 
-      <form class="auth-form">
+      <form class="auth-form" id="signupForm">
 
         <label>
           Email
 
           <input
             type="email"
+            name="email"
+            required
             placeholder="you@example.com"
             autocomplete="email"
           />
@@ -55,6 +57,9 @@
 
           <input
             type="password"
+            name="password"
+            required
+            minlength="8"
             placeholder="Create a password"
             autocomplete="new-password"
           />
@@ -65,6 +70,7 @@
         </button>
 
       </form>
+      <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
 
       <p class="auth-switch">
         Already have an account?
@@ -75,6 +81,7 @@
 
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="app.js"></script>
 
 </body>

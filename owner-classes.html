@@ -165,6 +165,18 @@
     .bottom-nav-item {
       min-width: 62px;
     }
+    .new-class {
+      display: block;
+      width: 100%;
+      margin: 0 0 var(--space-lg);
+      padding: 16px;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-weight: var(--font-heavy);
+    }
   </style>
 </head>
 
@@ -188,6 +200,8 @@
         View active class groups, enrolments and attendance.
       </p>
     </header>
+
+    <a class="new-class" href="owner-class-new.html">+ Create class</a>
 
     <input
       class="search"
@@ -243,6 +257,7 @@
   </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="auth.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
@@ -257,6 +272,10 @@
 
     function safe(value, fallback = "") {
       return value ?? fallback;
+    }
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
     }
 
     async function loadClasses() {
@@ -317,11 +336,11 @@
             </div>
 
             <div class="class-copy">
-              <h4>${safe(classItem.class_name, "Class")}</h4>
+              <h4>${escapeHtml(safe(classItem.class_name, "Class"))}</h4>
               <p>
-                ${safe(classItem.location, "Location")}
+                ${escapeHtml(safe(classItem.location, "Location"))}
                 ·
-                ${safe(classItem.program_name, "Program")}
+                ${escapeHtml(safe(classItem.program_name, "Program"))}
                 ·
                 ${enrolled}/${capacity} enrolled
                 ·
@@ -330,7 +349,7 @@
             </div>
 
             <span class="status-pill">
-              ${safe(classItem.status, "active")}
+              ${escapeHtml(safe(classItem.status, "active"))}
             </span>
 
           </a>

@@ -228,6 +228,16 @@
       box-shadow: var(--shadow-card);
       pointer-events: auto;
     }
+    .manage-card { padding: 18px; margin-bottom: var(--space-xl); }
+    .manage-card h3 { margin-bottom: 12px; }
+    .manage-card label { display: block; margin: 12px 0; font-weight: var(--font-heavy); }
+    .manage-card input, .manage-card select { display: block; width: 100%; min-height: 48px; padding: 10px; margin-top: 7px; border: 1px solid var(--glass-border); border-radius: var(--radius-md); background: white; font: inherit; }
+    .manage-card button { border: 0; border-radius: var(--radius-pill); background: var(--navy); color: white; padding: 13px 20px; font: inherit; font-weight: var(--font-heavy); }
+    .manage-card button:disabled { opacity: .5; }
+    .manage-card p { color: var(--text-secondary); line-height: 1.5; }
+    .manage-card .message { min-height: 1.5em; color: #9a3030; }
+    .session-row { padding: 14px 0; border-top: 1px solid var(--glass-border); }
+    .session-row strong { display: block; }
   </style>
 </head>
 
@@ -344,11 +354,11 @@
 
           <div class="detail-copy">
             <h4>Trainer</h4>
-            <p>Sarah Thompson · 3 active classes</p>
+            <p id="trainerName">Loading trainer...</p>
           </div>
         </div>
 
-        <a href="owner-class-enrolments.html" class="detail-card glass-card lift-card">
+        <a id="enrolmentsLink" href="owner-classes.html" class="detail-card glass-card lift-card">
           <div class="card-icon">
             <i data-lucide="dog"></i>
           </div>
@@ -361,7 +371,7 @@
           <div class="row-status">Manage</div>
         </a>
 
-        <a href="dog-sessions.html" class="detail-card glass-card lift-card">
+        <a href="#sessions" class="detail-card glass-card lift-card">
           <div class="card-icon">
             <i data-lucide="calendar-check"></i>
           </div>
@@ -375,44 +385,70 @@
         </a>
       </div>
     </section>
+    <section class="manage-card glass-card">
+      <h3>Assign a trainer</h3>
+      <label>Trainer<select id="trainerSelect"><option value="">Unassigned</option></select></label>
+      <button id="saveTrainer" type="button" disabled>Save trainer</button>
+      <p class="message" id="trainerMessage" role="status"></p>
+    </section>
+    <section class="manage-card glass-card" id="sessions">
+      <h3>Sessions</h3>
+      <div id="sessionList"><p>Loading sessions...</p></div>
+      <form id="sessionForm">
+        <label>Start date and time<input id="sessionStart" type="datetime-local" required /></label>
+        <label>Length (minutes)<input id="sessionLength" type="number" min="15" max="480" step="15" value="60" required /></label>
+        <button type="submit">Add session</button>
+        <p class="message" id="sessionMessage" role="status"></p>
+      </form>
+    </section>
 
   </main>
 
   <div class="cta-wrap">
     <button
       class="cta"
-      onclick="window.location='owner-class-enrolments.html'"
+      id="manageEnrolments"
+      disabled
     >
       Manage enrolments
     </button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="auth.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
-    const SUPABASE_URL = "https://woolaaiunapsaowheifj.supabase.co";
-
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc";
-
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const db = BarklyAuth.db;
+    const classId = new URLSearchParams(location.search).get("class");
+    let currentClass;
 
     function safe(value, fallback = "") {
       return value ?? fallback;
     }
 
     async function loadClass() {
+      if (!classId) {
+        document.getElementById("className").textContent = "Choose a class from Classes";
+        return;
+      }
       const { data, error } = await db
         .from("owner_class_full_detail_view")
         .select("*")
-        .limit(1)
-        .single();
+        .eq("class_id", classId)
+        .maybeSingle();
 
-      if (error) {
+      if (error || !data) {
         console.error("Class detail failed:", error);
+        document.getElementById("className").textContent = "Class unavailable";
         return;
       }
+      currentClass = data;
+      const enrolmentsUrl = "owner-class-enrolments.html?class=" + encodeURIComponent(classId);
+      document.getElementById("enrolmentsLink").href = enrolmentsUrl;
+      const manage = document.getElementById("manageEnrolments");
+      manage.disabled = false;
+      manage.onclick = () => { location.href = enrolmentsUrl; };
 
       const capacity = Number(data.capacity || 0);
       const enrolled = Number(data.enrolled_dogs || 0);
@@ -464,8 +500,98 @@
           ? "1 session recorded for this class."
           : `${sessionsRun} sessions recorded for this class.`;
 
+      await Promise.all([loadTrainers(), loadSessions()]);
       lucide.createIcons();
     }
+
+    async function loadTrainers() {
+      const [classResult, membersResult] = await Promise.all([
+        db.from("classes").select("trainer_id").eq("id", classId).single(),
+        db.from("school_members").select("user_id").eq("school_id", currentClass.school_id)
+          .eq("role", "trainer").eq("status", "active")
+      ]);
+      if (classResult.error || membersResult.error) {
+        document.getElementById("trainerMessage").textContent = "Could not load trainers.";
+        return;
+      }
+      const select = document.getElementById("trainerSelect");
+      select.replaceChildren(new Option("Unassigned", ""));
+      const ids = (membersResult.data || []).map(item => item.user_id);
+      if (ids.length) {
+        const { data, error } = await db.from("profiles").select("id, full_name, email").in("id", ids);
+        if (error) {
+          document.getElementById("trainerMessage").textContent = "Could not load trainers.";
+          return;
+        }
+        (data || []).forEach(item =>
+          select.add(new Option(item.full_name || item.email || "Trainer", item.id)));
+      }
+      select.value = classResult.data.trainer_id || "";
+      document.getElementById("trainerName").textContent = select.selectedOptions[0]?.textContent || "Unassigned";
+      document.getElementById("saveTrainer").disabled = false;
+    }
+
+    document.getElementById("saveTrainer").addEventListener("click", async () => {
+      const button = document.getElementById("saveTrainer");
+      const select = document.getElementById("trainerSelect");
+      button.disabled = true;
+      const { error } = await db.from("classes")
+        .update({ trainer_id: select.value || null }).eq("id", classId);
+      button.disabled = false;
+      document.getElementById("trainerMessage").textContent =
+        error ? "Could not save trainer." : "Trainer saved.";
+      if (!error) document.getElementById("trainerName").textContent =
+        select.selectedOptions[0]?.textContent || "Unassigned";
+    });
+
+    async function loadSessions() {
+      const list = document.getElementById("sessionList");
+      const { data, error } = await db.from("sessions")
+        .select("id, starts_at, ends_at, status").eq("class_id", classId)
+        .order("starts_at", { ascending: true });
+      if (error) { list.textContent = "Could not load sessions."; return; }
+      list.replaceChildren();
+      if (!data?.length) { list.textContent = "No sessions scheduled yet."; return; }
+      data.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "session-row";
+        const title = document.createElement("strong");
+        title.textContent = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" })
+          .format(new Date(item.starts_at));
+        const detail = document.createElement("p");
+        detail.textContent = (item.status || "Scheduled") + " · " +
+          Math.round((new Date(item.ends_at) - new Date(item.starts_at)) / 60000) + " minutes";
+        row.append(title, detail);
+        list.append(row);
+      });
+    }
+
+    document.getElementById("sessionForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!currentClass) return;
+      const start = new Date(document.getElementById("sessionStart").value);
+      const minutes = Number(document.getElementById("sessionLength").value);
+      const message = document.getElementById("sessionMessage");
+      if (!Number.isFinite(start.getTime()) || minutes < 15 || minutes > 480) {
+        message.textContent = "Enter a valid start time and length.";
+        return;
+      }
+      const button = event.currentTarget.querySelector("button");
+      button.disabled = true;
+      const { error } = await db.from("sessions").insert({
+        school_id: currentClass.school_id,
+        class_id: classId,
+        starts_at: start.toISOString(),
+        ends_at: new Date(start.getTime() + minutes * 60000).toISOString(),
+        status: "scheduled"
+      });
+      button.disabled = false;
+      message.textContent = error ? "Could not add session." : "Session added.";
+      if (!error) {
+        event.currentTarget.reset();
+        await loadSessions();
+      }
+    });
 
     loadClass();
     lucide.createIcons();
