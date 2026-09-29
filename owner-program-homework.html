@@ -1,1 +1,177 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Program Homework | Barkly Schools</title>
+  <link rel="stylesheet" href="design-system.css" />
+  <style>
+    body { padding: max(26px, env(safe-area-inset-top)) 20px 110px; }
+    .page { max-width: var(--content-width); margin: 0 auto; }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .brand img { width: 42px; height: 42px; object-fit: contain; }
+    .back { width: 42px; height: 42px; border: 1px solid var(--glass-border); border-radius: 50%; background: white; color: var(--navy); font-size: 22px; }
+    h1 { font-size: var(--display-md); margin-bottom: 8px; }
+    .subtitle, .card p { color: var(--text-secondary); line-height: 1.5; }
+    .subtitle { margin-bottom: var(--space-xl); }
+    .add { width: 100%; padding: 16px; border: 0; border-radius: var(--radius-pill); background: var(--navy); color: white; font: inherit; font-weight: var(--font-heavy); margin-bottom: var(--space-lg); }
+    .add:disabled, button:disabled { opacity: .5; }
+    .card { padding: 18px; margin-bottom: var(--space-sm); }
+    .card h2 { font-size: 16px; margin-bottom: 6px; }
+    .card p { font-size: var(--text-sm); white-space: pre-wrap; }
+    .stage-label { color: var(--sage); font-size: var(--text-sm); font-weight: var(--font-heavy); margin-bottom: 8px; }
+    .backdrop { display: none; position: fixed; inset: 0; z-index: 50; align-items: flex-end; background: rgba(15,31,46,.28); }
+    .backdrop.open { display: flex; }
+    .sheet { width: 100%; max-width: 540px; margin: 0 auto; padding: 22px 20px max(22px, env(safe-area-inset-bottom)); border-radius: 28px 28px 0 0; background: var(--cream); }
+    .sheet h2 { margin-bottom: 16px; }
+    label { display: block; font-size: var(--text-sm); font-weight: var(--font-heavy); margin-bottom: 14px; }
+    input, textarea, select { display: block; width: 100%; margin-top: 7px; padding: 13px; border: 1px solid var(--glass-border); border-radius: var(--radius-lg); background: white; font: inherit; }
+    textarea { min-height: 100px; resize: vertical; }
+    .actions { display: flex; gap: 10px; }
+    .actions button { flex: 1; padding: 14px; border: 0; border-radius: var(--radius-pill); font: inherit; font-weight: var(--font-heavy); }
+    .save { background: var(--navy); color: white; }
+    .error { color: #a33d3d; min-height: 1.5em; }
+    .bottom-nav { max-width: 540px; }
+  </style>
+</head>
+<body>
+  <main class="page fade-in">
+    <div class="brand"><button class="back" id="back" type="button" aria-label="Back to program">←</button><img src="assets/barkly-icon.png" alt="Barkly" /><strong>Barkly Schools</strong></div>
+    <h1>Homework</h1>
+    <p class="subtitle" id="subtitle">Loading program…</p>
+    <button class="add" id="add" disabled type="button">+ Add homework template</button>
+    <div id="list" aria-live="polite"></div>
+  </main>
+  <nav class="bottom-nav">
+    <a href="owner-dashboard.html" class="bottom-nav-item"><i data-lucide="layout-dashboard"></i>Home</a>
+    <a href="owner-programs.html" class="bottom-nav-item active"><i data-lucide="layers-3"></i>Programs</a>
+    <a href="owner-dogs.html" class="bottom-nav-item"><i data-lucide="users"></i>People</a>
+    <a href="owner-dashboard.html#school" class="bottom-nav-item"><i data-lucide="building-2"></i>School</a>
+  </nav>
+  <div class="backdrop" id="backdrop">
+    <form class="sheet" id="form">
+      <h2>Add homework</h2>
+      <label>Title<input id="title" required maxlength="120" placeholder="Calm greeting practice" /></label>
+      <label>Instructions<textarea id="instructions" placeholder="What should the family practise?"></textarea></label>
+      <label>Stage<select id="stage"><option value="">Any stage</option></select></label>
+      <p class="error" id="error" role="alert"></p>
+      <div class="actions"><button id="cancel" type="button">Cancel</button><button class="save" id="save" type="submit">Save template</button></div>
+    </form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="auth.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    const db = supabase.createClient(
+      "https://woolaaiunapsaowheifj.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2xhYWl1bmFwc2Fvd2hlaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMjAyNDEsImV4cCI6MjA5NTU5NjI0MX0.eBebW92-UHQVM8asBA6SwJql9s5DHgqhd0BlC00bUkc"
+    );
+    const programId = new URLSearchParams(location.search).get("program");
+    const list = document.getElementById("list");
+    const backdrop = document.getElementById("backdrop");
+    let program;
+    let stages = [];
+    document.getElementById("back").onclick = () => {
+      location.href = programId ? `owner-program-detail.html?program=${encodeURIComponent(programId)}` : "owner-programs.html";
+    };
+    document.getElementById("add").onclick = () => {
+      backdrop.classList.add("open");
+      document.getElementById("title").focus();
+    };
+    function close() {
+      backdrop.classList.remove("open");
+      document.getElementById("form").reset();
+      document.getElementById("error").textContent = "";
+    }
+    document.getElementById("cancel").onclick = close;
+    backdrop.onclick = event => { if (event.target === backdrop) close(); };
+    function empty(title, detail) {
+      list.replaceChildren();
+      const card = document.createElement("div");
+      card.className = "card glass-card";
+      const heading = document.createElement("h2");
+      heading.textContent = title;
+      const copy = document.createElement("p");
+      copy.textContent = detail;
+      card.append(heading, copy);
+      list.append(card);
+    }
+    async function load() {
+      if (!programId) {
+        document.getElementById("subtitle").textContent = "Open a program to see its homework.";
+        empty("No program selected", "Go back to Programs and choose one.");
+        return;
+      }
+      const { data, error } = await db.from("programs").select("id, school_id, name").eq("id", programId).single();
+      if (error || !data) {
+        document.getElementById("subtitle").textContent = "Could not load this program.";
+        empty("Program unavailable", "Please return to Programs and try again.");
+        return;
+      }
+      program = data;
+      document.getElementById("subtitle").textContent = `Reusable homework for ${program.name}.`;
+      const [stageResult, templateResult] = await Promise.all([
+        db.from("program_stages").select("id, name, sort_order").eq("program_id", programId).order("sort_order"),
+        db.from("homework_templates").select("id, title, instructions, stage_id, is_active, created_at").eq("program_id", programId).order("created_at")
+      ]);
+      if (stageResult.error || templateResult.error) {
+        console.error("Homework load failed", stageResult.error || templateResult.error);
+        empty("Could not load homework", "Please try again.");
+        return;
+      }
+      document.getElementById("add").disabled = false;
+      stages = stageResult.data || [];
+      const select = document.getElementById("stage");
+      select.replaceChildren(new Option("Any stage", ""));
+      stages.forEach(stage => select.add(new Option(stage.name, stage.id)));
+      list.replaceChildren();
+      const templates = templateResult.data || [];
+      if (!templates.length) {
+        empty("No homework templates yet", "Add a practice prompt for this program.");
+        return;
+      }
+      templates.forEach(template => {
+        const card = document.createElement("article");
+        card.className = "card glass-card";
+        const stage = stages.find(item => item.id === template.stage_id);
+        if (stage) {
+          const label = document.createElement("div");
+          label.className = "stage-label";
+          label.textContent = stage.name;
+          card.append(label);
+        }
+        const heading = document.createElement("h2");
+        heading.textContent = template.title;
+        const copy = document.createElement("p");
+        copy.textContent = template.instructions || "No instructions added.";
+        card.append(heading, copy);
+        list.append(card);
+      });
+    }
+    document.getElementById("form").onsubmit = async event => {
+      event.preventDefault();
+      if (!program) return;
+      const button = document.getElementById("save");
+      button.disabled = true;
+      const { error } = await db.from("homework_templates").insert({
+        school_id: program.school_id,
+        program_id: program.id,
+        stage_id: document.getElementById("stage").value || null,
+        title: document.getElementById("title").value.trim(),
+        instructions: document.getElementById("instructions").value.trim(),
+        is_active: true
+      });
+      button.disabled = false;
+      if (error) {
+        console.error("Homework save failed", error);
+        document.getElementById("error").textContent = "Could not save this template. Please try again.";
+        return;
+      }
+      close();
+      await load();
+    };
+    load();
+    lucide.createIcons();
+  </script>
+</body>
+</html>
