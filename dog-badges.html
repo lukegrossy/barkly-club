@@ -303,6 +303,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
+<script src="badge-art.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <script>
@@ -689,7 +690,7 @@ async function loadBadges() {
     ? earned.map(badge => `
       <div class="badge-card glass-card lift-card earned">
         <div class="badge-icon">
-          <i data-lucide="${badgeIcon(badge.badge_name, badge.icon)}"></i>
+          ${BarklyBadges.render(badge.icon, badge.badge_name)}
         </div>
 
         <div class="badge-copy">
@@ -719,7 +720,7 @@ async function loadBadges() {
     ? locked.map(badge => `
       <div class="badge-card glass-card locked">
         <div class="badge-icon">
-          <i data-lucide="lock"></i>
+          ${BarklyBadges.render(badge.icon, badge.badge_name)}
         </div>
 
         <div class="badge-copy">
