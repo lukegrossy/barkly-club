@@ -436,6 +436,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
+<script src="badge-art.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
@@ -689,7 +690,7 @@
 
       strip.innerHTML = data.map(badge => `
         <span class="badge-preview-chip">
-          <i data-lucide="${badge.icon || "badge-check"}"></i>
+          ${BarklyBadges.render(badge.icon, badge.badge_name || badge.name)}
           ${badge.badge_name || "Badge"}
         </span>
       `).join("");
