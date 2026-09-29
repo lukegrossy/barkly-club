@@ -447,19 +447,19 @@ white-space: nowrap;
 
         <div class="session-card hero-card lift-card">
           <div class="session-top">
-            <span class="pill session-pill">Current session</span>
-            <span class="session-status" id="heroCheckin">7/10 checked in</span>
+            <span class="pill session-pill">Loading</span>
+            <span class="session-status" id="heroCheckin">—</span>
           </div>
 
-          <h2>Puppy confidence class</h2>
+          <h2>Loading sessions...</h2>
 
           <div class="session-meta">
-            <div class="meta-pill"><i data-lucide="calendar"></i>Today</div>
-            <div class="meta-pill"><i data-lucide="clock-3"></i>4:30 PM</div>
-            <div class="meta-pill"><i data-lucide="map-pin"></i>Indoor studio</div>
+            <div class="meta-pill"><i data-lucide="calendar"></i>—</div>
+            <div class="meta-pill"><i data-lucide="clock-3"></i>—</div>
+            <div class="meta-pill"><i data-lucide="map-pin"></i>—</div>
           </div>
 
-          <button class="open-session-btn" data-sheet="sessionSheet">
+          <button class="open-session-btn" data-sheet="sessionSheet" disabled>
             Open session
           </button>
         </div>
@@ -470,29 +470,7 @@ white-space: nowrap;
           <h3>Upcoming sessions</h3>
         </div>
 
-        <div class="card-list">
-          <button class="row-card glass-card lift-card" data-sheet="sessionSheet">
-            <div class="row-left">
-              <div class="card-icon"><i data-lucide="calendar-check"></i></div>
-              <div>
-                <h4>Teen manners</h4>
-                <p>Today · 6:00 PM · Outdoor yard</p>
-              </div>
-            </div>
-            <div class="row-status">8/10</div>
-          </button>
-
-          <button class="row-card glass-card lift-card" data-sheet="sessionSheet">
-            <div class="row-left">
-              <div class="card-icon"><i data-lucide="target"></i></div>
-              <div>
-                <h4>Recall workshop</h4>
-                <p>Saturday · 9:00 AM · Open field</p>
-              </div>
-            </div>
-            <div class="row-status">6/8</div>
-          </button>
-        </div>
+        <div class="card-list" id="upcomingList">Loading sessions...</div>
       </section>
     </section>
 
@@ -537,7 +515,7 @@ white-space: nowrap;
   <div class="sheet-overlay" id="sessionSheet">
     <div class="sheet">
       <div class="sheet-head">
-        <h3>Puppy confidence class</h3>
+        <h3>Session</h3>
         <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
@@ -545,51 +523,19 @@ white-space: nowrap;
         <div class="row-left">
           <div class="card-icon"><i data-lucide="calendar"></i></div>
           <div>
-            <h4>Today · 4:30 PM</h4>
-            <p>Indoor studio · Puppy Foundations</p>
+            <h4>Loading</h4>
+            <p>Loading class</p>
           </div>
         </div>
-        <div class="row-status" id="sheetCheckin">7/10</div>
+        <div class="row-status" id="sheetCheckin">—</div>
       </div>
 
       <div class="sheet-section-title">Attendance</div>
 
-      <div class="card-list">
-        <div class="row-card glass-card lift-card roster-dog" data-dog-name="Luna">
-          <div class="row-left">
-            <div class="card-icon"><i data-lucide="dog"></i></div>
-            <div>
-              <h4>Luna</h4>
-              <p>Groodle · checked in</p>
-            </div>
-          </div>
-          <button class="check-btn present" data-present="true">Undo</button>
-        </div>
+      <div class="card-list">Loading roster...</div>
 
-        <div class="row-card glass-card lift-card roster-dog" data-dog-name="Bella">
-          <div class="row-left">
-            <div class="card-icon"><i data-lucide="dog"></i></div>
-            <div>
-              <h4>Bella</h4>
-              <p>Cavoodle · checked in</p>
-            </div>
-          </div>
-          <button class="check-btn present" data-present="true">Undo</button>
-        </div>
-
-        <div class="row-card glass-card lift-card roster-dog" data-dog-name="Archie">
-          <div class="row-left">
-            <div class="card-icon"><i data-lucide="dog"></i></div>
-            <div>
-              <h4>Archie</h4>
-              <p>Not arrived yet</p>
-            </div>
-          </div>
-          <button class="check-btn" data-present="false">Check in</button>
-        </div>
-      </div>
-
-      <button class="publish-btn" data-sheet="completeSheet">
+      <button class="publish-btn" id="startSession" type="button">Start session</button>
+      <button class="publish-btn" id="completeSession" data-sheet="completeSheet" disabled>
         Complete session
       </button>
     </div>
@@ -636,7 +582,7 @@ white-space: nowrap;
       </div>
 
       <div class="sheet-section-title">Parent update</div>
-      <textarea class="note-box">Luna is progressing beautifully and settling faster around other dogs.</textarea>
+      <textarea class="note-box" placeholder="What would you like the family to know?"></textarea>
 
       <button class="publish-btn">Save note</button>
     </div>
@@ -652,8 +598,14 @@ white-space: nowrap;
         <button class="close-sheet" data-close-sheet><i data-lucide="x"></i></button>
       </div>
 
-      <div class="sheet-section-title">Homework note</div>
-      <textarea class="note-box">Practise calm greetings for 5 minutes each day before the next session.</textarea>
+      <div class="sheet-section-title">Practice for this dog</div>
+      <label for="homeworkTemplate">Use a program template</label>
+      <select id="homeworkTemplate" style="width:100%;padding:12px;margin:10px 0 16px;border:1px solid #cad3cc;border-radius:12px;background:white">
+        <option value="">Write a custom task</option>
+      </select>
+      <label for="homeworkTitle">Title</label>
+      <input id="homeworkTitle" maxlength="120" placeholder="e.g. Calm greetings" style="width:100%;padding:12px;margin:10px 0 16px;border:1px solid #cad3cc;border-radius:12px;background:white" />
+      <textarea class="note-box" placeholder="What should the family practise?"></textarea>
 
       <button class="publish-btn">Assign homework</button>
     </div>
@@ -671,11 +623,7 @@ white-space: nowrap;
 
       <div class="sheet-section-title">Available badges</div>
 
-      <div class="chip-grid" id="badgeChoices">
-        <button class="chip selected" data-badge-name="Graduate">Graduate</button>
-        <button class="chip" data-badge-name="Off Leash Ready">Off Leash Ready</button>
-        <button class="chip" data-badge-name="Recall Rookie">Recall Rookie</button>
-      </div>
+      <div class="chip-grid" id="badgeChoices">Loading badges...</div>
 
       <button class="publish-btn">Award badge</button>
     </div>
@@ -697,7 +645,7 @@ white-space: nowrap;
             <div class="card-icon"><i data-lucide="users"></i></div>
             <div>
               <h4>Attendance</h4>
-              <p id="completeAttendance">7 checked in · 3 not checked in</p>
+              <p id="completeAttendance">No attendance recorded</p>
             </div>
           </div>
         </div>
@@ -740,6 +688,7 @@ white-space: nowrap;
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="auth.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
@@ -752,12 +701,16 @@ white-space: nowrap;
   const pages = document.querySelectorAll(".page");
   const sheets = document.querySelectorAll(".sheet-overlay");
   const closeButtons = document.querySelectorAll("[data-close-sheet]");
-  const badgeChoiceButtons = document.querySelectorAll("#badgeChoices .chip");
 
-  let selectedDogName = "Luna";
-  let selectedBadgeName = "Graduate";
+  let selectedDogName = "Dog";
+  let selectedBadgeId = null;
   let currentSessionId = null;
   let currentSessionStatus = "scheduled";
+  let currentSessionDogIds = new Set();
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+  }
 
   function statusLabel(status) {
     if (status === "in_progress") return "In progress";
@@ -769,22 +722,58 @@ white-space: nowrap;
   function updateSessionStatusUI(status) {
     const pill = document.querySelector(".session-pill");
     if (pill) pill.textContent = statusLabel(status);
+    document.getElementById("startSession").disabled = status !== "scheduled";
+    document.getElementById("completeSession").disabled = status !== "in_progress";
   }
 
   async function loadCurrentSession() {
     const { data, error } = await db
       .from("trainer_session_view")
       .select("*")
-      .limit(1)
-      .single();
+      .order("starts_at", { ascending: true })
+      .limit(100);
 
     if (error) {
       console.error("Session load failed:", error);
+      document.querySelector(".session-card h2").textContent = "Could not load sessions";
+      document.getElementById("upcomingList").textContent = "Please reload and try again.";
       return;
     }
+    const sessions = data || [];
+    const now = Date.now();
+    const chosen = sessions.find(item => item.status === "in_progress") ||
+      sessions.find(item => item.status === "scheduled" && new Date(item.starts_at).getTime() >= now);
+    const upcoming = document.getElementById("upcomingList");
+    upcoming.replaceChildren();
+    const future = sessions.filter(item => item.session_id !== chosen?.session_id &&
+      item.status !== "completed" && new Date(item.starts_at).getTime() >= now);
+    if (!future.length) upcoming.textContent = "No other upcoming sessions.";
+    future.forEach(item => {
+      const button = document.createElement("button");
+      button.className = "row-card glass-card lift-card";
+      button.type = "button";
+      const heading = document.createElement("strong");
+      heading.textContent = item.class_name || "Class";
+      const detail = document.createElement("span");
+      detail.textContent = " · " + new Intl.DateTimeFormat("en-AU",
+        { dateStyle: "medium", timeStyle: "short" }).format(new Date(item.starts_at));
+      button.append(heading, detail);
+      button.onclick = async () => { await showSession(item); openSheet("sessionSheet"); };
+      upcoming.append(button);
+    });
+    if (!chosen) {
+      document.querySelector(".session-card h2").textContent = "No upcoming sessions assigned";
+      document.querySelector(".session-pill").textContent = "No session";
+      document.getElementById("heroCheckin").textContent = "—";
+      return;
+    }
+    await showSession(chosen);
+  }
 
+  async function showSession(data) {
     currentSessionId = data.session_id;
     currentSessionStatus = data.status || "scheduled";
+    document.querySelector(".open-session-btn").disabled = false;
 
     const start = data.starts_at ? new Date(data.starts_at) : null;
     const dateLabel = start ? start.toLocaleDateString("en-AU", { weekday: "short" }) : "Today";
@@ -803,9 +792,9 @@ white-space: nowrap;
     const heroMeta = document.querySelectorAll(".session-meta .meta-pill");
 
     if (heroMeta.length >= 3) {
-      heroMeta[0].innerHTML = `<i data-lucide="calendar"></i>${dateLabel}`;
-      heroMeta[1].innerHTML = `<i data-lucide="clock-3"></i>${timeLabel}`;
-      heroMeta[2].innerHTML = `<i data-lucide="map-pin"></i>${data.location || "Training studio"}`;
+      heroMeta[0].replaceChildren(document.createTextNode(dateLabel));
+      heroMeta[1].replaceChildren(document.createTextNode(timeLabel));
+      heroMeta[2].replaceChildren(document.createTextNode(data.location || "Training studio"));
     }
 
     await loadSessionRoster();
@@ -836,6 +825,7 @@ white-space: nowrap;
     currentSessionStatus = "in_progress";
     updateSessionStatusUI(currentSessionStatus);
   }
+  document.getElementById("startSession").addEventListener("click", startSession);
 
   async function completeSession() {
     if (!currentSessionId) {
@@ -881,32 +871,34 @@ white-space: nowrap;
 
     const rosterList = document.querySelector("#sessionSheet .card-list");
     if (!rosterList) return;
+    currentSessionDogIds = new Set((data || []).map(row => row.dog_id));
 
-    rosterList.innerHTML = "";
-
-    data.forEach(row => {
+    rosterList.replaceChildren();
+    if (!data?.length) {
+      rosterList.textContent = "No dogs are enrolled in this class yet.";
+    }
+    (data || []).forEach(row => {
       const isPresent = row.attendance_status === "present";
-
-      rosterList.innerHTML += `
-        <div class="row-card glass-card lift-card roster-dog"
-          data-dog-id="${row.dog_id}"
-          data-dog-name="${row.dog_name}">
-          <div class="row-left">
-            <div class="card-icon"><i data-lucide="dog"></i></div>
-            <div>
-              <h4>${row.dog_name}</h4>
-              <p>${isPresent ? `${row.breed || "Dog"} · checked in` : "Not checked in"}</p>
-            </div>
-          </div>
-
-          <button
-            class="${isPresent ? "check-btn present" : "check-btn"}"
-            data-present="${isPresent}"
-            data-dog-id="${row.dog_id}">
-            ${isPresent ? "Undo" : "Check in"}
-          </button>
-        </div>
-      `;
+      const card = document.createElement("div");
+      card.className = "row-card glass-card lift-card roster-dog";
+      card.dataset.dogId = row.dog_id;
+      card.dataset.dogName = row.dog_name;
+      const info = document.createElement("div");
+      info.className = "row-left";
+      const copy = document.createElement("div");
+      const name = document.createElement("h4");
+      name.textContent = row.dog_name;
+      const detail = document.createElement("p");
+      detail.textContent = isPresent ? `${row.breed || "Dog"} · checked in` : "Not checked in";
+      copy.append(name, detail);
+      info.append(copy);
+      const button = document.createElement("button");
+      button.className = isPresent ? "check-btn present" : "check-btn";
+      button.dataset.present = String(isPresent);
+      button.dataset.dogId = row.dog_id;
+      button.textContent = isPresent ? "Undo" : "Check in";
+      card.append(info, button);
+      rosterList.append(card);
     });
 
     attachRosterHandlers();
@@ -935,9 +927,8 @@ white-space: nowrap;
   async function openSheet(id) {
     sheets.forEach(sheet => sheet.classList.remove("active"));
 
-    if (id === "sessionSheet") {
-      await startSession();
-    }
+    if (id === "homeworkSheet") await loadHomeworkTemplates();
+    if (id === "badgeSheet") await loadBadgeChoices();
 
     const titleMap = {
       noteSheet: `Trainer note for ${selectedDogName}`,
@@ -1062,7 +1053,7 @@ return data;
     const { error } = await db.from("parent_updates").insert({
       school_id: dog.school_id,
       dog_id: dog.id,
-      session_id: currentSessionId,
+      session_id: currentSessionDogIds.has(dog.id) ? currentSessionId : null,
       title: `${dog.name} is progressing beautifully`,
       update_text: text
     });
@@ -1078,34 +1069,89 @@ return data;
     if (!dog) return;
 
     const text = document.querySelector("#homeworkSheet .note-box")?.value?.trim();
-    if (!text) return;
+    const title = document.getElementById("homeworkTitle").value.trim();
+    if (!text || !title) return alert("Enter a title and instructions.");
+    const templateId = document.getElementById("homeworkTemplate").value || null;
 
     const { error } = await db.from("homework_assignments").insert({
       school_id: dog.school_id,
       dog_id: dog.id,
-      session_id: currentSessionId,
-      title: "Calm greeting practice",
-      instructions: text
+      session_id: currentSessionDogIds.has(dog.id) ? currentSessionId : null,
+      title,
+      instructions: text,
+      homework_template_id: templateId
     });
 
     if (error) return alert("Could not assign homework.");
 
     alert("Homework assigned.");
+    document.getElementById("homeworkTemplate").value = "";
+    document.getElementById("homeworkTitle").value = "";
+    document.querySelector("#homeworkSheet .note-box").value = "";
     closeSheets();
+  }
+
+  let availableHomeworkTemplates = [];
+  async function loadHomeworkTemplates() {
+    const dog = await getSelectedDog();
+    if (!dog) return;
+    let programId = null;
+    if (currentSessionId) {
+      const { data: session } = await db.from("sessions")
+        .select("class_id, classes(program_id)").eq("id", currentSessionId).maybeSingle();
+      programId = session?.classes?.program_id || null;
+    }
+    let query = db.from("homework_templates")
+      .select("id, title, instructions").eq("school_id", dog.school_id).eq("is_active", true)
+      .order("title");
+    if (programId) query = query.eq("program_id", programId);
+    const { data, error } = await query;
+    if (error) { console.error("Homework templates failed", error); return; }
+    availableHomeworkTemplates = data || [];
+    const select = document.getElementById("homeworkTemplate");
+    select.replaceChildren(new Option("Write a custom task", ""));
+    availableHomeworkTemplates.forEach(item => select.add(new Option(item.title, item.id)));
+  }
+
+  document.getElementById("homeworkTemplate").addEventListener("change", event => {
+    const template = availableHomeworkTemplates.find(item => item.id === event.target.value);
+    if (!template) return;
+    document.getElementById("homeworkTitle").value = template.title;
+    document.querySelector("#homeworkSheet .note-box").value = template.instructions || "";
+  });
+
+  async function loadBadgeChoices() {
+    const dog = await getSelectedDog();
+    if (!dog) return;
+    const { data, error } = await db.from("badge_templates").select("id, name")
+      .eq("school_id", dog.school_id).eq("is_active", true).order("sort_order");
+    const choices = document.getElementById("badgeChoices");
+    choices.replaceChildren();
+    selectedBadgeId = null;
+    if (error) { choices.textContent = "Could not load badges."; return; }
+    if (!data?.length) { choices.textContent = "No active badge templates yet."; return; }
+    data.forEach(item => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "chip";
+      button.dataset.badgeId = item.id;
+      button.textContent = item.name;
+      choices.append(button);
+    });
   }
 
   async function awardBadge() {
     const dog = await getSelectedDog();
     if (!dog) return;
-
+    if (!selectedBadgeId) return alert("Choose a badge.");
     const { data: badge, error: badgeError } = await db
       .from("badge_templates")
       .select("id, name")
       .eq("school_id", dog.school_id)
-      .eq("name", selectedBadgeName)
+      .eq("id", selectedBadgeId)
       .single();
 
-    if (badgeError || !badge) return alert(`Could not find ${selectedBadgeName}.`);
+    if (badgeError || !badge) return alert("Could not find this badge.");
 
     const { error } = await db.from("dog_badges").insert({
       school_id: dog.school_id,
@@ -1171,13 +1217,12 @@ openSheet(button.dataset.sheet);
 });
 
     
-  badgeChoiceButtons.forEach(button => {
-    button.addEventListener("click", event => {
-      event.preventDefault();
-      badgeChoiceButtons.forEach(chip => chip.classList.remove("selected"));
-      button.classList.add("selected");
-      selectedBadgeName = button.dataset.badgeName;
-    });
+  document.getElementById("badgeChoices").addEventListener("click", event => {
+    const button = event.target.closest("[data-badge-id]");
+    if (!button) return;
+    document.querySelectorAll("#badgeChoices .chip").forEach(chip => chip.classList.remove("selected"));
+    button.classList.add("selected");
+    selectedBadgeId = button.dataset.badgeId;
   });
 
   closeButtons.forEach(button => button.addEventListener("click", closeSheets));
@@ -1268,26 +1313,26 @@ function renderTrainerDogs() {
       href="dog-detail.html?role=trainer&dog=${dog.dog_id}"
       class="dog-card glass-card lift-card"
       data-dog-id="${dog.dog_id}"
-      data-dog-name="${dog.dog_name}"
+      data-dog-name="${escapeHtml(dog.dog_name)}"
     >
       <div class="dog-card-top">
         <div class="dog-left">
           <div class="card-icon"><i data-lucide="dog"></i></div>
           <div>
-            <h4>${dog.dog_name || "Dog"}</h4>
-            <p>${dog.breed || "Dog"} · ${dog.program_name || "Program"}</p>
+            <h4>${escapeHtml(dog.dog_name || "Dog")}</h4>
+            <p>${escapeHtml(dog.breed || "Dog")} · ${escapeHtml(dog.program_name || "Program")}</p>
           </div>
         </div>
 
-        <div class="dog-pill">${dog.status || "active"}</div>
+        <div class="dog-pill">${escapeHtml(dog.status || "active")}</div>
       </div>
 
-      <p>${dog.class_name || "No class assigned"}</p>
+      <p>${escapeHtml(dog.class_name || "No class assigned")}</p>
 
       <div class="dog-actions">
-        <button class="dog-action" data-dog-id="${dog.dog_id}" data-dog-name="${dog.dog_name}" data-sheet="noteSheet">Note</button>
-        <button class="dog-action" data-dog-id="${dog.dog_id}" data-dog-name="${dog.dog_name}" data-sheet="homeworkSheet">Homework</button>
-        <button class="dog-action" data-dog-id="${dog.dog_id}" data-dog-name="${dog.dog_name}" data-sheet="badgeSheet">Badge</button>
+        <button class="dog-action" data-dog-id="${dog.dog_id}" data-dog-name="${escapeHtml(dog.dog_name)}" data-sheet="noteSheet">Note</button>
+        <button class="dog-action" data-dog-id="${dog.dog_id}" data-dog-name="${escapeHtml(dog.dog_name)}" data-sheet="homeworkSheet">Homework</button>
+        <button class="dog-action" data-dog-id="${dog.dog_id}" data-dog-name="${escapeHtml(dog.dog_name)}" data-sheet="badgeSheet">Badge</button>
 
       </div>
     </a>
