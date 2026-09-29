@@ -256,7 +256,7 @@
 
     .icon-field { border: 0; padding: 0; margin: 0 0 16px; min-width: 0; }
     .icon-field legend { font-size: var(--text-xs); font-weight: var(--font-heavy); margin-bottom: 10px; }
-    .icon-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+    .icon-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
     .icon-choice { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; min-height: 72px; padding: 8px 2px; border: 2px solid transparent; border-radius: 16px; background: rgba(255,255,255,.75); color: var(--navy); font: inherit; font-size: 11px; cursor: pointer; }
     .icon-choice svg { width: 25px; height: 25px; }
     .icon-choice[aria-pressed="true"] { border-color: var(--navy); background: #dce8dc; font-weight: 800; }
@@ -396,7 +396,7 @@
 
     <fieldset class="icon-field">
       <legend>Choose an icon</legend>
-      <input id="badgeIcon" type="hidden" value="badge-check" />
+      <input id="badgeIcon" type="hidden" value="barkly-connection" />
       <div class="icon-grid" id="badgeIconPicker"></div>
     </fieldset>
     <div class="badge-preview" aria-label="Badge preview">
@@ -423,6 +423,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
+<script src="badge-art.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <script>
@@ -514,7 +515,7 @@ function renderBadgeTemplate(template) {
     <div class="badge-template-card glass-card lift-card">
 
       <div class="badge-icon">
-        <i data-lucide="${icon}"></i>
+        ${BarklyBadges.render(icon)}
       </div>
 
       <div class="badge-copy">
@@ -561,12 +562,7 @@ function renderBadgeTemplate(template) {
   `;
 }
 
-const badgeIconChoices = [
-  ["badge-check", "Badge"], ["sparkles", "Sparkles"], ["star", "Star"],
-  ["radio", "Recall"], ["footprints", "Footprints"], ["leaf", "Calm"],
-  ["target", "Focus"], ["graduation-cap", "Graduate"], ["heart", "Heart"],
-  ["shield-check", "Shield"]
-];
+const badgeIconChoices = BarklyBadges.choices;
 function updateBadgePreview() {
   document.getElementById("badgePreviewName").textContent = document.getElementById("badgeName").value.trim() || "Your badge";
   document.getElementById("badgePreviewDescription").textContent = document.getElementById("badgeDescription").value.trim() || "An achievement worth celebrating.";
@@ -577,19 +573,19 @@ function selectBadgeIcon(icon) {
   document.querySelectorAll(".icon-choice").forEach(button => {
     button.setAttribute("aria-pressed", String(button.dataset.icon === icon));
   });
-  document.getElementById("badgePreviewIcon").innerHTML = `<i data-lucide="${icon}"></i>`;
+  document.getElementById("badgePreviewIcon").innerHTML = `${BarklyBadges.render(icon)}`;
   lucide.createIcons();
 }
 const iconPicker = document.getElementById("badgeIconPicker");
 iconPicker.innerHTML = badgeIconChoices.map(([icon, label]) =>
-  `<button type="button" class="icon-choice" data-icon="${icon}" aria-pressed="false"><i data-lucide="${icon}" aria-hidden="true"></i><span>${label}</span></button>`
+  `<button type="button" class="icon-choice" data-icon="${icon}" aria-pressed="false">${BarklyBadges.render(icon)}<span>${label}</span></button>`
 ).join("");
 iconPicker.addEventListener("click", event => {
   const button = event.target.closest(".icon-choice");
   if (button) selectBadgeIcon(button.dataset.icon);
 });
 ["badgeName", "badgeDescription"].forEach(id => document.getElementById(id).addEventListener("input", updateBadgePreview));
-selectBadgeIcon("badge-check");
+selectBadgeIcon("barkly-connection");
 
 function openBadgeSheet() {
   document
@@ -611,7 +607,7 @@ function closeBadgeSheet() {
 
   document.getElementById("badgeName").value = "";
   document.getElementById("badgeDescription").value = "";
-  selectBadgeIcon("badge-check");
+  selectBadgeIcon("barkly-connection");
   updateBadgePreview();
   document.getElementById("badgeStage").value = "";
 }
