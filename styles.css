@@ -168,6 +168,13 @@ body {
     );
 }
 
+.auth-message {
+  margin-top: 18px;
+  color: var(--navy);
+  line-height: 1.5;
+  text-align: center;
+}
+
 .auth-header {
   height: 56px;
 
