@@ -38,13 +38,15 @@
         </p>
       </div>
 
-      <form class="auth-form">
+      <form class="auth-form" id="loginForm">
 
         <label>
           Email
 
           <input
             type="email"
+            name="email"
+            required
             placeholder="you@example.com"
             autocomplete="email"
           />
@@ -55,6 +57,8 @@
 
           <input
             type="password"
+            name="password"
+            required
             placeholder="Enter your password"
             autocomplete="current-password"
           />
@@ -65,6 +69,7 @@
         </button>
 
       </form>
+      <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
 
       <p class="auth-switch">
         New to Barkly?
@@ -75,6 +80,7 @@
 
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="app.js"></script>
 
 </body>
