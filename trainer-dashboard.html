@@ -689,6 +689,7 @@ white-space: nowrap;
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
+<script src="badge-art.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
@@ -1123,7 +1124,7 @@ return data;
   async function loadBadgeChoices() {
     const dog = await getSelectedDog();
     if (!dog) return;
-    const { data, error } = await db.from("badge_templates").select("id, name")
+    const { data, error } = await db.from("badge_templates").select("id, name, icon")
       .eq("school_id", dog.school_id).eq("is_active", true).order("sort_order");
     const choices = document.getElementById("badgeChoices");
     choices.replaceChildren();
@@ -1135,7 +1136,10 @@ return data;
       button.type = "button";
       button.className = "chip";
       button.dataset.badgeId = item.id;
-      button.textContent = item.name;
+      button.innerHTML = BarklyBadges.render(item.icon, item.name);
+      const label = document.createElement("span");
+      label.textContent = item.name;
+      button.append(label);
       choices.append(button);
     });
   }
@@ -1146,7 +1150,7 @@ return data;
     if (!selectedBadgeId) return alert("Choose a badge.");
     const { data: badge, error: badgeError } = await db
       .from("badge_templates")
-      .select("id, name")
+      .select("id, name, icon")
       .eq("school_id", dog.school_id)
       .eq("id", selectedBadgeId)
       .single();
