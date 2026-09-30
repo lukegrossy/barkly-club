@@ -19,6 +19,7 @@
       if (location.pathname.endsWith("/choose-role.html")) location.replace("login.html");
       return;
     }
+    if (window.BarklyInvite?.get() || new URLSearchParams(location.search).get("next") === "join-parent.html") { location.replace("join-parent.html"); return; }
     const { error: profileError } = await db.from("profiles").upsert(
       { id: authData.user.id, email: authData.user.email },
       { onConflict: "id", ignoreDuplicates: true }
@@ -37,6 +38,7 @@
     location.replace(destinations[role]);
   }
   const login = document.getElementById("loginForm");
+  if (login && window.BarklyInvite?.get()) db.auth.getUser().then(({ data }) => { if (data?.user) location.replace("join-parent.html"); }).catch(() => {});
   if (login) login.addEventListener("submit", async event => {
     event.preventDefault();
     const button = login.querySelector("button[type=submit]");
@@ -64,7 +66,7 @@
     button.disabled = false;
     if (error) { show("Could not create the account. Please check the details and try again."); return; }
     if (data.session) { await route(); return; }
-    show("Check your email to confirm your account, then log in. Your school will connect your role.");
+    show(window.BarklyInvite?.get() ? "Check your email to confirm your account, then return here to connect your puppy." : "Check your email to confirm your account, then log in. If you’re joining a puppy school, open the connection link they share with you.");
   });
   if (location.pathname.endsWith("/choose-role.html")) route();
   document.getElementById("signOut")?.addEventListener("click", async () => {

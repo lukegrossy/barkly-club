@@ -38,6 +38,7 @@
   }
 
   async function guard() {
+    if (location.pathname.endsWith("/join-parent.html")) return;
     document.documentElement.style.visibility = "hidden";
     try {
       const account = await roles();
