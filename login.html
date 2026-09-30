@@ -70,6 +70,15 @@
 
       </form>
       <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
+      <button id="forgotPassword" class="btn btn-secondary" type="button">Forgot password?</button>
+      <section id="resetPanel" hidden>
+        <h2>Reset your password</h2>
+        <form id="resetForm" class="auth-form"><label>Email<input type="email" name="email" autocomplete="email" required></label><button class="btn btn-primary">Send reset link</button></form>
+      </section>
+      <section id="recoveryPanel" hidden>
+        <form id="recoveryForm" class="auth-form"><label>New password<input type="password" name="password" minlength="8" autocomplete="new-password" required></label><label>Confirm new password<input type="password" name="confirmPassword" minlength="8" autocomplete="new-password" required></label><button class="btn btn-primary">Save new password</button></form>
+        <button id="requestNewReset" class="btn btn-secondary" type="button">Request another reset link</button>
+      </section>
 
       <p class="auth-switch">
         New to Barkly?
@@ -80,8 +89,8 @@
 
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="invite-state.js"></script><script src="app.js?v=parent-1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+  <script src="invite-state.js?v=setup-2"></script><script src="app.js?v=setup-2"></script>
 
 </body>
 </html>

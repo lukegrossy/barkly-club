@@ -189,7 +189,7 @@
 
   <section class="hero hero-card lift-card">
     <h2 id="programName">Loading program...</h2>
-    <p id="programDescription">Loading program details.</p>
+    <p><a id="editCourseLink" class="wf-link">Edit course & lessons →</a></p><p id="programDescription">Loading program details.</p>
 
     <div class="hero-meta">
       <span class="hero-pill" id="programStatus">Active</span>
@@ -289,8 +289,8 @@
 
 </nav>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="auth.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+<script src="auth.js?v=setup-2"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <script>
@@ -378,6 +378,7 @@ async function loadProgram() {
   document.getElementById("programSessions").textContent =
     `${sessionCount(program)} sessions`;
 
+  document.getElementById("editCourseLink").href = `owner-program-edit.html?program=${programId}`;
   document.getElementById("stagesLink").href =
     `owner-program-stages.html?program=${programId}`;
 

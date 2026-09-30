@@ -1,0 +1,26 @@
+/* Shared, accessible course editor for templates and saved school programs. */
+(function(){
+ 'use strict';
+ const e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ window.BarklyCourseEditor=function(root,plan,onChange=()=>{}){
+  const field=(label,value,attrs='',area=false)=>`<label>${e(label)}${area?`<textarea ${attrs} maxlength="6000">${e(value)}</textarea>`:`<input ${attrs} value="${e(value)}" maxlength="160" required>`}</label>`;
+  function render(focusIndex){
+   const open=new Set([...root.querySelectorAll('details[open]')].map(d=>Number(d.dataset.lesson)));
+   root.innerHTML=field('Course name',plan.name,'data-course="name"')+field('Course description',plan.description,'data-course="description"',true)+`<p class="muted wf-small">Open a lesson to customise its teaching notes, home practice and achievements.</p>`+plan.stages.map((s,i)=>`<details class="wf-lesson" data-lesson="${i}" ${open.has(i)||focusIndex===i?'open':''}><summary>${i+1}. ${e(s.name)}</summary><div class="wf-form">${field('Lesson name',s.name,`data-stage="${i}" data-field="name"`)}${field('Trainer lesson notes',s.description,`data-stage="${i}" data-field="description"`,true)}<h3>Home practice</h3>${s.homework.map((h,j)=>`<div class="wf-card">${field('Homework title',h.title,`data-stage="${i}" data-homework="${j}" data-field="title"`)}${field('Instructions for the family',h.instructions,`data-stage="${i}" data-homework="${j}" data-field="instructions"`,true)}<button type="button" class="wf-btn secondary" data-action="remove-homework" data-stage="${i}" data-item="${j}">Remove homework ${j+1}</button></div>`).join('')}<button type="button" class="wf-btn secondary" data-action="add-homework" data-stage="${i}">Add homework</button><h3>Achievements</h3>${s.badges.map((b,j)=>`<div class="wf-card"><div class="wf-badge-choice">${BarklyBadges.render(b.icon,b.name)}</div>${field('Badge name',b.name,`data-stage="${i}" data-badge="${j}" data-field="name"`)}${field('Achievement to check',b.unlock_criteria||b.description,`data-stage="${i}" data-badge="${j}" data-field="unlock_criteria"`,true)}<details><summary>Choose badge artwork</summary><div class="wf-badge-grid">${BarklyBadges.choices.map(([key,name])=>`<button type="button" class="wf-badge-option" data-action="icon" data-stage="${i}" data-item="${j}" data-icon="${e(key)}" aria-label="${e(name)}" aria-pressed="${b.icon===key}">${BarklyBadges.render(key,name)}<span>${e(name)}</span></button>`).join('')}</div></details><button type="button" class="wf-btn secondary" data-action="remove-badge" data-stage="${i}" data-item="${j}">Remove badge ${j+1}</button></div>`).join('')}<button type="button" class="wf-btn secondary" data-action="add-badge" data-stage="${i}">Add badge</button><div class="wf-actions"><button type="button" class="wf-btn secondary" data-action="up" data-stage="${i}" ${i===0?'disabled':''}>Move lesson up</button><button type="button" class="wf-btn secondary" data-action="down" data-stage="${i}" ${i===plan.stages.length-1?'disabled':''}>Move lesson down</button><button type="button" class="wf-btn secondary" data-action="remove-stage" data-stage="${i}" ${plan.stages.length===1?'disabled':''}>Remove lesson</button></div></div></details>`).join('')+`<button type="button" class="wf-btn secondary" data-action="add-stage" ${plan.stages.length>=20?'disabled':''}>Add lesson</button><p class="wf-small muted" role="status" id="courseEditStatus"></p>`;
+  }
+  root.oninput=ev=>{const t=ev.target;if(t.dataset.course){plan[t.dataset.course]=t.value;onChange();return;}if(t.dataset.field===undefined)return;const s=plan.stages[+t.dataset.stage];const row=t.dataset.homework!==undefined?s.homework[+t.dataset.homework]:t.dataset.badge!==undefined?s.badges[+t.dataset.badge]:s;row[t.dataset.field]=t.value;if(t.dataset.field==='unlock_criteria')row.description=t.value;if(t.dataset.field==='name'&&t.dataset.badge===undefined)root.querySelector(`[data-lesson="${t.dataset.stage}"] > summary`).textContent=(+t.dataset.stage+1)+'. '+t.value;onChange();};
+  root.onclick=ev=>{const b=ev.target.closest('button[data-action]');if(!b)return;const i=+b.dataset.stage,j=+b.dataset.item,s=plan.stages[i],action=b.dataset.action;let focus=i;
+   if(action==='add-stage'){plan.stages.push({name:'New lesson',description:'',homework:[],badges:[]});focus=plan.stages.length-1;}
+   if(action==='remove-stage'){if(!confirm('Remove this lesson and its practice from this course draft?'))return;plan.stages.splice(i,1);focus=Math.min(i,plan.stages.length-1);}
+   if(action==='up'||action==='down'){focus=i+(action==='up'?-1:1);[plan.stages[i],plan.stages[focus]]=[plan.stages[focus],plan.stages[i]];}
+   if(action==='add-homework')s.homework.push({title:'Home practice',instructions:''});
+   if(action==='remove-homework')s.homework.splice(j,1);
+   if(action==='add-badge')s.badges.push({name:'New achievement',icon:BarklyBadges.choices[0][0],unlock_criteria:''});
+   if(action==='remove-badge')s.badges.splice(j,1);
+   if(action==='icon')s.badges[j].icon=b.dataset.icon;
+   render(focus);onChange();root.querySelector('#courseEditStatus').textContent='Course draft updated. Save when ready.';
+   root.querySelector(`[data-lesson="${focus}"] > summary`)?.focus();
+  };
+  render();return {plan};
+ };
+})();

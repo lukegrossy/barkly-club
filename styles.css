@@ -680,3 +680,5 @@ body {
   text-decoration: none;
   display: block;
 }
+
+[hidden] { display: none !important; }

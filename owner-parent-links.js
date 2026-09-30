@@ -16,7 +16,7 @@
      const url=new URL('join-parent.html',location.href);url.hash='invite='+created.token;
      render(created);const result=target.querySelector('[data-link-result]');
      result.innerHTML='<label class="wf-label">Connection link<input readonly data-invite-url aria-label="Parent connection link"></label><button type="button" class="wf-btn secondary" data-copy-link>Copy link</button><p class="wf-small muted" data-copy-status>Copy this link and share it with this parent. No message has been sent.</p>';
-     const input=result.querySelector('input');input.value=url.href;
+     const input=result.querySelector('input');input.value=url.href;BarklyShareInvitation(result,url.href,panel.dataset.email,'parent');
      result.querySelector('[data-copy-link]').onclick=async()=>{try{await navigator.clipboard.writeText(url.href);result.querySelector('[data-copy-status]').textContent='Link copied. Ready to share with this parent.';}catch(_){input.focus();input.select();result.querySelector('[data-copy-status]').textContent='Select and copy the link above.';}};
     }catch(error){result.textContent=error.message||'Could not create a link.';}finally{button.disabled=false;}
    };

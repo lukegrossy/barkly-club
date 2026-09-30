@@ -29,7 +29,7 @@
     const page = location.pathname.split("/").pop();
     if (page.startsWith("owner-")) return "owner";
     if (page.startsWith("parent-")) return "parent";
-    if (page === "trainer-dashboard.html") return "trainer";
+    if (page.startsWith("trainer-")) return "trainer";
     const queryRole = new URLSearchParams(location.search).get("role");
     if (page === "dogs.html" || page.startsWith("dog-")) {
       return ["owner", "trainer", "parent"].includes(queryRole) ? queryRole : "owner";
@@ -38,7 +38,7 @@
   }
 
   async function guard() {
-    if (location.pathname.endsWith("/join-parent.html")) return;
+    if (/\/join-(parent|trainer)\.html$/.test(location.pathname)) return;
     document.documentElement.style.visibility = "hidden";
     try {
       const account = await roles();
@@ -52,7 +52,7 @@
         return;
       }
       const expected = allowedRole();
-      if (expected && !account.roles.some(member => member.role === expected)) {
+      if (expected && !account.roles.some(member => member.role === expected || (expected === 'trainer' && member.role === 'owner'))) {
         location.replace(landing[account.roles[0].role]);
         return;
       }

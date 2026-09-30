@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>if(new URLSearchParams(location.search).get('role')==='trainer')location.replace('trainer-dog.html'+location.search+'&tab=updates');</script>
 <script>if(new URLSearchParams(location.search).get('role')==='parent')location.replace('parent-updates.html'+location.search);</script>
 <script>if(!new URLSearchParams(location.search).get('role')||new URLSearchParams(location.search).get('role')==='owner')location.replace('owner-dog-notes.html'+location.search);</script>
   <meta charset="UTF-8" />
@@ -230,8 +231,8 @@
 
 <nav class="bottom-nav" id="bottomNav"></nav>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="auth.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+<script src="auth.js?v=setup-2"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <script>
