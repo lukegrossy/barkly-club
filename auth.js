@@ -46,7 +46,7 @@
         location.replace("login.html?next=" + next);
         return;
       }
-      if (!account.roles.length) {
+      if (!account.roles.length && !location.pathname.endsWith("/school-onboarding.html")) {
         location.replace("access-pending.html");
         return;
       }

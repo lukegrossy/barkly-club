@@ -535,7 +535,7 @@ white-space: nowrap;
       <div class="card-list">Loading roster...</div>
 
       <button class="publish-btn" id="startSession" type="button">Start session</button>
-      <button class="publish-btn" id="completeSession" data-sheet="completeSheet" disabled>
+      <button class="publish-btn" id="completeSession" disabled>
         Complete session
       </button>
     </div>
@@ -829,32 +829,10 @@ white-space: nowrap;
   document.getElementById("startSession").addEventListener("click", startSession);
 
   async function completeSession() {
-    if (!currentSessionId) {
-      alert("No active session found.");
-      return;
-    }
-
-    const { error } = await db
-      .from("sessions")
-      .update({
-        status: "completed",
-        completed_at: new Date().toISOString()
-      })
-      .eq("id", currentSessionId);
-
-    if (error) {
-      console.error("Complete session failed:", error);
-      alert("Could not complete session.");
-      return;
-    }
-
-    currentSessionStatus = "completed";
-    updateSessionStatusUI(currentSessionStatus);
-
-    alert("Session completed.");
-    closeSheets();
-    await loadCurrentSession();
+    if (currentSessionId) location.href = "class-session.html?session=" + currentSessionId;
   }
+
+  document.getElementById("completeSession").addEventListener("click", completeSession);
 
   async function loadSessionRoster() {
     if (!currentSessionId) return;

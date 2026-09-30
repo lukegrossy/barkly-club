@@ -385,6 +385,7 @@
         </a>
       </div>
     </section>
+    <section class="manage-card glass-card"><h3>Bring in your families</h3><p>Add a new dog and owner, or enrol dogs already in your school.</p><a id="addFamily" href="owner-dogs.html#add">Add dog & owner →</a></section>
     <section class="manage-card glass-card">
       <h3>Assign a trainer</h3>
       <label>Trainer<select id="trainerSelect"><option value="">Unassigned</option></select></label>
@@ -446,6 +447,7 @@
       currentClass = data;
       const enrolmentsUrl = "owner-class-enrolments.html?class=" + encodeURIComponent(classId);
       document.getElementById("enrolmentsLink").href = enrolmentsUrl;
+      document.getElementById("addFamily").href = "owner-dogs.html?class=" + classId + "#add";
       const manage = document.getElementById("manageEnrolments");
       manage.disabled = false;
       manage.onclick = () => { location.href = enrolmentsUrl; };
@@ -508,7 +510,7 @@
       const [classResult, membersResult] = await Promise.all([
         db.from("classes").select("trainer_id").eq("id", classId).single(),
         db.from("school_members").select("user_id").eq("school_id", currentClass.school_id)
-          .eq("role", "trainer").eq("status", "active")
+          .in("role", ["owner", "trainer"]).eq("status", "active")
       ]);
       if (classResult.error || membersResult.error) {
         document.getElementById("trainerMessage").textContent = "Could not load trainers.";
@@ -562,6 +564,10 @@
         detail.textContent = (item.status || "Scheduled") + " · " +
           Math.round((new Date(item.ends_at) - new Date(item.starts_at)) / 60000) + " minutes";
         row.append(title, detail);
+        const open = document.createElement("a");
+        open.href = "class-session.html?session=" + item.id;
+        open.textContent = item.status === "completed" ? "Review class work →" : "Open lesson & attendance →";
+        row.append(open);
         list.append(row);
       });
     }
@@ -597,5 +603,6 @@
     lucide.createIcons();
   </script>
 
+<script src="owner-nav.js"></script>
 </body>
 </html>

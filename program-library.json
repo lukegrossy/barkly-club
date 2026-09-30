@@ -1,0 +1,306 @@
+[
+  {
+    "name": "Puppy Preschool",
+    "stages": [
+      {
+        "name": "Week 1 — A safe start",
+        "badges": [
+          {
+            "icon": "barkly-connection",
+            "name": "First Connection",
+            "description": "Owner demonstrates well-timed rewards and puppy voluntarily checks in three times in a quiet setting.",
+            "unlock_criteria": "Owner demonstrates well-timed rewards and puppy voluntarily checks in three times in a quiet setting."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Name and reward",
+            "instructions": "In a quiet room, say your puppy’s name once. Mark and reward a glance towards you; try three repetitions, then pause. If they cannot respond, reduce distractions. Record where it was easy. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Home routine diary",
+            "instructions": "For three days, note sleep, meals, play, toilet opportunities and successes. Take your puppy to the chosen toilet area frequently and after waking, meals and play; reward promptly after toileting. Clean accidents without punishment. Provide undisturbed rest. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Coach reward timing with a marker word, name response and a voluntary hand target. Discuss toilet opportunities after waking, eating and play; reward outside immediately. Set up a rest space and family supervision plan. Introduce body-language observation before any puppy interactions."
+      },
+      {
+        "name": "Week 2 — Discovering the world",
+        "badges": [
+          {
+            "icon": "barkly-explorer",
+            "name": "Curious Explorer",
+            "description": "Puppy comfortably observes or explores a new item at a self-chosen distance; owner recognises when to pause.",
+            "unlock_criteria": "Puppy comfortably observes or explores a new item at a self-chosen distance; owner recognises when to pause."
+          }
+        ],
+        "homework": [
+          {
+            "title": "One comfortable discovery",
+            "instructions": "Choose one gentle new experience, such as watching people from a quiet distance. Let your puppy watch, retreat or explore. Pair the experience with a reward they enjoy. Stop if they look worried; note distance and response rather than counting exposures. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Handling with a choice",
+            "instructions": "When relaxed, briefly touch a comfortable area such as the shoulder, then reward and pause. Continue only if your puppy remains loose and chooses to stay. Stop if they pull away; avoid restraint and sensitive areas initially. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Practise observing a new object, surface or sound from a comfortable distance. Teach owners to notice turning away, freezing, tucked posture or attempts to escape and to increase space. Calm observation counts; greetings are optional. No uncontrolled group play."
+      },
+      {
+        "name": "Week 3 — Mouths, toys and coming back",
+        "badges": [
+          {
+            "icon": "barkly-recall",
+            "name": "Recall Rookie",
+            "description": "Puppy returns over a short distance in three easy supervised trials; owner rewards without pressure.",
+            "unlock_criteria": "Puppy returns over a short distance in three easy supervised trials; owner rewards without pressure."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Come for something good",
+            "instructions": "In a secure room, call once from one or two steps away when your puppy is likely to come. Reward at your feet and let them return to safe play. Do three easy repetitions. Never test this near traffic or off lead in public. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Swap a toy",
+            "instructions": "With a low-value safe toy, offer a better reward without reaching into the mouth. When the puppy voluntarily releases, reward and return the toy if safe. Stop if they stiffen, freeze or growl; contact your trainer. Do not practise with stolen dangerous items. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Coach toy redirection for mouthing, a voluntary toy trade and a short recall in a secure space. Discuss rest and overstimulation. Never chase to remove a harmless item, force the mouth open, or punish growling; guarding needs individual support."
+      },
+      {
+        "name": "Week 4 — Calm habits",
+        "badges": [
+          {
+            "icon": "barkly-calm",
+            "name": "Calm Beginnings",
+            "description": "Puppy voluntarily spends a few relaxed seconds on a mat and owner can describe a comfortable starting point for independence.",
+            "unlock_criteria": "Puppy voluntarily spends a few relaxed seconds on a mat and owner can describe a comfortable starting point for independence."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Find your mat",
+            "instructions": "Place a mat in a quiet room. Reward looking at it, stepping onto it and settling voluntarily. Release after a few seconds. Practise briefly; never hold the puppy on the mat or use it as punishment. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Tiny independence practice",
+            "instructions": "After toilet and comfort needs are met, let your puppy enjoy a safe activity while you sit nearby. Briefly shift position or step away only while they remain relaxed, then return. If worried, shorten the next attempt. Do not leave them to cry; persistent distress needs professional advice. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Introduce a mat, a comfortable harness and a few loose-lead steps. Reward four paws on the floor during low-key greetings. Introduce tiny comfortable separations with an owner nearby; distinguish relaxed independence from distress."
+      },
+      {
+        "name": "Week 5 — Putting it together",
+        "badges": [
+          {
+            "icon": "barkly-puppy-graduate",
+            "name": "Puppy School Graduate",
+            "description": "Family completes the review and an individual next-step plan; skills assessed at the puppy’s current comfort level, not a fixed pass/fail test.",
+            "unlock_criteria": "Family completes the review and an individual next-step plan; skills assessed at the puppy’s current comfort level, not a fixed pass/fail test."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Three easy skills",
+            "instructions": "Choose three familiar skills and practise separately in one quiet new location permitted by your vet. Start easier than at home and reward generously. Record what changed and where your puppy needed more distance or rest. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Your next fortnight",
+            "instructions": "Choose two achievable goals with your trainer. Record a starting point, a short practice opportunity and a way to make each task easier. Continue positive experiences at your puppy’s pace; seek help for persistent fear, guarding or distress. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Run a gentle circuit of name response, hand target, recall, mat and handling with rest breaks. Each family chooses two next goals. Celebrate participation and individual progress; graduation does not certify public off-lead reliability."
+      }
+    ],
+    "description": "Five weekly 50–60 minute classes for puppies roughly 8–16 weeks at entry, subject to individual readiness and veterinary advice. Core offer: home routines, safe socialisation, handling and first skills. Barkly curriculum template: trainer review required before delivery. Suggested group size 4–6, adjusted to space, staffing and welfare; alternate demonstrations, brief practice and rest. Use rewards, choice and management; no intimidation or forced interaction. School intake must check health, vaccination suitability with the puppy’s vet, and individual behaviour needs. Separate worried puppies with space or barriers; offer individual support when group learning is unsuitable. Homework is brief, optional to adapt, and stops when the dog is uncomfortable. Badges recognise observed progress, never certify safety."
+  },
+  {
+    "name": "Puppy Next Steps",
+    "stages": [
+      {
+        "name": "Week 1 — Skills in new places",
+        "badges": [
+          {
+            "icon": "barkly-focus",
+            "name": "Focus Finder",
+            "description": "Puppy offers three comfortable check-ins in a mildly different setting.",
+            "unlock_criteria": "Puppy offers three comfortable check-ins in a mildly different setting."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Check-in trail",
+            "instructions": "In a quiet safe area, mark and reward five voluntary looks towards you while exploring on lead. Do not pull the puppy into position. Reduce distractions if they cannot disengage. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "One small change",
+            "instructions": "Practise a familiar hand target in another room, then finish. Add a quiet new location only when comfortable. Note the easiest setup; avoid increasing difficulty and duration together. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Review reward timing and identify each puppy’s easiest environment. Build voluntary check-ins and hand targets in a slightly different setting. Change distance, duration or distraction one at a time."
+      },
+      {
+        "name": "Week 2 — Walking together",
+        "badges": [
+          {
+            "icon": "barkly-walking",
+            "name": "Walking Buddy",
+            "description": "Puppy walks five slack-lead steps in an easy setting and handler offers a sniff break.",
+            "unlock_criteria": "Puppy walks five slack-lead steps in an easy setting and handler offers a sniff break."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Five loose steps",
+            "instructions": "On a comfortable harness and lead in a safe quiet area, reward beside you after one or two slack-lead steps. Gradually aim for five. If the lead tightens, pause and invite reconnection; never jerk it. Allow sniff breaks. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Watch then move on",
+            "instructions": "Observe a distant dog or person without approaching. Reward a voluntary look back and move away together. Increase space if your puppy fixates, freezes or barks; do not wait for them to endure it. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Teach slack-lead walking with frequent sniffing breaks. Practise a cheerful change of direction and neutral observation of another dog from a suitable distance. Avoid leash corrections and compulsory greetings."
+      },
+      {
+        "name": "Week 3 — Greetings and settling",
+        "badges": [
+          {
+            "icon": "barkly-polite",
+            "name": "Polite Paws",
+            "description": "Puppy manages one comfortable four-paws greeting or calm observation without greeting.",
+            "unlock_criteria": "Puppy manages one comfortable four-paws greeting or calm observation without greeting."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Polite hello",
+            "instructions": "Ask a willing adult to approach slowly while you reward four paws down. Pause or add distance if excitement rises. Keep the greeting brief and optional; do not require a sit while someone leans over the puppy. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Mini café at home",
+            "instructions": "Sit beside your puppy’s mat at home. Reward a few seconds of relaxed behaviour, then release. Build comfortable duration gradually before adding a quiet public setting. Keep sessions short and leave if overwhelmed. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Rehearse a willing person approaching at low intensity; reward four paws down and allow retreat. Practise brief mat time while the owner sits. Discuss barriers and active adult supervision around children."
+      },
+      {
+        "name": "Week 4 — Recall and everyday choices",
+        "badges": [
+          {
+            "icon": "barkly-next-graduate",
+            "name": "Next Steps Graduate",
+            "description": "Handler demonstrates recall setup, reward and release plus a safe management plan for distractions.",
+            "unlock_criteria": "Handler demonstrates recall setup, reward and release plus a safe management plan for distractions."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Recall then release",
+            "instructions": "In an enclosed space, call once when your puppy is likely to respond. Reward the return, then release to sniff again. Use a harness and safely handled long line where containment is uncertain; avoid other dogs and entanglement. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Leave it safely",
+            "instructions": "Cover a low-value item with your hand without teasing. Reward looking away using a different treat. Keep the item inaccessible and progress only when easy. Never use medicine, rubbish or other hazards as practice items. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Practise recall in an enclosed area, rewarding returns before releasing to explore. Introduce leave-it using a covered low-value item and reward disengagement. Plan continued practice without claiming emergency reliability."
+      }
+    ],
+    "description": "Four weekly 50–60 minute classes, typically for puppies around 4–6 months or preschool graduates. Consolidate foundations around everyday distractions. Placement follows skills and comfort, not age alone. Barkly curriculum template: trainer review required before delivery. Suggested group size 4–6, adjusted to space, staffing and welfare; alternate demonstrations, brief practice and rest. Use rewards, choice and management; no intimidation or forced interaction. School intake must check health, vaccination suitability with the puppy’s vet, and individual behaviour needs. Separate worried puppies with space or barriers; offer individual support when group learning is unsuitable. Homework is brief, optional to adapt, and stops when the dog is uncomfortable. Badges recognise observed progress, never certify safety."
+  },
+  {
+    "name": "Adolescent Foundations",
+    "stages": [
+      {
+        "name": "Week 1 — Reset and reconnect",
+        "badges": [
+          {
+            "icon": "barkly-reconnected",
+            "name": "Team Reconnected",
+            "description": "Owner identifies two effective rewards and adjusts task difficulty when the dog struggles.",
+            "unlock_criteria": "Owner identifies two effective rewards and adjusts task difficulty when the dog struggles."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Reward menu",
+            "instructions": "Try several safe rewards your dog enjoys in a quiet place: food, a toy or access to sniff. Record which works in each setting. Avoid competition with other dogs and keep food portions appropriate. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Easy wins",
+            "instructions": "Practise one well-known cue in a low-distraction setting for three easy repetitions. Mark and reward promptly. If it becomes difficult, simplify the setup rather than repeating the cue or applying pressure. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Review changing motivation, environment and routines. Return to achievable criteria rather than treating difficulty as defiance. Identify useful food, toy and sniff rewards; plan enrichment and rest appropriate to the individual."
+      },
+      {
+        "name": "Week 2 — Space and self-control",
+        "badges": [
+          {
+            "icon": "barkly-choices",
+            "name": "Thoughtful Choices",
+            "description": "Dog pauses briefly at a secured doorway and owner maintains physical safety measures.",
+            "unlock_criteria": "Dog pauses briefly at a secured doorway and owner maintains physical safety measures."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Pause at the doorway",
+            "instructions": "At a safe internal door, reward a momentary pause, give a release cue and walk through together. Build one second at a time. Keep external exits secured; never test at traffic-facing doors. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Space to succeed",
+            "instructions": "Choose a quiet location and reward voluntary attention at a comfortable distance from activity. Walk away early if tension builds. Record the distance that allowed relaxed behaviour for your next session. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Practise short waits at safe internal doorways and comfortable observation of everyday activity. Management prevents rehearsal of unsafe behaviour; waiting never replaces a closed gate or lead near roads."
+      },
+      {
+        "name": "Week 3 — Real-world walking and recall",
+        "badges": [
+          {
+            "icon": "barkly-teammate",
+            "name": "Everyday Teammate",
+            "description": "Team completes a short walk-sniff-reconnect sequence and an easy contained recall.",
+            "unlock_criteria": "Team completes a short walk-sniff-reconnect sequence and an easy contained recall."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Walk, sniff, reconnect",
+            "instructions": "Alternate a few rewarded slack-lead steps with a sniff break. Use a cheerful cue to move on and reward reconnection. Start in quiet places and shorten the task if your dog pulls persistently. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Recall with a mild distraction",
+            "instructions": "In a secure area, introduce a small distraction well away from the dog. Call only when success is likely; reward richly and release. If unsuccessful, reduce difficulty. Maintain lead or enclosure safety regardless of progress. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Combine short slack-lead stretches, direction changes and recall games in controlled spaces. Increase one challenge at a time. Teach owners to recognise situations where management is essential."
+      },
+      {
+        "name": "Week 4 — Settle and keep learning",
+        "badges": [
+          {
+            "icon": "barkly-together",
+            "name": "Growing Together",
+            "description": "Family completes an individual review and realistic maintenance plan; no guarantee of universal obedience or off-lead safety.",
+            "unlock_criteria": "Family completes an individual review and realistic maintenance plan; no guarantee of universal obedience or off-lead safety."
+          }
+        ],
+        "homework": [
+          {
+            "title": "Quiet outing rehearsal",
+            "instructions": "Start with a visitor or café-style setup at home. Reward relaxed mat behaviour and take breaks. Move to a quiet suitable venue only when ready, choosing space and an easy exit. Leave before frustration or worry builds. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          },
+          {
+            "title": "Four-week practice plan",
+            "instructions": "Pick two skills and specify an easy starting environment, reward and small next step. Keep a weekly note of comfort and progress. Ask the trainer for individual help when difficulties persist; arrange veterinary assessment for sudden behaviour change or possible pain. Suggested practice: 1–3 minutes at a time, with rest; fewer repetitions if needed. Share one success or difficulty with your trainer."
+          }
+        ],
+        "description": "Rehearse a short visit to a controlled quiet setting with a mat and an exit plan. Review progress, identify remaining needs and develop a four-week maintenance plan. Refer persistent fear, guarding, aggression or distress to suitable professional support."
+      }
+    ],
+    "description": "Four weekly 50–60 minute classes, typically from about six months, adjusted for development and prior learning. A follow-on for growing dogs or an assessed entry point for those who missed puppy school. Significant fear, aggression or separation distress requires individual assessment. Barkly curriculum template: trainer review required before delivery. Suggested group size 4–6, adjusted to space, staffing and welfare; alternate demonstrations, brief practice and rest. Use rewards, choice and management; no intimidation or forced interaction. School intake must check health, vaccination suitability with the puppy’s vet, and individual behaviour needs. Separate worried puppies with space or barriers; offer individual support when group learning is unsuitable. Homework is brief, optional to adapt, and stops when the dog is uncomfortable. Badges recognise observed progress, never certify safety."
+  }
+]
